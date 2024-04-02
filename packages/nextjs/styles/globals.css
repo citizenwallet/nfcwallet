@@ -32,9 +32,17 @@ p {
 }
 
 h1 {
-  @apply text-3xl mx-2 my-4;
+  @apply text-3xl my-4;
 }
 
 h2 {
-  @apply text-2xl mx-2 my-4;
+  @apply text-2xl my-4;
+}
+
+ul {
+  @apply list-disc my-4 ml-6;
+}
+
+li {
+  @apply my-2 list-disc;
 }
