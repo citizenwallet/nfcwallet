@@ -25,7 +25,7 @@ const chains: ChainMap = {
   44787: celoAlfajores,
 };
 
-export default function ShowAccountAddress({
+export default function ShowAccount({
   accountAddress,
   owner,
   config,
@@ -34,7 +34,7 @@ export default function ShowAccountAddress({
   owner: string;
   config: any;
 }) {
-  const [profile] = useProfile(config.community.alias, owner);
+  const [profile] = useProfile(config?.community.alias, owner);
   const avatarUrl = profile ? getUrlFromIPFS(profile.image_medium) : "/nfcwallet-icon.jpg";
 
   const publicClient = createPublicClient({
@@ -79,7 +79,7 @@ export default function ShowAccountAddress({
         {topupPlugin && typeof window !== "undefined" && (
           <div className="text-center pt-8 my-8">
             <Link
-              className="bouton"
+              className="button"
               href={`${topupPlugin.url}?account=${accountAddress}&redirectUrl=${encodeURIComponent(
                 window.location.href,
               )}`}

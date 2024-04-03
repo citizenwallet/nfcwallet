@@ -14,6 +14,7 @@ export const useProfile = (communitySlug: string, account: string) => {
   const [profile, setProfile] = useState<any>(null);
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (!communitySlug) return;
     if (!account) return;
     const configUrl = `${window.location.protocol}//${window.location.host}/api/getConfig`;
     const community = new CitizenWalletCommunity(communitySlug);

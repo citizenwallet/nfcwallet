@@ -40,7 +40,7 @@ export default class CitizenWalletCommunity {
   loadConfig = async () => {
     if (this.config) return this.config;
     console.log(">>> fetching", this.configUrl);
-    const response = await fetch(this.configUrl, {
+    const response = await fetch(`${this.configUrl}?cacheBuster=${Math.round(new Date().getTime() / 10000)}`, {
       mode: "cors",
     });
     if (!response.ok) {
