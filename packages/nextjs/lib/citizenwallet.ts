@@ -2,22 +2,7 @@ import { ethers } from "ethers";
 import ERC20ABI from "smartcontracts/build/contracts/erc20/ERC20.abi.json";
 import ProfileABI from "smartcontracts/build/contracts/profile/Profile.abi.json";
 import { createPublicClient, http } from "viem";
-import { base, baseSepolia, celo, celoAlfajores, gnosis, gnosisChiado, polygon, polygonMumbai } from "viem/chains";
-
-interface ChainMap {
-  [key: number]: any;
-}
-
-const chains: ChainMap = {
-  137: polygon,
-  80001: polygonMumbai,
-  100: gnosis,
-  10200: gnosisChiado,
-  8453: base,
-  84532: baseSepolia,
-  42220: celo,
-  44787: celoAlfajores,
-};
+import chains from "~~/lib/chains";
 
 const protocol = ["production", "preview"].includes(process.env.NODE_ENV) ? "https" : "http";
 

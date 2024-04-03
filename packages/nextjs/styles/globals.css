@@ -46,3 +46,15 @@ ul {
 li {
   @apply my-2 list-disc;
 }
+
+.button {
+  @apply bg-black text-white p-3 rounded-md;
+}
+
+.button:hover {
+  @apply bg-gray-800;
+}
+
+.button:active {
+  @apply bg-gray-900 scale-90;
+}

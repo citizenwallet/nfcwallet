@@ -1,7 +1,7 @@
-import * as chains from "viem/chains";
+import chains from "~~/lib/chains";
 
 export type ScaffoldConfig = {
-  targetNetworks: readonly chains.Chain[];
+  targetNetworks: readonly any[];
   pollingInterval: number;
   alchemyApiKey: string;
   walletConnectProjectId: string;
@@ -9,9 +9,14 @@ export type ScaffoldConfig = {
   walletAutoConnect: boolean;
 };
 
+const chain = chains[parseInt(process.env.NEXT_PUBLIC_CHAIN_ID || "100")];
+if (!chain) {
+  throw new Error("No chain found for chainId " + process.env.NEXT_PUBLIC_CHAIN_ID);
+}
+
 const scaffoldConfig = {
   // The networks on which your DApp is live
-  targetNetworks: [process.env.NEXT_PUBLIC_CHAIN_ID === "8453" ? chains.base : chains.baseSepolia],
+  targetNetworks: [chain],
 
   // The interval at which your front-end polls the RPC servers for new data
   // it has no effect if you only target the local network (default is 4000)

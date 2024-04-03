@@ -1,4 +1,5 @@
 import React from "react";
+import Error from "@/components/Error";
 import ShowAccount from "@/components/ShowAccount";
 import CitizenWalletCommunity from "~~/lib/citizenwallet";
 
@@ -10,6 +11,10 @@ export default async function WalletProfile({
   searchParams: { owner: string };
 }) {
   // const [urlRecord, setUrlRecord] = useState("");
+  const { accountAddress } = params;
+  if (accountAddress.length !== 42 || accountAddress.substring(0, 2) !== "0x") {
+    return <Error msg="Invalid account address" />;
+  }
 
   const cw = new CitizenWalletCommunity(params.communitySlug);
   const config = await cw.loadConfig();
@@ -17,7 +22,7 @@ export default async function WalletProfile({
   return (
     <div>
       {/* <p>Serial Number: {serialNumber}</p> */}
-      <ShowAccount config={config} accountAddress={params.accountAddress} owner={searchParams.owner} />
+      <ShowAccount config={config} accountAddress={accountAddress} owner={searchParams.owner} />
     </div>
   );
 }

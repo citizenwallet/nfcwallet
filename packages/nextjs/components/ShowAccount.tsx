@@ -76,10 +76,10 @@ export default function ShowAccountAddress({
             />
           )}
         </div>
-        {topupPlugin && (
+        {topupPlugin && typeof window !== "undefined" && (
           <div className="text-center pt-8 my-8">
             <Link
-              className="rounded-lg p-4 border-black border-2"
+              className="bouton"
               href={`${topupPlugin.url}?account=${accountAddress}&redirectUrl=${encodeURIComponent(
                 window.location.href,
               )}`}

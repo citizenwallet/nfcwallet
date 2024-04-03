@@ -27,8 +27,8 @@ export default function ShowAccountAddress({
   });
   useEffect(() => {
     if (accountAddress) {
-      console.log(">>> pushing to", `/${communitySlug}/account/${accountAddress}`);
-      router.push(`/${communitySlug}/account/${accountAddress}`);
+      console.log(">>> pushing to", `/${communitySlug}/${accountAddress}`);
+      router.push(`/${communitySlug}/${accountAddress}`);
     }
   }, [accountAddress, communitySlug, router]);
   return null;
