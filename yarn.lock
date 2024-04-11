@@ -2800,7 +2800,7 @@ __metadata:
     react-dom: ~18.2.0
     react-hot-toast: ~2.4.0
     react-qr-code: ^2.0.12
-    smartcontracts: "github:citizenwallet/smartcontracts#v0.0.97"
+    smartcontracts: "github:citizenwallet/smartcontracts#v0.0.106"
     tailwindcss: ~3.3.3
     type-fest: ~4.6.0
     typescript: ~5.4.2
@@ -14592,12 +14592,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"smartcontracts@github:citizenwallet/smartcontracts#v0.0.97":
+"smartcontracts@github:citizenwallet/smartcontracts#v0.0.106":
   version: 1.0.0
-  resolution: "smartcontracts@https://github.com/citizenwallet/smartcontracts.git#commit=165fa739afb370db377da2410c4f8bc178b57062"
+  resolution: "smartcontracts@https://github.com/citizenwallet/smartcontracts.git#commit=d45f310c1621ec859ba6c39076709c857302a4b4"
   dependencies:
     userop: ^0.3.3
-  checksum: e559f53aba22f7acf3041c810c8541ce76ac107f227fe063077e68c457d3ea93fe9d9e65e160a934fe82dde6541ed501f478900f7926c504e885368dae9a9d72
+  checksum: 6e88634a6c537bb3b467239e6fb1af1e2d7ff0a11a5fb34995597245c511268127ec3ad35d1faacdc24f02922fbd631ce7ff8990a00787ab25e93f896cb3e7db
   languageName: node
   linkType: hard
 

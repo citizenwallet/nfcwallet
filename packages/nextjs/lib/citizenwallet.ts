@@ -1,8 +1,10 @@
 import { ethers } from "ethers";
+import CardFactoryABI from "smartcontracts/build/contracts/cardFactory/CardFactory.abi.json";
 import ERC20ABI from "smartcontracts/build/contracts/erc20/ERC20.abi.json";
 import ProfileABI from "smartcontracts/build/contracts/profile/Profile.abi.json";
 import { createPublicClient, http } from "viem";
 import chains from "~~/lib/chains";
+import { getHash } from "~~/utils/crypto";
 
 const protocol = ["production", "preview"].includes(process.env.NODE_ENV) ? "https" : "http";
 
@@ -63,7 +65,7 @@ export default class CitizenWalletCommunity {
       args: [account],
     });
 
-    return this.fetchJSON(ipfsHash);
+    return await this.fetchJSON(ipfsHash);
   };
 
   getProfileFromUsername = async (username: string) => {
@@ -78,12 +80,34 @@ export default class CitizenWalletCommunity {
         functionName: "getFromUsername",
         args: [username32],
       });
-      return this.fetchJSON(ipfsHash);
+      return await this.fetchJSON(ipfsHash);
     } catch (e) {
       // console.error(JSON.stringify(e, null, 2));
       console.error(e.shortMessage);
       return null;
     }
+  };
+
+  getCardAccountAddress = async function (this: any, serialNumber: string): Promise<string | null> {
+    await this.initClient();
+    const contractAddress: string | undefined = this.config.cards?.card_factory_address;
+    if (!contractAddress) return null;
+    if (!serialNumber) return null;
+
+    const hash = getHash(
+      serialNumber,
+      BigInt(this.config.node.chain_id || 0),
+      this.config.cards.card_factory_address || "",
+    );
+
+    const accountAddress = await this.client.readContract({
+      address: contractAddress,
+      abi: CardFactoryABI,
+      functionName: "getCardAddress",
+      args: [hash],
+    });
+
+    return accountAddress;
   };
 
   getBalance = async (account: string) => {

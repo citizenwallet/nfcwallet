@@ -19,9 +19,12 @@ export default async function WalletProfile({
   const cw = new CitizenWalletCommunity(params.communitySlug);
   const config = await cw.loadConfig();
 
+  if (!config) {
+    return <Error msg={`Unable to load the ${params.communitySlug} community`} />;
+  }
+
   return (
     <div>
-      {/* <p>Serial Number: {serialNumber}</p> */}
       <ShowAccount config={config} accountAddress={accountAddress} owner={searchParams.owner} />
     </div>
   );

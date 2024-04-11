@@ -4,26 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import QRCode from "react-qr-code";
 import { createPublicClient, http } from "viem";
-import { base, baseSepolia, celo, celoAlfajores, gnosis, gnosisChiado, polygon, polygonMumbai } from "viem/chains";
 import { WagmiConfig, createConfig } from "wagmi";
 import { Address, TokenBalance } from "~~/components/scaffold-eth";
 import { useProfile } from "~~/hooks/citizenwallet";
+import chains from "~~/lib/chains";
 import { getUrlFromIPFS } from "~~/utils/ipfs";
-
-interface ChainMap {
-  [key: number]: any;
-}
-
-const chains: ChainMap = {
-  137: polygon,
-  80001: polygonMumbai,
-  100: gnosis,
-  10200: gnosisChiado,
-  8453: base,
-  84532: baseSepolia,
-  42220: celo,
-  44787: celoAlfajores,
-};
 
 export default function ShowAccount({
   accountAddress,
@@ -37,8 +22,9 @@ export default function ShowAccount({
   const [profile] = useProfile(config?.community.alias, owner);
   const avatarUrl = profile ? getUrlFromIPFS(profile.image_medium) : "/nfcwallet-icon.jpg";
 
+  if (!config) return null;
   const publicClient = createPublicClient({
-    chain: chains[config.node.chain_id],
+    chain: chains[config?.node.chain_id],
     transport: http(),
   });
 
