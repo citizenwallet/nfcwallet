@@ -2,8 +2,9 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 
-const Scan = ({ onChange }: { onChange: (event: NDEFReadingEvent) => any }) => {
-  const [nfcAvailable, setNfcAvailable] = useState(false);
+const Scan = ({ onChange, ignoreRead }: { onChange: (event: NDEFReadingEvent) => any; ignoreRead?: boolean }) => {
+  const [nfcAvailable, setNfcAvailable] = useState(undefined);
+  const [errorMsg, setErrorMsg] = useState("");
   const [scanning, setScanning] = useState(false);
 
   const startScanner = async () => {
@@ -18,6 +19,7 @@ const Scan = ({ onChange }: { onChange: (event: NDEFReadingEvent) => any }) => {
       };
 
       ndef.onreading = event => {
+        if (ignoreRead) return;
         console.log("NDEF message read.");
         onChange(event);
       };
@@ -25,17 +27,18 @@ const Scan = ({ onChange }: { onChange: (event: NDEFReadingEvent) => any }) => {
       setScanning(true);
     } catch (error) {
       console.log(`Error! Scan failed to start: ${error}.`);
+      setErrorMsg(`Scanner failed to start: ${error}.`);
     }
   };
 
   const scan = useCallback(async () => {
-    if ("NDEFReader" in window) {
-      try {
-        new NDEFReader();
-        setNfcAvailable(true);
-      } catch (error) {
-        console.log(`Error! Scan failed to start: ${error}.`);
-      }
+    try {
+      new NDEFReader();
+      setNfcAvailable(true);
+    } catch (error) {
+      console.log(`Error! Scan failed to start: ${error}.`);
+      // setErrorMsg(`setNfcAvailable error: ${error}.`);
+      setNfcAvailable(false);
     }
   }, []);
 
@@ -70,13 +73,20 @@ const Scan = ({ onChange }: { onChange: (event: NDEFReadingEvent) => any }) => {
           <div className="pb-4">{scanning ? "Scanning..." : "Start scanning"}</div>
         </button>
       )}
-      {!nfcAvailable && (
+      {nfcAvailable === undefined && (
+        <center>
+          <button className="btn disabled btn-primary w-64 rounded-md">Waiting for NFC reader...</button>
+          <div className="text-red-800">{errorMsg}</div>
+        </center>
+      )}
+      {nfcAvailable === false && (
         <center>
           <button className="btn disabled btn-primary w-64 rounded-md">NFC not available on this device</button>
           <div className="text-sm my-2">
             Requires Chrome on Android (
             <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_NFC_API#browser_compatibility">more info</a>)
           </div>
+          <div className="text-red-800">{errorMsg}</div>
         </center>
       )}
     </center>

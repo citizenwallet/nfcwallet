@@ -31,7 +31,7 @@
     "react-dom": "~18.2.0",
     "react-hot-toast": "~2.4.0",
     "react-qr-code": "^2.0.12",
-    "smartcontracts": "github:citizenwallet/smartcontracts#v0.0.97",
+    "smartcontracts": "github:citizenwallet/smartcontracts#v0.0.106",
     "use-debounce": "~8.0.4",
     "usehooks-ts": "2.13.0",
     "viem": "1.19.9",
