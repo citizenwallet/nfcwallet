@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import QRCode from "react-qr-code";
 import { createPublicClient, http } from "viem";
 import { WagmiConfig, createConfig } from "wagmi";
+import Plugins from "~~/components/Plugins";
 import { Address, TokenBalance } from "~~/components/scaffold-eth";
 import { useProfile } from "~~/hooks/citizenwallet";
 import chains from "~~/lib/chains";
@@ -33,8 +33,6 @@ export default function ShowAccount({
     publicClient,
   });
 
-  const topupPlugin = (config?.plugins || []).find((plugin: any) => plugin.name === "Top Up");
-
   return (
     <WagmiConfig config={wagmiConfig}>
       <div className="max-w-xl mx-auto">
@@ -62,18 +60,7 @@ export default function ShowAccount({
             />
           )}
         </div>
-        {topupPlugin && typeof window !== "undefined" && (
-          <div className="text-center pt-8 my-8">
-            <Link
-              className="button"
-              href={`${topupPlugin.url}?account=${accountAddress}&redirectUrl=${encodeURIComponent(
-                window.location.href,
-              )}`}
-            >
-              Top Up
-            </Link>
-          </div>
-        )}
+        {config.plugins && <Plugins config={config} accountAddress={accountAddress} />}
       </div>
     </WagmiConfig>
   );
