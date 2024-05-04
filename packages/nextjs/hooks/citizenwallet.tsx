@@ -29,6 +29,7 @@ export const useProfile = (communitySlug: string, account: string) => {
 };
 
 export const useCardAccountAddress = (communitySlug: string, serialNumber: string) => {
+  console.log(">>> useCardAccountAddress", communitySlug, serialNumber);
   const [cardAccountAddress, setCardAccountAddress] = useState<any>(null);
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -37,7 +38,11 @@ export const useCardAccountAddress = (communitySlug: string, serialNumber: strin
     const configUrl = `${window.location.protocol}//${window.location.host}/api/getConfig`;
     const community = new CitizenWalletCommunity(communitySlug);
     community.configUrl = configUrl;
-    community.getCardAccountAddress(serialNumber).then(cardAccountAddress => setCardAccountAddress(cardAccountAddress));
+    console.log(">>> configUrl", configUrl);
+    community.getCardAccountAddress(serialNumber).then(cardAccountAddress => {
+      console.log(">>> cardAccountAddress", cardAccountAddress);
+      setCardAccountAddress(cardAccountAddress);
+    });
   }, [communitySlug, serialNumber]);
   return [cardAccountAddress];
 };

@@ -1,16 +1,19 @@
-import { getHash } from "../../../../utils/crypto";
+import { NextRequest } from "next/server";
+import CitizenWalletCommunity from "../../../../lib/citizenwallet";
 
-type paramsType = { serialNumber: string };
+type paramsType = {
+  serialNumber: string;
+};
 
-export async function GET(request: Request, { params }: { params: paramsType }) {
+export async function GET(request: NextRequest, { params }: { params: paramsType }) {
   const serialNumber = params.serialNumber;
+  const communitySlug = request.nextUrl.searchParams.get("communitySlug");
 
-  // const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
-  const hash = getHash(
-    serialNumber,
-    BigInt(process.env.NEXT_PUBLIC_CHAIN_ID || 0),
-    process.env.NEXT_PUBLIC_CARDMANAGER_CONTRACT_ADDRESS || "",
-  );
+  if (!communitySlug) {
+    return Response.json({ error: "Community slug is required" });
+  }
+  const community = new CitizenWalletCommunity(communitySlug);
+  const accountAddress = await community.getCardAccountAddress(serialNumber);
 
-  return Response.json({ accountAddress: hash });
+  return Response.json({ accountAddress });
 }

@@ -8,10 +8,9 @@ import { getHash } from "~~/utils/crypto";
 
 const protocol = ["production", "preview"].includes(process.env.NODE_ENV) ? "https" : "http";
 
-const CONFIG_URL =
-  process.env.NODE_ENV === "test"
-    ? `${protocol}://config.internal.citizenwallet.xyz/v3/communities.json`
-    : `${process.env.NEXT_PUBLIC_WEBAPP_URL}/api/getConfig`;
+const CONFIG_URL = process.env.NEXT_PUBLIC_WEBAPP_URL
+  ? `${process.env.NEXT_PUBLIC_WEBAPP_URL}/api/getConfig`
+  : `${protocol}://config.internal.citizenwallet.xyz/v3/communities.json`;
 
 export const IPFS_BASE_URL = "https://ipfs.internal.citizenwallet.xyz";
 
@@ -50,6 +49,9 @@ export default class CitizenWalletCommunity {
     }
     const configs = await response.json();
     const config = configs.find((config: any) => config.community.alias === this.communitySlug);
+    if (!config) {
+      console.error(`Community ${this.communitySlug} not found in ${this.configUrl}`);
+    }
     this.config = config;
     return config;
   };
@@ -91,6 +93,10 @@ export default class CitizenWalletCommunity {
   getCardAccountAddress = async function (this: any, serialNumber: string): Promise<string | null> {
     await this.initClient();
     const contractAddress: string | undefined = this.config.cards?.card_factory_address;
+    if (!contractAddress) {
+      console.error(">>> card_factory_address missing for", this.config.community.alias);
+      return null;
+    }
     if (!contractAddress) return null;
     if (!serialNumber) return null;
 
