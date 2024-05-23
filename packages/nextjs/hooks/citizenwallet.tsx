@@ -46,3 +46,13 @@ export const useCardAccountAddress = (communitySlug: string, serialNumber: strin
   }, [communitySlug, serialNumber]);
   return [cardAccountAddress];
 };
+
+export const getCardAccountAddress = async (communitySlug: string, serialNumber: string): Promise<string | null> => {
+  if (!communitySlug) return null;
+  if (typeof window === "undefined") return null;
+  const configUrl = `${window.location.protocol}//${window.location.host}/api/getConfig`;
+  const community = new CitizenWalletCommunity(communitySlug);
+  community.configUrl = configUrl;
+  const cardAccountAddress = await community.getCardAccountAddress(serialNumber);
+  return cardAccountAddress;
+};
