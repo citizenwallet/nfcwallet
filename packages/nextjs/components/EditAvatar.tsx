@@ -51,20 +51,27 @@ export default function EditAvatar({ accountAddress, avatarUrl, onChange }: Edit
   const handleImageSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     setStatus("editing");
-    const file = event.target.files[0];
-    const imageData = await readFile(file);
+    const file = event?.target?.files[0];
+    try {
+      const imageData = await readFile(file);
 
-    setImageDataURL(imageData);
-    console.log("File size:", file.size / 1024 / 1024, "MB");
+      setImageDataURL(imageData);
+      console.log("File size:", file.size / 1024 / 1024, "MB");
+    } catch (e) {
+      setStatus("saved"); // user cancelled file selection
+      console.error(e);
+    }
     return false;
     // Now you can use this file object to preview the image or upload it to a server
   };
 
   const handleChangeAvatar = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!imageDataURL) return triggerFileSelect(event);
+    event.preventDefault();
+    if (status == "saved") return triggerFileSelect(event);
     setStatus("saving");
     const images = await processCroppedImage();
     onChange(images);
+    return false;
   };
 
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
@@ -163,7 +170,7 @@ export default function EditAvatar({ accountAddress, avatarUrl, onChange }: Edit
         onClick={handleChangeAvatar}
       >
         {status != "saved" ? "Save avatar" : "Change avatar"}
-      </button>{" "}
+      </button>
     </div>
   );
 }

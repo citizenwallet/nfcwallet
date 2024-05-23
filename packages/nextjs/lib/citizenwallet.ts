@@ -73,7 +73,11 @@ export default class CitizenWalletCommunity {
         functionName: "get",
         args: [account],
       });
-      return await this.fetchJSON(ipfsHash);
+      const profileData = await this.fetchJSON(ipfsHash);
+      return {
+        ...profileData,
+        ipfsHash,
+      };
     } catch (e) {
       console.error("Unable to fetch profile", e);
       return null;
