@@ -53,6 +53,6 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "Invalid password" });
     }
   }
-  const bearer = `${expiryDate}-${data.account}-${profile.ipfsHash}-${signedMessage}`;
+  const bearer = `${expiryDate}-${data.account}-${profile && profile.ipfsHash}-${signedMessage}`;
   return Response.json({ success: true, bearer });
 }

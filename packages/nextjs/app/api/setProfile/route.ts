@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: "Authentication bearer missing" });
   }
 
-  const bearer = authentication.split(" ")[1];
+  const bearer = authentication.substring(7);
   //  const bearer = `${expiryDate}-${data.account}-${profile.ipfsHash}-${signedMessage}`;
   const matches = bearer.match(/(\d+)-(0x.*)-(.*)-(0x.*)/);
   if (matches?.length !== 5) {

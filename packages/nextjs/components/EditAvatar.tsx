@@ -166,10 +166,14 @@ export default function EditAvatar({ accountAddress, avatarUrl, onChange }: Edit
         onChange={handleImageSelect}
       />
       <button
-        className={`btn btn-primary w-full max-w-md rounded-t-none ${status === "saving" ? "btn-disabled" : ""}`}
+        className={`btn ${status !== "saved" ? "btn-primary" : "btn-secondary"} w-full max-w-md rounded-t-none ${
+          status === "saving" ? "btn-disabled" : ""
+        }`}
         onClick={handleChangeAvatar}
       >
-        {status != "saved" ? "Save avatar" : "Change avatar"}
+        {status === "saving" && "Uploading..."}
+        {status === "saved" && "Change avatar"}
+        {status === "editing" && "Upload avatar"}
       </button>
     </div>
   );
