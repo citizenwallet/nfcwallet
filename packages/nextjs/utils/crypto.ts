@@ -25,3 +25,32 @@ export function getHash(serialNumber: string, chainId: bigint, contractAddress: 
 
   return hash;
 }
+
+/**
+ * Computes a keccak256 hash of the given inputs, simulating Solidity's tightly packed behavior.
+ *
+ * @param password - the unencrypted password.
+ * @param chainId - The blockchain chain ID as a bigint.
+ * @param contractAddress - The contract address as a string.
+ * @returns The keccak256 hash as a string.
+ */
+export function getPasswordHash(password: string, chainId: bigint, contractAddress: string): string {
+  // Compute the keccak256 hash of the concatenated bytes
+  const hash = ethers.solidityPackedKeccak256(["string", "uint256", "address"], [password, chainId, contractAddress]);
+
+  return hash;
+}
+
+/**
+ * Computes a keccak256 hash of the given inputs, simulating Solidity's tightly packed behavior.
+ *
+ * @param password - the unencrypted password.
+ * @param chainId - The blockchain chain ID as a bigint.
+ * @param contractAddress - The contract address as a string.
+ * @returns The keccak256 hash as a string.
+ */
+export function getServerPasswordHash(password: string, secret: string): string {
+  // Compute the keccak256 hash of the concatenated bytes
+  const hash = ethers.solidityPackedKeccak256(["string", "string"], [password, secret]);
+  return hash;
+}

@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { encodeBytes32String, formatUnits } from "ethers";
 import CardFactoryABI from "smartcontracts/build/contracts/cardFactory/CardFactory.abi.json";
 import ERC20ABI from "smartcontracts/build/contracts/erc20/ERC20.abi.json";
 import ProfileABI from "smartcontracts/build/contracts/profile/Profile.abi.json";
@@ -41,40 +41,50 @@ export default class CitizenWalletCommunity {
   loadConfig = async () => {
     if (this.config) return this.config;
     console.log(">>> fetching", this.configUrl);
-    const response = await fetch(`${this.configUrl}?cacheBuster=${Math.round(new Date().getTime() / 10000)}`, {
-      mode: "cors",
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error. Unable to fetch ${this.configUrl}. Response status: ${response.status}`);
+    try {
+      const response = await fetch(`${this.configUrl}?cacheBuster=${Math.round(new Date().getTime() / 10000)}`, {
+        mode: "cors",
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error. Unable to fetch ${this.configUrl}. Response status: ${response.status}`);
+      }
+      const configs = await response.json();
+      const config = configs.find((config: any) => config.community.alias === this.communitySlug);
+      if (!config) {
+        console.error(`Community ${this.communitySlug} not found in ${this.configUrl}`);
+      }
+      // console.log(">>> this.config", config);
+      this.config = config;
+      return config;
+    } catch (e) {
+      console.error("Unable to fetch config", e);
+      return null;
     }
-    const configs = await response.json();
-    const config = configs.find((config: any) => config.community.alias === this.communitySlug);
-    if (!config) {
-      console.error(`Community ${this.communitySlug} not found in ${this.configUrl}`);
-    }
-    this.config = config;
-    return config;
   };
 
   getProfile = async (account: string) => {
     await this.initClient();
     const contractAddress = this.config.profile.address;
-
-    const ipfsHash = await this.client.readContract({
-      address: contractAddress,
-      abi: ProfileABI,
-      functionName: "get",
-      args: [account],
-    });
-
-    return await this.fetchJSON(ipfsHash);
+    console.log(">>> getProfile", account, contractAddress);
+    try {
+      const ipfsHash = await this.client.readContract({
+        address: contractAddress,
+        abi: ProfileABI,
+        functionName: "get",
+        args: [account],
+      });
+      return await this.fetchJSON(ipfsHash);
+    } catch (e) {
+      console.error("Unable to fetch profile", e);
+      return null;
+    }
   };
 
   getProfileFromUsername = async (username: string) => {
     await this.initClient();
     const contractAddress = this.config.profile.address;
 
-    const username32 = ethers.encodeBytes32String(username);
+    const username32 = encodeBytes32String(username);
     try {
       const ipfsHash = await this.client.readContract({
         address: contractAddress,
@@ -128,7 +138,7 @@ export default class CitizenWalletCommunity {
       args: [account],
     });
 
-    return parseFloat(ethers.formatUnits(balance, decimals));
+    return parseFloat(formatUnits(balance, decimals));
   };
 
   getTransactions = async (account: string) => {
@@ -150,7 +160,9 @@ export default class CitizenWalletCommunity {
 
   fetchJSON = async (ipfsHash: string) => {
     const data = await this.fetchFromIPFS(ipfsHash);
-    return JSON.parse(data);
+    const json = JSON.parse(data);
+    console.log(">>> fetched json from ipfs", json);
+    return json;
   };
 
   getImageSrc = (ipfsHash: string) => {
