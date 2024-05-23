@@ -15,7 +15,7 @@ import { getUrlFromIPFS } from "~~/utils/ipfs";
 export default function ShowAccount({ accountAddress, config }: { accountAddress: string; config: any }) {
   const communitySlug = config?.community.alias;
   const [profile] = useProfile(communitySlug, accountAddress);
-  const avatarUrl = profile ? getUrlFromIPFS(profile.image_medium) : "/nfcwallet-icon.jpg";
+  const avatarUrl = getUrlFromIPFS(profile?.image_medium) || "/nfcwallet-icon.jpg";
 
   if (!config) return null;
   const publicClient = createPublicClient({
@@ -33,7 +33,7 @@ export default function ShowAccount({ accountAddress, config }: { accountAddress
       <div className="max-w-xl mx-auto">
         <div className="text-center my-8">
           {profile && <h1>{profile.name}</h1>}
-          {profile?.description && <h2>{profile.description}</h2>}
+          {profile?.description && <h2 className="text-lg">{profile.description}</h2>}
           {!profile && config?.community.name && <h1>{config.community.name}</h1>}
         </div>
         <div className="flex flex-row my-14">
