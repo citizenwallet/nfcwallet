@@ -97,7 +97,7 @@ export default function EditProfile({
       setTimeout(() => setErrorMsg(null), 3000);
       return false;
     }
-    if (!profile.hashedPassword && !formData.password) {
+    if ((!profile || !profile.hashedPassword) && !formData.password) {
       setErrorMsg("Please enter a password");
       setTimeout(() => setErrorMsg(null), 3000);
       return false;
