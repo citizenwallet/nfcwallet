@@ -41,23 +41,27 @@ export default function EditAvatar({ accountAddress, avatarUrl, onChange }: Edit
 
   avatarUrl = avatarUrl || "/nfcwallet-icon.jpg";
 
-  const triggerFileSelect = () => {
+  const triggerFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
     const fileInput = document.getElementById("avatar");
     fileInput?.click();
+    return false;
   };
 
-  const handleImageSelect = async event => {
+  const handleImageSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
     setStatus("editing");
     const file = event.target.files[0];
     const imageData = await readFile(file);
 
     setImageDataURL(imageData);
     console.log("File size:", file.size / 1024 / 1024, "MB");
+    return false;
     // Now you can use this file object to preview the image or upload it to a server
   };
 
-  const handleChangeAvatar = async () => {
-    if (!imageDataURL) return triggerFileSelect();
+  const handleChangeAvatar = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!imageDataURL) return triggerFileSelect(event);
     setStatus("saving");
     const images = await processCroppedImage();
     onChange(images);
