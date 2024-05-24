@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Authenticate from "./Authenticate";
@@ -86,7 +86,6 @@ export default function EditProfile({
   }
 
   function handleAuthentication(bearer: string) {
-    window.localStorage.setItem(`${communitySlug}-${accountAddress}-bearer`, bearer);
     setBearer(bearer);
   }
 

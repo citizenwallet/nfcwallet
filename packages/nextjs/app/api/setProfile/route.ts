@@ -45,7 +45,8 @@ export async function POST(request: NextRequest) {
   const signedMessage = bearerTokens[2];
 
   const d = new Date();
-  if (d.getTime() > parseInt(expiryDate) * 1000) {
+  const gracePeriod = 1000 * 60 * 5; // 5 minutes
+  if (d.getTime() > parseInt(expiryDate) * 1000 + gracePeriod) {
     return Response.json({ error: "Authentication bearer expired" });
   }
 

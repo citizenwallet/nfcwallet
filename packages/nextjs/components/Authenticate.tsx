@@ -11,19 +11,26 @@ export default function Authenticate({
   onChange: (bearer: string) => void;
 }) {
   const [password, setPassword] = useState("");
+  const [trustDevice, setTrustDevice] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const communitySlug = config.community.alias;
   function handlePasswordChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     setPassword(event.target.value);
+  }
+
+  function handleTrustDevice(event: React.ChangeEvent<HTMLInputElement>) {
+    console.log(">>> setting trustDevice to", !!event.target.checked);
+    setTrustDevice(!!event.target.checked);
   }
 
   async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch(`/api/authenticate?communitySlug=${config.community.alias}`, {
+      const res = await fetch(`/api/authenticate?communitySlug=${communitySlug}`, {
         method: "POST",
         body: JSON.stringify({
           account: accountAddress,
@@ -42,6 +49,10 @@ export default function Authenticate({
       }
       console.log(">>> authenticate response", data);
       onChange(data.bearer);
+      if (trustDevice) {
+        console.log(">>> trusted device, saving bearer to localStorage", data.bearer);
+        window.localStorage.setItem(`${communitySlug}-${accountAddress}-bearer`, data.bearer);
+      }
       setLoading(false);
     } catch (e) {
       console.error(e);
@@ -71,6 +82,19 @@ export default function Authenticate({
           </span>
         </div>
       </label>
+      <div className="form-control">
+        <label className="label cursor-pointer">
+          <span className="label-text">Trust this device</span>
+          <input
+            type="checkbox"
+            defaultChecked
+            className="toggle toggle-md"
+            name="trustDevice"
+            onChange={handleTrustDevice}
+          />
+        </label>
+      </div>
+
       <button
         className={`btn btn-primary w-full max-w-sm my-8 ${loading ? "btn-disabled" : ""}`}
         onClick={handleSubmit}
