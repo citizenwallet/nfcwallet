@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
   const profile = await cw.getProfile(data.account);
 
   const expiryDate = Math.floor(new Date().getTime() / 1000) + 60 * 60 * 10; // 10h for CELO Gather
-  const msg = `${expiryDate}-${data.account}-${profile.ipfsHash}`;
+  const msg = `${expiryDate}-${data.account}`;
   console.log(">>> requesting bearer for", msg);
   const signedMessage = await wallet.signMessage(msg);
 
@@ -53,6 +53,6 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "Invalid password" });
     }
   }
-  const bearer = `${expiryDate}-${data.account}-${profile && profile.ipfsHash}-${signedMessage}`;
+  const bearer = `${expiryDate}-${data.account}-${signedMessage}`;
   return Response.json({ success: true, bearer });
 }

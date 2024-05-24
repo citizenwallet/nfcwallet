@@ -47,11 +47,11 @@ export default function EditProfile({
 
   useMemo(() => {
     if (typeof window !== "undefined" && !bearer) {
-      const bearer = window.localStorage.getItem("bearer");
+      const bearer = window.localStorage.getItem(`${communitySlug}-${accountAddress}-bearer`);
       const expiryDate = bearer?.split("-")[0];
       if (expiryDate && parseInt(expiryDate) * 1000 < new Date().getTime()) {
         console.log(">>> bearer expired", bearer, parseInt(expiryDate) * 1000, new Date().getTime());
-        window.localStorage.removeItem("bearer");
+        window.localStorage.removeItem(`${communitySlug}-${accountAddress}-bearer`);
         setBearer("");
       } else if (bearer) {
         setBearer(bearer);
@@ -86,7 +86,7 @@ export default function EditProfile({
   }
 
   function handleAuthentication(bearer: string) {
-    window.localStorage.setItem("bearer", bearer);
+    window.localStorage.setItem(`${communitySlug}-${accountAddress}-bearer`, bearer);
     setBearer(bearer);
   }
 
@@ -157,7 +157,7 @@ export default function EditProfile({
       setBearer(data.bearer);
     } else if (data.error === "Invalid password") {
       setBearer("");
-      window.localStorage.removeItem("bearer");
+      window.localStorage.removeItem(`${communitySlug}-${accountAddress}-bearer`);
     }
   }
 
@@ -379,7 +379,7 @@ export default function EditProfile({
                 onClick={handleSubmit}
                 className={`btn btn-primary w-full max-w-sm ${saving ? "btn-disabled" : ""}`}
               >
-                save profile
+                {saving ? "Saving..." : "Save profile"}
               </button>
               <div className="flex justify-center my-2 text-sm">
                 <Link href={`/${communitySlug}/${accountAddress}`}>cancel</Link>

@@ -32,16 +32,17 @@ export async function POST(request: NextRequest) {
   }
 
   const bearer = authentication.substring(7);
-  //  const bearer = `${expiryDate}-${data.account}-${profile.ipfsHash}-${signedMessage}`;
-  const matches = bearer.match(/(\d+)-(0x.*)-(.*)-(0x.*)/);
-  if (matches?.length !== 5) {
+  //  const bearer = `${expiryDate}-${data.account}-${signedMessage}`;
+  console.log(">>> bearer", bearer);
+  const matches = bearer.match(/(\d+)-(0x.*)-(0x.*)/);
+  console.log(">>> matches", matches);
+  if (matches?.length !== 4) {
     return Response.json({ error: "Invalid bearer format" });
   }
   const bearerTokens = bearer.split("-");
   const expiryDate = bearerTokens[0];
   // const accountAddress = bearerTokens[1];
-  const ipfsHash = bearerTokens[2];
-  const signedMessage = bearerTokens[3];
+  const signedMessage = bearerTokens[2];
 
   const d = new Date();
   if (d.getTime() > parseInt(expiryDate) * 1000) {
@@ -49,7 +50,7 @@ export async function POST(request: NextRequest) {
   }
 
   const data = await request.json();
-  const msg = `${expiryDate}-${data.account}-${ipfsHash}`;
+  const msg = `${expiryDate}-${data.account}`;
   const newSignedMessage = await wallet.signMessage(msg);
   if (newSignedMessage !== signedMessage) {
     return Response.json({ error: "Invalid signature" });
