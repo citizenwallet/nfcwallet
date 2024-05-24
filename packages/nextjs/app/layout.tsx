@@ -30,6 +30,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
         </footer>
+        <div className="text-center text-xs dark:text-gray-100 p-4">
+          <a href="https://github.com/citizenwallet/nfcwallet/issues/new">report an issue</a>
+        </div>
       </body>
     </html>
   );

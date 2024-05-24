@@ -11,7 +11,7 @@ export default function Authenticate({
   onChange: (bearer: string) => void;
 }) {
   const [password, setPassword] = useState("");
-  const [trustDevice, setTrustDevice] = useState<boolean>(true);
+  const [trustDevice, setTrustDevice] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -85,13 +85,7 @@ export default function Authenticate({
       <div className="form-control">
         <label className="label cursor-pointer">
           <span className="label-text">Trust this device</span>
-          <input
-            type="checkbox"
-            defaultChecked
-            className="toggle toggle-md"
-            name="trustDevice"
-            onChange={handleTrustDevice}
-          />
+          <input type="checkbox" className="toggle toggle-md" name="trustDevice" onChange={handleTrustDevice} />
         </label>
       </div>
 
