@@ -61,7 +61,10 @@ export default function ShowAccount({ accountAddress, config }: { accountAddress
         <div>{profile && <Linktree profile={profile} />}</div>
         {config.plugins && <Plugins config={config} accountAddress={accountAddress} />}
         <div className="flex justify-center text-sm my-8 pb-4">
-          <Link href={`/${communitySlug}/${accountAddress}/edit`}>edit profile</Link>
+          <Link href={`/${communitySlug}/${accountAddress}/edit`} className="w-full max-w-sm p-4">
+            {!profile && <button className="btn btn-primary w-full max-w-sm">Edit profile</button>}
+            {profile && <button className="btn btn-outline w-full max-w-sm">Edit profile</button>}
+          </Link>
         </div>
       </div>
     </WagmiConfig>

@@ -191,7 +191,7 @@ export default function EditProfile({
               {!profile && config?.community.name && <h1>{config.community.name}</h1>}
               <Address address={accountAddress} format="short" className="justify-center my-2" />
             </div>
-            <div className="flex flex-row my-14">
+            <div className="flex flex-row my-14 justify-center">
               <EditAvatar accountAddress={accountAddress} avatarUrl={avatarUrl || ""} onChange={handleAvatarChange} />
             </div>
             <h2 className="text-lg mb-2">👤 About you</h2>

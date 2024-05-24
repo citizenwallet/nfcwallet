@@ -137,7 +137,7 @@ export default function EditAvatar({ accountAddress, avatarUrl, onChange }: Edit
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full max-w-xs">
       {!imageDataURL && avatarUrl && (
         <Image src={avatarUrl} alt="avatar" width="400" height="400" className="w-full max-w-md" />
       )}
