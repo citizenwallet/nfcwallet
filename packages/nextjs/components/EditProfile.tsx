@@ -197,7 +197,7 @@ export default function EditProfile({
             <h2 className="text-lg mb-2">👤 About you</h2>
             <label className="form-control w-full max-w-sm">
               <div className="label">
-                <span className="label-text">What&apos;s your name buddy?</span>
+                <span className="label-text">What&apos;s your name citizen?</span>
               </div>
               <input
                 name="name"

@@ -3,6 +3,7 @@ import Link from "next/link";
 
 export default function Plugins({ config, accountAddress }: { config: any; accountAddress: string }) {
   if (!config) return null;
+  if (typeof window === "undefined") return null;
 
   return (
     <>

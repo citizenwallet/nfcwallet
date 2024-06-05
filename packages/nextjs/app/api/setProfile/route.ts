@@ -5,7 +5,8 @@ import CitizenWalletCommunity from "../../../lib/citizenwallet";
 import { getServerPasswordHash } from "../../../utils/crypto";
 import pinataSDK from "@pinata/sdk";
 import { waitUntil } from "@vercel/functions";
-import { Wallet } from "ethers";
+import { Contract, JsonRpcProvider, Wallet } from "ethers";
+import accountFactoryContractAbi from "smartcontracts/build/contracts/accfactory/AccountFactory.abi";
 
 if (!process.env.SECRET) {
   throw new Error("process.env.SECRET is required");
@@ -33,9 +34,7 @@ export async function POST(request: NextRequest) {
 
   const bearer = authentication.substring(7);
   //  const bearer = `${expiryDate}-${data.account}-${signedMessage}`;
-  console.log(">>> bearer", bearer);
   const matches = bearer.match(/(\d+)-(0x.*)-(0x.*)/);
-  console.log(">>> matches", matches);
   if (matches?.length !== 4) {
     return Response.json({ error: "Invalid bearer format" });
   }
@@ -80,15 +79,20 @@ export async function POST(request: NextRequest) {
   const newIpfsHash = resData.IpfsHash;
   const signer = new Wallet(process.env.PRIVATE_KEY || "");
 
-  const bundler = new BundlerService(cw.config);
-  waitUntil(
-    bundler.setProfile(
-      signer,
-      "0xbA8e1bA697C26E106a51F85D6bBb3a925a627F5C", // TODO: get the server account address from the factory
-      data.account,
-      data.username,
-      newIpfsHash,
-    ),
+  const address = signer.address;
+  const provider = new JsonRpcProvider(cw.config.node.url);
+
+  const accountFactoryContract = new Contract(
+    cw.config.erc4337.account_factory_address,
+    accountFactoryContractAbi,
+    provider,
   );
+
+  const serverAccountAddress = await accountFactoryContract.getFunction("getAddress")(address, 0);
+
+  console.log(">>> serverAccountAddress", serverAccountAddress);
+
+  const bundler = new BundlerService(cw.config);
+  waitUntil(bundler.setProfile(signer, serverAccountAddress, data.account, data.username, newIpfsHash));
   return Response.json({ success: true, profile: data, ipfsHash: newIpfsHash });
 }
