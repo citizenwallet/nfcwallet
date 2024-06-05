@@ -165,7 +165,7 @@ export default class CitizenWalletCommunity {
   fetchJSON = async (ipfsHash: string) => {
     const data = await this.fetchFromIPFS(ipfsHash);
     const json = JSON.parse(data);
-    console.log(">>> fetched json from ipfs", json);
+    console.log(">>> fetched json from ipfs", ipfsHash, json);
     return json;
   };
 
