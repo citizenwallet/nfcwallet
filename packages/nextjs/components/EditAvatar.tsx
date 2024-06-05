@@ -142,7 +142,7 @@ export default function EditAvatar({ accountAddress, avatarUrl, onChange }: Edit
         <Image src={avatarUrl} alt="avatar" width="400" height="400" className="w-full max-w-md" />
       )}
       {imageDataURL && (
-        <div className="w-screen relative" style={{ height: "100vw" }}>
+        <div className="w-screen relative" style={{ height: "100vw", maxWidth: "320px", maxHeight: "320px" }}>
           {" "}
           <Cropper
             image={imageDataURL}
@@ -166,9 +166,9 @@ export default function EditAvatar({ accountAddress, avatarUrl, onChange }: Edit
         onChange={handleImageSelect}
       />
       <button
-        className={`btn ${status !== "saved" ? "btn-primary" : "btn-secondary"} w-full max-w-md rounded-t-none ${
-          status === "saving" ? "btn-disabled" : ""
-        }`}
+        className={`btn ${status !== "saved" ? "btn-primary" : "btn-secondary"} ${
+          status === "editing" ? "animate-blink" : ""
+        } w-full max-w-md rounded-t-none ${status === "saving" ? "btn-disabled" : ""}`}
         onClick={handleChangeAvatar}
       >
         {status === "saving" && "Uploading..."}
