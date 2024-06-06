@@ -74,6 +74,9 @@ export async function POST(request: NextRequest) {
     // }
     data.hashedPassword = existingProfile.hashedPassword;
   }
+  data.image = data.image?.replace("https://ipfs.internal.citizenwallet.xyz/", "ipfs://");
+  data.image_small = data.image_small?.replace("https://ipfs.internal.citizenwallet.xyz/", "ipfs://");
+  data.image_medium = data.image_medium?.replace("https://ipfs.internal.citizenwallet.xyz/", "ipfs://");
   console.log(">>> saving to ipfs", data);
   const resData = await pinata.pinJSONToIPFS(data);
   const newIpfsHash = resData.IpfsHash;
@@ -221,8 +224,9 @@ export async function GET(request: NextRequest) {
 
   const bundler = new BundlerService(cw.config);
   const data = profiles[parseInt(index || "0") || 0];
-  await bundler.setProfile(signer, serverAccountAddress, data.account, `@${data.username}`, data.ipfsHash);
+  const tx = await bundler.setProfile(signer, serverAccountAddress, data.account, `@${data.username}`, data.ipfsHash);
   return Response.json({
+    tx,
     success: true,
     username: `@${data.username}`,
     profile: data,
