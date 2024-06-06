@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { BundlerService } from "../../../lib/4337";
 import CitizenWalletCommunity from "../../../lib/citizenwallet";
 import { getServerPasswordHash } from "../../../utils/crypto";
@@ -195,14 +195,11 @@ const profiles = [
  */
 export async function GET(request: NextRequest) {
   const secret = request.nextUrl.searchParams.get("secret");
+  const index = request.nextUrl.searchParams.get("index");
 
   if (!secret || secret !== "hello321") {
     return Response.json({ error: "Wrong secret" });
   }
-
-  const encoder = new TextEncoder();
-  const { readable, writable } = new TransformStream();
-  const writer = writable.getWriter();
 
   const cw = new CitizenWalletCommunity("wallet.pay.brussels");
   await cw.loadConfig();
@@ -223,11 +220,13 @@ export async function GET(request: NextRequest) {
   console.log(">>> serverAccountAddress", serverAccountAddress);
 
   const bundler = new BundlerService(cw.config);
-  for (let i = 0; i < profiles.length; i++) {
-    const data = profiles[i];
-    writer.write(encoder.encode(`${data.account} @${data.username}\n`));
-    await bundler.setProfile(signer, serverAccountAddress, data.account, `@${data.username}`, data.ipfsHash);
-  }
-  writer.close();
-  return new NextResponse(readable);
+  const data = profiles[parseInt(index || "0") || 0];
+  await bundler.setProfile(signer, serverAccountAddress, data.account, `@${data.username}`, data.ipfsHash);
+  return Response.json({
+    success: true,
+    username: `@${data.username}`,
+    profile: data,
+    profiles: profiles.length,
+    index,
+  });
 }
