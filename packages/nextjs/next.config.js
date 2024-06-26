@@ -10,7 +10,18 @@ const nextConfig = {
     ignoreDuringBuilds: process.env.NEXT_PUBLIC_IGNORE_BUILD_ERROR === "true",
   },
   images: {
-    domains: ["storage.googleapis.com", "ipfs.internal.citizenwallet.xyz"],
+    remotePatterns: [
+      {
+        hostname: "api.multiavatar.com",
+      },
+      {
+        hostname: "assets.poap.xyz",
+      },
+      {
+        hostname: "storage.googleapis.com",
+      },
+      { hostname: "ipfs.internal.citizenwallet.xyz" },
+    ],
   },
   webpack: config => {
     config.resolve.fallback = { fs: false, net: false, tls: false };

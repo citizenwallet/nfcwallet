@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import PreviewAccountBadges from "./PreviewAccountBadges";
 import QRCode from "react-qr-code";
 import { createPublicClient, http } from "viem";
 import { WagmiConfig, createConfig } from "wagmi";
 import Linktree from "~~/components/Linktree";
 import Plugins from "~~/components/Plugins";
-import { Address, TokenBalance } from "~~/components/scaffold-eth";
+import { TokenBalance } from "~~/components/scaffold-eth";
 import { useProfile } from "~~/hooks/citizenwallet";
 import chains from "~~/lib/chains";
 import { getUrlFromIPFS } from "~~/utils/ipfs";
@@ -28,6 +29,11 @@ export default function ShowAccount({ accountAddress, config }: { accountAddress
     publicClient,
   });
 
+  const hasPlugin = (plugin: string) => {
+    if (communitySlug === "wallet.pay.brussels") return true;
+    return config.plugins.includes(plugin);
+  };
+
   return (
     <WagmiConfig config={wagmiConfig}>
       <div className="max-w-xl mx-auto">
@@ -37,12 +43,20 @@ export default function ShowAccount({ accountAddress, config }: { accountAddress
           {!profile && config?.community.name && <h1>{config.community.name}</h1>}
         </div>
         <div className="flex flex-row my-14">
-          <div className="w-1/2">{avatarUrl && <Image src={avatarUrl} alt="avatar" width="300" height="300" />}</div>
+          <div className="w-1/2">
+            {avatarUrl && (
+              <div>
+                <Image src={avatarUrl} alt="avatar" width="300" height="300" />
+                {hasPlugin("poap") && (
+                  <PreviewAccountBadges limit={5} accountAddress={accountAddress} communitySlug={communitySlug} />
+                )}
+              </div>
+            )}
+          </div>
           <div className="w-1/2">
             {accountAddress && (
               <div>
                 <QRCode value={accountAddress} size={256} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
-                <Address address={accountAddress} format="short" className="justify-center my-2" />
               </div>
             )}
           </div>

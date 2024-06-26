@@ -551,16 +551,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@citizenwallet/sdk@npm:^1.2.21":
-  version: 1.2.21
-  resolution: "@citizenwallet/sdk@npm:1.2.21"
+"@citizenwallet/sdk@npm:^1.2.37":
+  version: 1.2.37
+  resolution: "@citizenwallet/sdk@npm:1.2.37"
   dependencies:
     "@openzeppelin/contracts-upgradeable": ^5.0.2
     ethers: ^6.11.1
+    fflate: ^0.8.2
     react: ^18.2.0
     smartcontracts: "github:citizenwallet/smartcontracts#v0.0.106"
     zustand: ^4.5.2
-  checksum: 5f30e392fbc94042b1c50cca79f4895cd876c2128b1af68e120847f88573a290c599cc2d1550e4cb100f8af4f5809b555c29ef12026c5ebe96105618653ce10c
+  checksum: 21c9e91374cea5a6db490eabbe86ce0bdee525a39cd0af64aa57738b44dfac7a83ea2de452a0840309ad2dab8d01c5b26c77896bd252aa5eebcd63a03811ae16
   languageName: node
   linkType: hard
 
@@ -2795,7 +2796,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@se-2/nextjs@workspace:packages/nextjs"
   dependencies:
-    "@citizenwallet/sdk": ^1.2.21
+    "@citizenwallet/sdk": ^1.2.37
     "@ethersproject/providers": ~5.7.2
     "@heroicons/react": ~2.0.11
     "@pinata/sdk": ^2.1.0
@@ -2819,6 +2820,7 @@ __metadata:
     eslint-plugin-prettier: ~4.2.1
     ethers: ^6.11.1
     lodash: ^4.17.21
+    moment: ^2.30.1
     next: ^14.2.3
     next-themes: ~0.2.1
     nprogress: ~0.2.0
@@ -2833,6 +2835,7 @@ __metadata:
     react-image-file-resizer: ^0.4.8
     react-qr-code: ^2.0.12
     smartcontracts: "github:citizenwallet/smartcontracts#v0.0.108"
+    swr: ^2.2.5
     tailwindcss: ~3.3.3
     type-fest: ~4.6.0
     typescript: ~5.4.2
@@ -6389,7 +6392,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"client-only@npm:0.0.1":
+"client-only@npm:0.0.1, client-only@npm:^0.0.1":
   version: 0.0.1
   resolution: "client-only@npm:0.0.1"
   checksum: 0c16bf660dadb90610553c1d8946a7fdfb81d624adea073b8440b7d795d5b5b08beb3c950c6a2cf16279365a3265158a236876d92bce16423c485c322d7dfaf8
@@ -8787,6 +8790,13 @@ __metadata:
   dependencies:
     pend: ~1.2.0
   checksum: c8585fd5713f4476eb8261150900d2cb7f6ff2d87f8feb306ccc8a1122efd152f1783bdb2b8dc891395744583436bfd8081d8e63ece0ec8687eeefea394d4ff2
+  languageName: node
+  linkType: hard
+
+"fflate@npm:^0.8.2":
+  version: 0.8.2
+  resolution: "fflate@npm:0.8.2"
+  checksum: 29470337b85d3831826758e78f370e15cda3169c5cd4477c9b5eea2402261a74b2975bae816afabe1c15d21d98591e0d30a574f7103aa117bff60756fa3035d4
   languageName: node
   linkType: hard
 
@@ -12262,6 +12272,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"moment@npm:^2.30.1":
+  version: 2.30.1
+  resolution: "moment@npm:2.30.1"
+  checksum: 859236bab1e88c3e5802afcf797fc801acdbd0ee509d34ea3df6eea21eb6bcc2abd4ae4e4e64aa7c986aa6cba563c6e62806218e6412a765010712e5fa121ba6
+  languageName: node
+  linkType: hard
+
 "motion@npm:10.16.2":
   version: 10.16.2
   resolution: "motion@npm:10.16.2"
@@ -15462,6 +15479,18 @@ __metadata:
   version: 1.0.0
   resolution: "supports-preserve-symlinks-flag@npm:1.0.0"
   checksum: 53b1e247e68e05db7b3808b99b892bd36fb096e6fba213a06da7fab22045e97597db425c724f2bbd6c99a3c295e1e73f3e4de78592289f38431049e1277ca0ae
+  languageName: node
+  linkType: hard
+
+"swr@npm:^2.2.5":
+  version: 2.2.5
+  resolution: "swr@npm:2.2.5"
+  dependencies:
+    client-only: ^0.0.1
+    use-sync-external-store: ^1.2.0
+  peerDependencies:
+    react: ^16.11.0 || ^17.0.0 || ^18.0.0
+  checksum: c6e6a5bd254951b22e5fd0930a95c7f79b5d0657f803c41ba1542cd6376623fb70b1895049d54ddde26da63b91951ae9d62a06772f82be28c1014d421e5b7aa9
   languageName: node
   linkType: hard
 
