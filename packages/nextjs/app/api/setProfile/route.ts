@@ -3,6 +3,7 @@ import { NextRequest } from "next/server";
 import { BundlerService } from "../../../lib/4337";
 import CitizenWalletCommunity from "../../../lib/citizenwallet";
 import { getServerPasswordHash } from "../../../utils/crypto";
+import { formatUsernameToBytes32 } from "@citizenwallet/sdk";
 import pinataSDK from "@pinata/sdk";
 import { waitUntil } from "@vercel/functions";
 import { Contract, JsonRpcProvider, Wallet } from "ethers";
@@ -224,7 +225,13 @@ export async function GET(request: NextRequest) {
 
   const bundler = new BundlerService(cw.config);
   const data = profiles[parseInt(index || "0") || 0];
-  const tx = await bundler.setProfile(signer, serverAccountAddress, data.account, `@${data.username}`, data.ipfsHash);
+  const tx = await bundler.setProfile(
+    signer,
+    serverAccountAddress,
+    data.account,
+    formatUsernameToBytes32(data.username),
+    data.ipfsHash,
+  );
   return Response.json({
     tx,
     success: true,
