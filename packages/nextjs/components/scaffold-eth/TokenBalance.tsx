@@ -1,5 +1,6 @@
 "use client";
 
+import EURbIcon from "@/public/eurb.svg";
 import { Address } from "viem";
 import { useContractRead } from "wagmi";
 import { erc20ABI } from "wagmi";
@@ -57,10 +58,15 @@ export const TokenBalance = ({
 
   const balance = Number(fetchedBalanceData) / 10 ** 6;
   return (
-    <div className={`w-full flex items-baseline justify-center mx-auto my-8 text-6xl ${className}`}>
-      <div>
-        <span className="">{balance?.toFixed(precision)}</span>
-        <span className={`${symbol.length < 3 ? "text-4xl" : "text-lg"} font-bold ml-1`}>{symbol}</span>
+    <div className={`w-full flex items-baseline justify-center mx-auto text-4xl ${className}`}>
+      <div className="flex flex-row items-center gap-1">
+        <span className="font-bold text-2xl">{balance?.toFixed(precision)}</span>
+        {symbol === "EURb" && (
+          <span>
+            <EURbIcon width={32} height={32} />
+          </span>
+        )}
+        <span className={`${symbol.length < 3 ? "text-4xl" : "text-xl"} ml-0`}>{symbol}</span>
       </div>
     </div>
   );

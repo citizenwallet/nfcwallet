@@ -57,7 +57,7 @@ export default function EditProfile({
         setBearer(bearer);
       }
     }
-  }, [bearer]);
+  }, [bearer, accountAddress, communitySlug]);
 
   if (!config) return null;
 

@@ -1,31 +1,28 @@
 import Link from "next/link";
+import SocialIcon from "./SocialIcon";
 
 const providers = {
-  twitter: { svg: "/providers/twitter.svg", baseUrl: "https://twitter.com", prefix: "@" },
+  twitter: { baseUrl: "https://twitter.com", prefix: "@" },
   instagram: {
-    svg: "/providers/instagram.svg",
     baseUrl: "https://instagram.com",
     prefix: "@",
   },
   linkedin: {
-    svg: "/providers/linkedin.svg",
     baseUrl: "https://linkedin.com/in",
     prefix: "@",
   },
   telegram: {
-    svg: "/providers/telegram.svg",
     baseUrl: "https://t.me",
     prefix: "@",
   },
   github: {
-    svg: "/providers/github.svg",
     baseUrl: "https://github.com",
     prefix: "@",
   },
-  website: { svg: "/providers/internet.svg", baseUrl: "https:/", prefix: "https://" },
+  website: { baseUrl: "https:/", prefix: "https://" },
 };
 
-export default function Linktree({ profile }: { profile: any }) {
+export default function Linktree({ profile, theme }: { profile: any; theme: any }) {
   return (
     <div className="flex flex-wrap w-full justify-center">
       {Object.keys(providers).map((provider, key) => {
@@ -34,10 +31,13 @@ export default function Linktree({ profile }: { profile: any }) {
           <Link
             key={key}
             href={`${providers[provider].baseUrl}/${profile[provider]}`}
-            className="border-2 w-full max-w-md h-18 text-center flex flex-col rounded-lg p-2 m-4"
+            className="w-full max-w-md h-18 text-center flex flex-col rounded-xl p-2 mx-4 my-2 bg-[#FFCFCF] bg-opacity-10"
           >
-            <div className="flex items-center py-1 px-3">
-              <img src={providers[provider].svg} width={48} height={48} />
+            <div
+              className="flex justify-center items-center py-1 px-3 font-semibold text-xl"
+              style={{ color: theme?.primary }}
+            >
+              <SocialIcon iconName={provider} className="fill-current h-6 w-8" />
               <div className="flex items-center ml-2">
                 {providers[provider].prefix}
                 {profile[provider]}

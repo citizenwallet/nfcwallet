@@ -1,11 +1,15 @@
 import React from "react";
+import CreateBadge from "@/components/CreateBadge";
 import Error from "@/components/Error";
-import ShowAccount from "@/components/ShowAccount";
-import { Footer } from "@/containers/Footer";
 import CitizenWalletCommunity from "~~/lib/citizenwallet";
-import { darkenHexColor } from "~~/lib/colors";
 
-export default async function WalletProfile({ params }: { params: { communitySlug: string; accountAddress: string } }) {
+export default async function WalletProfile({
+  params,
+  searchParams,
+}: {
+  params: { communitySlug: string; accountAddress: string };
+  searchParams: { owner: string };
+}) {
   // const [urlRecord, setUrlRecord] = useState("");
   const { accountAddress } = params;
   if (accountAddress.length !== 42 || accountAddress.substring(0, 2) !== "0x") {
@@ -20,9 +24,8 @@ export default async function WalletProfile({ params }: { params: { communitySlu
   }
 
   return (
-    <div style={{ background: darkenHexColor(config.community.theme.primary, 70) }}>
-      <ShowAccount config={config} accountAddress={accountAddress} />
-      <Footer />
+    <div>
+      <CreateBadge config={config} accountAddress={accountAddress} owner={searchParams.owner} />
     </div>
   );
 }

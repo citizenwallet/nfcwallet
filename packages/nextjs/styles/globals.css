@@ -9,6 +9,8 @@
 
 body {
   min-height: 100vh;
+  color: white;
+  font-family: "Inter", sans-serif;
 }
 
 h1,
@@ -57,4 +59,17 @@ li {
 
 .button:active {
   @apply bg-gray-900 scale-90;
+}
+
+.label-text {
+  color: white;
+}
+
+.input,
+.textarea {
+  color: black;
+}
+
+.socialIcon {
+  fill: black;
 }
