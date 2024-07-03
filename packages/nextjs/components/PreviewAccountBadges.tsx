@@ -17,12 +17,12 @@ export default function PreviewAccountBadges({
 
   return (
     <Link href={`/${communitySlug}/${accountAddress}/badges`}>
-      <div className="mx-2 flex flex-wrap">
+      <div className="w-fit mx-auto overflow-x-auto whitespace-nowrap max-w-full box-border scroll-smooth">
         {poaps &&
           poaps.length > 0 &&
           poaps.map(poap => (
-            <div key={poap.tokenId} className="rounded-full overflow-hidden my-2 h-12 w-12 mr-[-15px]">
-              <Image src={`${poap.event.image_url}?size=small`} width={48} height={48} alt={poap.event.name} />
+            <div key={poap.tokenId} className="inline-block rounded-full overflow-hidden my-2 mx-2">
+              <Image src={`${poap.event.image_url}?size=small`} width={80} height={80} alt={poap.event.name} />
             </div>
           ))}
       </div>

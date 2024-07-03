@@ -36,6 +36,15 @@
       "@/components/*": [
         "components/*"
       ],
+      "@/containers/*": [
+        "containers/*"
+      ],
+      "@/lib/*": [
+        "lib/*"
+      ],
+      "@/public/*": [
+        "public/*"
+      ],
       "~~/*": [
         "./*"
       ]
