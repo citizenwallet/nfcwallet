@@ -24,7 +24,6 @@ export default function PreviewAccountBadges({
   poapToClaim?: Poap | undefined;
   theme: any;
 }) {
-  console.log(">>> rendering PreviewAccountBadges", accountAddress);
   const { data: poaps } = usePoaps(accountAddress, limit);
   const [claimedPoap, setClaimedPoap] = useState(undefined);
 

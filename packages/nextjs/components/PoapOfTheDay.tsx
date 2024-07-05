@@ -15,8 +15,6 @@ export default function PoapOfTheDay({
   poap: Poap;
   onClaimed: (data: any) => void;
 }) {
-  console.log(">>> PoapOfTheDay", typeof poap.id, poap.id);
-
   const { hasPoap, isLoading } = useHasPoap(accountAddress, poap.id);
 
   if (isLoading) return <></>;
