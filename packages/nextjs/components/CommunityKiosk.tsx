@@ -29,27 +29,26 @@ export default function CommunityKiosk({
     if (writing) return;
     setCardUrl(null);
     const textDecoder = new TextDecoder();
+    let accountAddress = null;
     for (const record of message.records) {
       if (record.recordType === "url") {
         const urlstr = textDecoder.decode(record.data);
         console.log("URL:", urlstr);
-        setCardUrl(urlstr);
+        const lastToken = urlstr.split("/").pop();
+        if (lastToken?.substring(0, 2) === "0x" && lastToken.length === 42) {
+          setAccountAddress(accountAddress);
+          setCardUrl(urlstr);
+        }
         // return router.push(urlstr);
       }
     }
-    const accountAddress = await getCardAccountAddress(communitySlug, serialNumber);
-    if (accountAddress) {
-      setAccountAddress(accountAddress);
-    } else {
-      if (cardUrl) {
-        console.log(">>> NFC tag not empty: can't set up the card", cardUrl);
-      } else {
-        setupCard();
-      }
+    if (!accountAddress) {
+      accountAddress = await getCardAccountAddress(communitySlug, serialNumber);
+      setupCard(accountAddress);
     }
   };
 
-  const setupCard = async () => {
+  const setupCard = async accountAddress => {
     if (!accountAddress) {
       console.error("Account address is required");
       return null;
@@ -66,35 +65,35 @@ export default function CommunityKiosk({
       });
       setCardUrl(urlstr);
       console.log("Card set up successfully!", urlstr);
-      setTimeout(() => {
-        setCardUrl(null);
-        setAccountAddress(null);
-      }, 2000);
+      setAccountAddress(accountAddress);
       // return router.push(urlstr);
     } catch {
       setWriting(false);
       console.error("Write failed :-( try again.");
       setTimeout(() => {
         setCardUrl(null);
+        setAccountAddress(null);
       }, 3000);
     }
     setWriting(false);
   };
 
   const updateSoftware = useCallback(() => {
-    if (accountAddress) return; // don't update while someone is using the kiosk
-    const d = new Date().getTime();
-    if (d - lastPageReload > 1000 * 60 * 5) {
-      window.location.reload();
-    }
+    // bad idea as it would require people to press to activate the NFC reader again.
+    return;
+    // if (accountAddress) return; // don't update while someone is using the kiosk
+    // const d = new Date().getTime();
+    // if (d - lastPageReload > 1000 * 60 * 5) {
+    //   window.location.reload();
+    // }
   }, [accountAddress, lastPageReload]);
 
   useEffect(() => {
     // for easy testing
     window.setAccount = (address: string) => setAccountAddress(address);
     console.log(">>> setting up interval to updateSoftware");
-    const interval = setInterval(updateSoftware, 1000 * 60 * 5); // every 5 minutes
-    return () => clearInterval(interval);
+    // const interval = setInterval(updateSoftware, 1000 * 60 * 5); // every 5 minutes
+    // return () => clearInterval(interval);
   }, [updateSoftware]);
 
   if (accountAddress) {
@@ -109,9 +108,9 @@ export default function CommunityKiosk({
   return (
     <div className="text-center">
       {!accountAddress && (
-        <div>
-          <DefaultAvatar className="mt-16 w-32 h-32 mx-auto" />
-          <h1 className="text-4xl font-bold">Hello, regen!</h1>
+        <div className="flex items-center h-screen flex-col">
+          <DefaultAvatar className="mt-16 w-48 h-48 mx-auto" />
+          <h1 className="text-6xl font-bold">Hello, regen!</h1>
           <NFCReaderRegenVillage onChange={handleNFCData} isWriting={writing} />
         </div>
       )}

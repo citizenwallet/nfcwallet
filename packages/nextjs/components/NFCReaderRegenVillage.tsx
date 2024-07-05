@@ -58,7 +58,7 @@ const Scan = ({
   return (
     <center>
       {nfcAvailable && (
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center" onClick={startScanner}>
           <div className="mt-16 mb-8">
             <Image
               src="/heart-nfc.png"
@@ -68,7 +68,7 @@ const Scan = ({
               className={`${isWriting || !scanning ? "" : "heartBeating"}`}
             />
           </div>
-          <div className="pb-4 font-bold text-4xl whitespace-nowrap text-center" onClick={startScanner}>
+          <div className="pb-4 font-bold text-4xl whitespace-nowrap text-center">
             {isWriting ? "Hold your wristband" : scanning ? "Tap your wristband" : "Start scanner"}
           </div>
         </div>

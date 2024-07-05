@@ -51,12 +51,13 @@ export default function ShowAccount({
   });
 
   const hasPlugin = (plugin: string) => {
+    if (communitySlug === "wallet.regenvillage.brussels" && plugin === "poap") return true;
     if (communitySlug === "wallet.pay.brussels") return true;
     return config.plugins?.includes(plugin);
   };
 
   const getPlugin = (plugin: string) => {
-    return config.plugins.find((p: any) => p.name === plugin);
+    return config.plugins?.find((p: any) => p.name === plugin);
   };
 
   const toggleModal = () => {

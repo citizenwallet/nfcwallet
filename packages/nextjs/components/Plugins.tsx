@@ -7,7 +7,7 @@ export default function Plugins({ config, accountAddress }: { config: any; accou
 
   return (
     <>
-      {config.plugins.map((plugin: any) => (
+      {config.plugins?.map((plugin: any) => (
         <div key={plugin.name} className="text-center pt-2 my-4">
           <Link
             className="border-2 w-24 h-24 text-center flex flex-col rounded-lg p-2 m-4 mx-auto justify-center"

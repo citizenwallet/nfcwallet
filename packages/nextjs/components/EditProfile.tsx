@@ -80,31 +80,7 @@ export default function EditProfile({
     setFormData(prev => ({ ...prev, [name]: value.trim() }));
   }
 
-  function handleAvatarChange(images: any) {
-    setFormData(prev => ({
-      ...prev,
-      image: "ipfs://" + images.image,
-      image_medium: "ipfs://" + images.image_medium,
-      image_small: "ipfs://" + images.image_small,
-    }));
-  }
-
-  function handleAuthentication(bearer: string) {
-    setBearer(bearer);
-  }
-
-  async function handleSubmit(e: any) {
-    e.preventDefault();
-    if (showChangePassword && !formData.password) {
-      setErrorMsg("Please enter a new password");
-      setTimeout(() => setErrorMsg(null), 3000);
-      return false;
-    }
-    if ((!profile || !profile.hashedPassword) && !formData.password) {
-      setErrorMsg("Please enter a password");
-      setTimeout(() => setErrorMsg(null), 3000);
-      return false;
-    }
+  async function saveProfile() {
     setSaving(true);
     defaults(formData, profile);
     if (formData.password) {
@@ -141,6 +117,35 @@ export default function EditProfile({
       setSaving(false);
       return false;
     }
+  }
+
+  function handleAvatarChange(images: any) {
+    setFormData(prev => ({
+      ...prev,
+      image: "ipfs://" + images.image,
+      image_medium: "ipfs://" + images.image_medium,
+      image_small: "ipfs://" + images.image_small,
+    }));
+    saveProfile();
+  }
+
+  function handleAuthentication(bearer: string) {
+    setBearer(bearer);
+  }
+
+  async function handleSubmit(e?: any) {
+    e?.preventDefault();
+    if (showChangePassword && !formData.password) {
+      setErrorMsg("Please enter a new password");
+      setTimeout(() => setErrorMsg(null), 3000);
+      return false;
+    }
+    if ((!profile || !profile.hashedPassword) && !formData.password) {
+      setErrorMsg("Please set a password");
+      setTimeout(() => setErrorMsg(null), 3000);
+      return false;
+    }
+    await saveProfile();
   }
 
   // Request a bearer token to edit this version of the profile
