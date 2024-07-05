@@ -81,18 +81,6 @@ export default function CommunityKiosk({
     setWriting(false);
   };
 
-  useEffect(() => {
-    // for easy testing
-    window.setAccount = (address: string) => setAccountAddress(address);
-    console.log(">>> setting up interval to updateSoftware");
-    const interval = setInterval(updateSoftware, 1000 * 60 * 5); // every 5 minutes
-    return () => clearInterval(interval);
-  }, []);
-
-  if (accountAddress) {
-    console.log(">>> card account address", accountAddress);
-  }
-
   const updateSoftware = () => {
     if (accountAddress) return; // don't update while someone is using the kiosk
     const d = new Date().getTime();
@@ -100,6 +88,18 @@ export default function CommunityKiosk({
       window.location.reload();
     }
   };
+
+  useEffect(() => {
+    // for easy testing
+    window.setAccount = (address: string) => setAccountAddress(address);
+    console.log(">>> setting up interval to updateSoftware");
+    const interval = setInterval(updateSoftware, 1000 * 60 * 5); // every 5 minutes
+    return () => clearInterval(interval);
+  }, [updateSoftware]);
+
+  if (accountAddress) {
+    console.log(">>> card account address", accountAddress);
+  }
 
   const onLogout = () => {
     setAccountAddress(null);
