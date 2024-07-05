@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Poap } from "@/lib/poap";
 import { pickRandom } from "@/lib/utils";
@@ -12,17 +12,19 @@ export default function ClaimPoapModal({
   poap,
   theme,
   profile,
+  onClaimed,
 }: {
   accountAddress: string;
   poap: Poap;
   theme: any;
   profile: any;
+  onClaimed: (data: any) => void;
 }) {
   const { data, isLoading } = useGetEvent(poap.id);
-  const [claimed, setClaimed] = useState(false);
+  const [status, setStatus] = useState("");
+  const [poapHashToClaim, setPoapHashToClaim] = useState({ hash: "", secret: "" });
   const [showConfetti, setShowConfetti] = useState(false);
   const { width, height } = useWindowSize();
-  console.log(">>> poap:useGetEvent data", data);
 
   async function getPoapSecret(hash: string) {
     try {
@@ -35,30 +37,37 @@ export default function ClaimPoapModal({
       return null;
     }
   }
-  async function claimPoapNow() {
-    console.log(">>> Claiming POAP", poap.id, "for", accountAddress);
+
+  useEffect(() => {
     const randomPoap = pickRandom(poap.hashes.filter(h => !h.claimed));
-    console.log(">>> Random POAP", randomPoap);
-    const secret = await getPoapSecret(randomPoap.qr_hash);
-    if (!secret) return null;
-    const res = await fetch(`/api/poap/claim/${randomPoap.qr_hash}`, {
+    getPoapSecret(randomPoap.qr_hash).then(s => {
+      setPoapHashToClaim({ hash: randomPoap.qr_hash, secret: s });
+    });
+  }, [setPoapHashToClaim]);
+
+  async function claimPoapNow() {
+    setStatus("claiming");
+    if (!poapHashToClaim) return null;
+    console.log(">>> Claiming POAP", poap.id, "for", accountAddress);
+    const res = await fetch(`/api/poap/claim/${poapHashToClaim.hash}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ address: accountAddress, secret }),
+      body: JSON.stringify({ address: accountAddress, secret: poapHashToClaim.secret }),
     });
     const data = await res.json();
     console.log(">>> POST ClaimPoap data", data);
-    setClaimed(true);
+    onClaimed(data);
+    setStatus("claimed");
     setShowConfetti(true);
     setTimeout(() => {
       setShowConfetti(false);
-    }, 4000);
+    }, 5000);
   }
 
   if (isLoading) return <></>;
-  if (claimed && !showConfetti) return <></>;
+  if (status === "claimed" && !showConfetti) return <></>;
 
   return (
     <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundColor: theme.secondary }}>
@@ -72,12 +81,12 @@ export default function ClaimPoapModal({
       </div>
       <div className="flex justify-center items-center flex-col">
         <Image src={data?.image_url} alt={data?.name} width={500} height={500} className="mx-auto my-8" />
-        <div className="px-16 w-full mt-8">
-          {claimed ? (
+        <div className="px-16 w-full mt-6">
+          {status === "claimed" ? (
             <h2 className="text-4xl font-bold text-center">Claimed!</h2>
           ) : (
             <button
-              className="bg-[#195245] active:bg-[#01392C] border-2 border-[#1E6756] color-[#F8F7F3] h-32 w-full rounded-2xl text-center font-bold text-4xl"
+              className="rounded-xl mt-4 h-20 px-6 text-[#1CB260] font-bold bg-white bg-opacity-[0.08] active:bg-opacity-[0.04] text-4xl"
               onClick={claimPoapNow}
             >
               Claim your POAP of the day

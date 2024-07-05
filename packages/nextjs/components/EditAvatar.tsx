@@ -169,7 +169,7 @@ export default function EditAvatar({ accountAddress, avatarUrl, onChange }: Edit
         onChange={handleImageSelect}
       />
       <button
-        className={`btn !shadow-none bg-white ${status !== "saved" ? "btn-primary" : "btn-secondary"} ${
+        className={`btn !shadow-none ${status !== "saved" ? "btn-primary" : "btn-secondary"} ${
           status === "editing" ? "animate-blink" : ""
         } w-full max-w-md ${
           status === "saving" ? "btn-disabled" : ""

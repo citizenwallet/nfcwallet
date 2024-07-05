@@ -7,21 +7,22 @@ export default function PoapOfTheDay({
   theme,
   profile,
   poap,
+  onClaimed,
 }: {
   accountAddress: string;
   theme: any;
   profile: any;
   poap: Poap;
+  onClaimed: (data: any) => void;
 }) {
   console.log(">>> PoapOfTheDay", typeof poap.id, poap.id);
 
-  const { hasPoap, data, isLoading } = useHasPoap(accountAddress, poap.id);
-
-  console.log(">>> ClaimPoap", poap.id);
-  console.log(">>> data", data);
+  const { hasPoap, isLoading } = useHasPoap(accountAddress, poap.id);
 
   if (isLoading) return <></>;
   if (hasPoap) return <></>;
 
-  return <ClaimPoapModal accountAddress={accountAddress} poap={poap} theme={theme} profile={profile} />;
+  return (
+    <ClaimPoapModal accountAddress={accountAddress} poap={poap} theme={theme} profile={profile} onClaimed={onClaimed} />
+  );
 }

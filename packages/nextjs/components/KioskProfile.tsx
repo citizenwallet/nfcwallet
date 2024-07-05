@@ -5,7 +5,6 @@ import Link from "next/link";
 import PreviewAccountBadges from "./PreviewAccountBadges";
 import EditProfileQRModal from "@/components/EditProfileQRModal";
 import KioskProfileHeader from "@/components/KioskProfileHeader";
-import PoapOfTheDay from "@/components/PoapOfTheDay";
 import { TokenBalance } from "@/components/scaffold-eth";
 import { Poap } from "@/lib/poap";
 import EditProfileIcon from "@/public/editProfileIcon.svg";
@@ -41,7 +40,6 @@ export default function KioskProfile({
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
 
   useEffect(() => {
-    console.log(">>> SETTING INTERVAL", timeleft, INACTIVITY_TIMEOUT_SECONDS);
     const interval = setInterval(() => {
       setTimeLeft(prevTimeLeft => {
         if (prevTimeLeft === 1) {
@@ -108,8 +106,6 @@ export default function KioskProfile({
           style={{ color: config.community.theme.primary }}
         />
 
-        {poap?.id && <PoapOfTheDay accountAddress={accountAddress} poap={poap} profile={profile} theme={theme} />}
-
         <KioskProfileHeader greeting={`Hey, ${profile?.name || "regen"}!`} profile={profile} config={config} />
 
         {accountAddress && showEditProfileModal && (
@@ -158,7 +154,10 @@ export default function KioskProfile({
           <div className="mb-8 mx-auto">
             <PreviewAccountBadges
               title="POAPs collected"
+              theme={theme}
               limit={10}
+              profile={profile}
+              poapToClaim={poap}
               accountAddress={accountAddress}
               communitySlug={communitySlug}
             />

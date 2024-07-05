@@ -25,14 +25,14 @@ const poaps = {
 
 const poapOfTheDay = poaps[moment().format("YYYY-MM-DD")];
 
-let hashes;
+let hashes, renewPoapOfTheDayInterval;
 
-if (poapOfTheDay) {
+if (poapOfTheDay && !renewPoapOfTheDayInterval) {
   hashes = await getPoapHashes(poapOfTheDay.id, poapOfTheDay.editCode);
-  setInterval(async () => {
+  renewPoapOfTheDayInterval = setInterval(async () => {
     // update list of poaps
     hashes = await getPoapHashes(poapOfTheDay.id, poapOfTheDay.editCode);
-  }, 10000);
+  }, 20000);
 }
 
 export default async function KioskPage({ params }: { params: { communitySlug: string } }) {
