@@ -2,6 +2,16 @@ const client_id = process.env.POAP_CLIENT_ID || "";
 const secret = process.env.POAP_CLIENT_SECRET || "";
 const apiKey = process.env.POAP_API_KEY || "";
 
+export type PoapHash = {
+  qr_hash: string;
+  claimed: boolean;
+};
+
+export type Poap = {
+  id: number;
+  hashes: PoapHash[];
+};
+
 let accessToken: AccessTokenType = {
   access_token: "",
   token_type: "",
@@ -81,7 +91,7 @@ export async function claimPoap(address: string, hash: string, secret: string) {
     await renewAccessToken();
   }
 
-  const url = ` https://api.poap.tech/actions/claim-qr?qr_hash=${hash}`;
+  const url = ` https://api.poap.tech/actions/claim-qr`;
   const headers = {
     "Content-Type": "application/json",
     authorization: `Bearer ${accessToken.access_token}`,
@@ -105,7 +115,7 @@ export async function claimPoap(address: string, hash: string, secret: string) {
   return data;
 }
 
-export async function getPoaps(eventId: string, secret: string) {
+export async function getPoapHashes(eventId: string, secret: number) {
   if (!accessToken.access_token) {
     await renewAccessToken();
   }
@@ -123,6 +133,27 @@ export async function getPoaps(eventId: string, secret: string) {
     }),
   });
   const data = await response.json();
+  console.log(">>> getPoapHashes", new Date(), data);
+  return data;
+}
+
+/**
+ * Returns true if the address has the poap for eventId
+ * @param eventId
+ * @returns
+ */
+export async function getEvent(eventId: number) {
+  // actions/scan/{address}/{eventID}
+  const url = ` https://api.poap.tech/events/id/${eventId}`;
+  const headers = {
+    "Content-Type": "application/json",
+    "x-api-key": apiKey,
+  };
+  const response = await fetch(url, {
+    method: "GET",
+    headers,
+  });
+  const data = await response.json();
 
   return data;
 }
@@ -133,7 +164,7 @@ export async function getPoaps(eventId: string, secret: string) {
  * @param eventId
  * @returns
  */
-export async function hasPoap(address: string, eventId: string) {
+export async function hasPoap(address: string, eventId: number) {
   // actions/scan/{address}/{eventID}
   const url = ` https://api.poap.tech/actions/scan/${address}/${eventId}`;
   const headers = {

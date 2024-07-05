@@ -5,7 +5,7 @@
 html,
 body {
   min-height: 100vh;
-  background-color: white;
+  background-color: #01392c;
   padding: 0;
   margin: 0;
   color: white;
@@ -71,4 +71,39 @@ li {
 
 .socialIcon {
   fill: black;
+}
+
+@keyframes heartBeating {
+  0%,
+  100% {
+    filter: brightness(1);
+    transform: scale(1);
+  }
+  10% {
+    filter: brightness(0.8);
+    transform: scale(0.95);
+  }
+  20% {
+    filter: brightness(1.2);
+    transform: scale(1.05);
+  }
+  30%,
+  70% {
+    filter: brightness(0.8);
+    transform: scale(0.95);
+  }
+  80% {
+    filter: brightness(1.2);
+    transform: scale(1.05);
+  }
+  90% {
+    filter: brightness(0.8);
+    transform: scale(0.95);
+  }
+}
+
+.heartBeating {
+  animation: heartBeating 1.2s infinite;
+  animation-timing-function: ease-in-out;
+  display: inline-block; /* Ensure transform applies correctly */
 }

@@ -1,0 +1,33 @@
+import LeftArrowIcon from "@/public/leftarrow.svg";
+import QRCode from "react-qr-code";
+
+export default function EditProfileQRModal({
+  editProfileUrl,
+  theme,
+  onClose,
+}: {
+  editProfileUrl: string;
+  theme: any;
+  onClose: () => void;
+}) {
+  return (
+    <div
+      className="absolute top-0 left-0 w-full h-full bg-[#F8F7F3] flex justify-center items-center flex-col px-16 pt-16"
+      style={{ backgroundColor: theme.secondary }}
+    >
+      <h1 className="font-bold text-4xl text-center">Scan QR to edit your profile</h1>
+      <div className="w-fit mx-auto my-4 flex justify-center items-center bg-white p-4 rounded-2xl" onClick={onClose}>
+        <QRCode value={editProfileUrl} size={256} style={{ height: "auto", maxWidth: "300px", width: "100%" }} />
+      </div>
+      <button
+        className="bg-[#195245] active:bg-[#01392C] border-2 border-[#1E6756] color-[#F8F7F3] h-32 w-full rounded-2xl text-center font-bold text-4xl my-16"
+        onClick={onClose}
+      >
+        <div className="flex flex-row gap-6 justify-center">
+          <LeftArrowIcon />
+          <span>Go back</span>
+        </div>
+      </button>
+    </div>
+  );
+}

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePoaps } from "~~/hooks/poap";
+import { usePoaps } from "~~/hooks/usePoap";
 
 export default function PreviewAccountBadges({
   accountAddress,
@@ -14,6 +14,8 @@ export default function PreviewAccountBadges({
   limit?: number;
 }) {
   const { data: poaps } = usePoaps(accountAddress, limit);
+
+  console.log(">>> poaps", poaps);
 
   return (
     <Link href={`/${communitySlug}/${accountAddress}/badges`}>

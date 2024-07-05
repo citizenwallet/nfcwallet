@@ -24,6 +24,7 @@ export async function GET(request: NextRequest, { params }: { params: paramsType
 export async function POST(request: NextRequest, { params }: { params: paramsType }) {
   const hash = params.hash;
   const { address, secret } = await request.json();
+  console.log("POST> Claiming POAP", hash, hash.length, "for", address, "with secret", secret);
   if (!address || !address.match(/^0x[a-fA-F0-9]{40}$/)) {
     console.log("Invalid address", address);
     return Response.json({ error: "Invalid address" }, { status: 400 });
@@ -34,7 +35,8 @@ export async function POST(request: NextRequest, { params }: { params: paramsTyp
   }
 
   try {
-    const data = claimPoap(hash, address, secret);
+    const data = await claimPoap(address, hash, secret);
+    console.log(">>> Claimed POAP", data);
     return Response.json(data);
   } catch (e) {
     console.error("Error:", e);

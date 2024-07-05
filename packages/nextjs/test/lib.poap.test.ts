@@ -1,4 +1,4 @@
-import { claimPoap, getPoapData, getPoaps, hasPoap, stopRenewAccessToken } from "../lib/poap";
+import { claimPoap, getPoapData, getPoapHashes, hasPoap, stopRenewAccessToken } from "../lib/poap";
 
 // Mock data for the test
 const mockEventId = 175275;
@@ -10,9 +10,9 @@ afterAll(() => {
   stopRenewAccessToken();
 });
 
-describe("getPoaps", () => {
+describe("getPoapHashes", () => {
   it("fetches POAPs successfully", async () => {
-    const data = await getPoaps(mockEventId, mockSecret);
+    const data = await getPoapHashes(mockEventId, mockSecret);
     expect(data.length).toEqual(10);
     expect(data[0].qr_hash.length).toEqual(6);
     expect(data[1].claimed).toBeBoolean();

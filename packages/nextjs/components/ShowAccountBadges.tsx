@@ -8,7 +8,7 @@ import { createPublicClient, http } from "viem";
 import { WagmiConfig, createConfig } from "wagmi";
 import { Address } from "~~/components/scaffold-eth";
 import { useProfile } from "~~/hooks/citizenwallet";
-import { usePoaps } from "~~/hooks/poap";
+import { usePoaps } from "~~/hooks/usePoap";
 import chains from "~~/lib/chains";
 import { getUrlFromIPFS } from "~~/utils/ipfs";
 

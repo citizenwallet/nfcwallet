@@ -1,43 +1,69 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import PreviewAccountBadges from "./PreviewAccountBadges";
-import Linktree from "@/components/Linktree";
+import EditProfileQRModal from "@/components/EditProfileQRModal";
 import PoapOfTheDay from "@/components/PoapOfTheDay";
 import ProfileHeader from "@/components/ProfileHeader";
 import { TokenBalance } from "@/components/scaffold-eth";
+import { Poap } from "@/lib/poap";
+import EditProfileIcon from "@/public/editProfileIcon.svg";
+import LogoutIcon from "@/public/logout.svg";
 import { useSafeEffect } from "@citizenwallet/sdk";
-import { Poap } from "@lib/poap";
 import QRCode from "react-qr-code";
 import { createPublicClient, http } from "viem";
 import { WagmiConfig, createConfig } from "wagmi";
 import { useProfile } from "~~/hooks/citizenwallet";
 import chains from "~~/lib/chains";
 import { hexToRgba } from "~~/lib/colors";
-import PlusIcon from "~~/public/plus.svg";
 import QRCodeIcon from "~~/public/qrcode.svg";
-import SettingsIcon from "~~/public/settings.svg";
 
-export default function ShowAccount({
+const INACTIVITY_TIMEOUT_SECONDS = 20;
+
+export default function KioskProfile({
   accountAddress,
   config,
   theme,
   poap,
+  onLogout,
 }: {
   accountAddress: string;
   config: any;
   theme: any;
-  poap: Poap;
+  poap: Poap | undefined;
+  onLogout: () => void;
 }) {
   const communitySlug = config?.community.alias;
   const [profile] = useProfile(communitySlug, accountAddress);
   const [showProfileQR, setShowProfileQR] = useState(false);
+  const [timeleft, setTimeLeft] = useState(INACTIVITY_TIMEOUT_SECONDS);
+  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
+
+  useEffect(() => {
+    console.log(">>> SETTING INTERVAL", timeleft, INACTIVITY_TIMEOUT_SECONDS);
+    const interval = setInterval(() => {
+      setTimeLeft(prevTimeLeft => {
+        if (prevTimeLeft === 1) {
+          clearInterval(interval);
+          onLogout();
+          return 0; // Reset to 0 or could be set to INACTIVITY_TIMEOUT_SECONDS if you want to restart the timer
+        }
+        return prevTimeLeft - 1;
+      });
+    }, 1000);
+
+    // Cleanup on component unmount
+    return () => clearInterval(interval);
+  }, []); // Empty dependency array ensures this effect runs only once on mount
 
   useSafeEffect(() => {
-    window.localStorage.setItem("account", accountAddress);
-    window.localStorage.setItem("communityslug", config.community.alias);
-  });
+    window.localStorage.setItem("communitySlug", config.community.alias);
+  }, []);
+
+  function resetTimeout() {
+    setTimeLeft(INACTIVITY_TIMEOUT_SECONDS);
+  }
 
   if (!config) return null;
   const publicClient = createPublicClient({
@@ -59,8 +85,13 @@ export default function ShowAccount({
     return config.plugins.find((p: any) => p.name === plugin);
   };
 
-  const toggleModal = () => {
+  const toggleProfileQR = () => {
+    resetTimeout();
     setShowProfileQR(!showProfileQR);
+  };
+  const toggleEditProfileModal = () => {
+    resetTimeout();
+    setShowEditProfileModal(!showEditProfileModal);
   };
 
   const profilePageUrl = `${process.env.NEXT_PUBLIC_WEBAPP_URL}/${communitySlug}/${accountAddress}`;
@@ -74,21 +105,30 @@ export default function ShowAccount({
         <QRCodeIcon
           width="40"
           height="40"
-          onClick={toggleModal}
+          onClick={toggleProfileQR}
           className="absolute right-6 top-6"
           style={{ color: config.community.theme.primary }}
         />
 
         {poap?.id && <PoapOfTheDay accountAddress={accountAddress} poap={poap} profile={profile} theme={theme} />}
 
-        <ProfileHeader profile={profile} config={config} />
+        <ProfileHeader greeting={`Hey, ${profile?.name}!`} profile={profile} config={config} />
 
+        {accountAddress && showEditProfileModal && (
+          <EditProfileQRModal
+            theme={theme}
+            editProfileUrl={`${profilePageUrl}/edit`}
+            onClose={toggleEditProfileModal}
+          />
+        )}
         {accountAddress && showProfileQR && (
-          <div
-            className="w-fit mx-auto my-4 flex justify-center items-center bg-white p-4 rounded-2xl"
-            onClick={toggleModal}
-          >
-            <QRCode value={profilePageUrl} size={256} style={{ height: "auto", maxWidth: "300px", width: "100%" }} />
+          <div>
+            <div
+              className="w-fit mx-auto my-4 flex justify-center items-center bg-white p-4 rounded-2xl"
+              onClick={toggleProfileQR}
+            >
+              <QRCode value={profilePageUrl} size={256} style={{ height: "auto", maxWidth: "300px", width: "100%" }} />
+            </div>
           </div>
         )}
 
@@ -112,14 +152,7 @@ export default function ShowAccount({
               href={`${getPlugin("Top Up").url}?account=${accountAddress}&redirectUrl=${encodeURIComponent(
                 profilePageUrl,
               )}`}
-            >
-              <div
-                style={{ backgroundColor: hexToRgba(config.community.theme.primary, 0.1) }}
-                className="flex-shrink-0 w-16 h-16 text-center rounded-2xl box-border overflow-hidden flex justify-center items-center"
-              >
-                <PlusIcon />
-              </div>
-            </Link>
+            ></Link>
           )}
         </div>
 
@@ -130,23 +163,27 @@ export default function ShowAccount({
           </div>
         )}
 
-        <div className="mx-10">{profile && <Linktree profile={profile} theme={config.community.theme} />}</div>
-        <div className="flex justify-center text-sm my-8 pb-4">
-          <Link href={`/${communitySlug}/${accountAddress}/edit`} className="w-full max-w-sm p-4">
-            {!profile && (
-              <button className="mx-auto h-10 w-56 flex flex-row justify-center items-center gap-2 rounded-3xl bg-[#184C40] border">
-                Edit profile <SettingsIcon className="h-5" />
-              </button>
-            )}
-            {profile && (
-              <button
-                className="mx-auto h-10 w-56 flex flex-row justify-center items-center gap-2 rounded-3xl bg-[#184C40] border"
-                style={{ color: config.community.theme.primary, borderColor: config.community.theme.primary }}
-              >
-                Edit profile <SettingsIcon className="h-5" />
-              </button>
-            )}
-          </Link>
+        <div className="flex justify-center text-sm my-8 pb-4 px-16 flex-col gap-8">
+          <button
+            className="bg-[#195245] active:bg-[#01392C] border-2 border-[#1E6756] color-[#F8F7F3] h-32 w-full rounded-2xl text-center font-bold text-4xl"
+            onClick={toggleEditProfileModal}
+          >
+            <div className="flex flex-row gap-6 justify-center">
+              <EditProfileIcon />
+              <span>Edit profile</span>
+            </div>
+          </button>
+
+          <button
+            className="bg-[#195245] active:bg-[#01392C] border-2 border-[#1E6756] color-[#F8F7F3] h-32 w-full rounded-2xl text-center font-bold text-4xl"
+            onClick={onLogout}
+          >
+            <div className="flex flex-row justify-center items-center">
+              <LogoutIcon width={40} height={40} className="mr-6" />
+              <span>Log out</span>
+              <div className=" w-20 flex-shrink-0 ml-1">({timeleft})</div>
+            </div>
+          </button>
         </div>
       </div>
     </WagmiConfig>
