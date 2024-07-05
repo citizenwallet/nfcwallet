@@ -14,12 +14,13 @@ import { useSafeEffect } from "@citizenwallet/sdk";
 import QRCode from "react-qr-code";
 import { createPublicClient, http } from "viem";
 import { WagmiConfig, createConfig } from "wagmi";
+import { Address } from "~~/components/scaffold-eth";
 import { useProfile } from "~~/hooks/citizenwallet";
 import chains from "~~/lib/chains";
 import { hexToRgba } from "~~/lib/colors";
 import QRCodeIcon from "~~/public/qrcode.svg";
 
-const INACTIVITY_TIMEOUT_SECONDS = 20;
+const INACTIVITY_TIMEOUT_SECONDS = 200;
 
 export default function KioskProfile({
   accountAddress,
@@ -101,7 +102,7 @@ export default function KioskProfile({
 
   return (
     <WagmiConfig config={wagmiConfig}>
-      <div className="w-full mx-auto relative overflow-hidden contrast-125">
+      <div className="w-full min-h-screen mx-auto relative overflow-hidden contrast-125">
         <QRCodeIcon
           width="40"
           height="40"
@@ -112,7 +113,7 @@ export default function KioskProfile({
 
         {poap?.id && <PoapOfTheDay accountAddress={accountAddress} poap={poap} profile={profile} theme={theme} />}
 
-        <ProfileHeader greeting={`Hey, ${profile?.name}!`} profile={profile} config={config} />
+        <ProfileHeader greeting={`Hey, ${profile?.name || "regen"}!`} profile={profile} config={config} />
 
         {accountAddress && showEditProfileModal && (
           <EditProfileQRModal
@@ -128,6 +129,7 @@ export default function KioskProfile({
               onClick={toggleProfileQR}
             >
               <QRCode value={profilePageUrl} size={256} style={{ height: "auto", maxWidth: "300px", width: "100%" }} />
+              <Address address={accountAddress} format="short" className="justify-center my-2" />
             </div>
           </div>
         )}
@@ -158,8 +160,12 @@ export default function KioskProfile({
 
         {hasPlugin("poap") && (
           <div className="mb-8 mx-auto">
-            <h2 className="text-[#4C8477] font-bold text-center text-xl">POAPs collected</h2>
-            <PreviewAccountBadges limit={10} accountAddress={accountAddress} communitySlug={communitySlug} />
+            <PreviewAccountBadges
+              title="POAPs collected"
+              limit={10}
+              accountAddress={accountAddress}
+              communitySlug={communitySlug}
+            />
           </div>
         )}
 

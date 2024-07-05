@@ -40,22 +40,20 @@ const Scan = ({
     }
   }, [ignoreRead, onChange]);
 
-  const scan = useCallback(async () => {
+  const setScannerAvailability = useCallback(async () => {
     try {
       new NDEFReader();
       setNfcAvailable(true);
-      startScanner();
     } catch (error) {
       console.log(`Error! Scan failed to start: ${error}.`);
       // setErrorMsg(`setNfcAvailable error: ${error}.`);
       setNfcAvailable(true); // toggle
-      setScanning(true); // remove
     }
-  }, [startScanner]);
+  }, []);
 
   useEffect(() => {
-    scan();
-  }, [scan]);
+    setScannerAvailability();
+  }, [setScannerAvailability]);
 
   return (
     <center>
@@ -67,11 +65,11 @@ const Scan = ({
               width={254}
               height={140}
               alt="heart NFC"
-              className={`${isWriting ? "" : "heartBeating"}`}
+              className={`${isWriting || !scanning ? "" : "heartBeating"}`}
             />
           </div>
-          <div className="pb-4 font-bold text-4xl whitespace-nowrap text-center">
-            {isWriting ? "Hold your wristband" : scanning ? "Tap your wristband" : "Start scanning"}
+          <div className="pb-4 font-bold text-4xl whitespace-nowrap text-center" onClick={startScanner}>
+            {isWriting ? "Hold your wristband" : scanning ? "Tap your wristband" : "Start scanner"}
           </div>
         </div>
       )}

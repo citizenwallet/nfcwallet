@@ -39,7 +39,7 @@ export default function EditAvatar({ accountAddress, avatarUrl, onChange }: Edit
   const [imageDataURL, setImageDataURL] = useState(null);
   const [status, setStatus] = useState<string | null>("saved");
 
-  avatarUrl = avatarUrl || "/nfcwallet-icon.jpg";
+  avatarUrl = avatarUrl || "/avatar.svg";
 
   const triggerFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -137,12 +137,15 @@ export default function EditAvatar({ accountAddress, avatarUrl, onChange }: Edit
   };
 
   return (
-    <div className="w-full max-w-xs">
+    <div className="w-full max-w-[160px]">
       {!imageDataURL && avatarUrl && (
-        <Image src={avatarUrl} alt="avatar" width="400" height="400" className="w-full max-w-md" />
+        <Image src={avatarUrl} alt="avatar" width="160" height="160" className="w-full max-w-md rounded-full" />
       )}
       {imageDataURL && (
-        <div className="w-screen relative" style={{ height: "100vw", maxWidth: "320px", maxHeight: "320px" }}>
+        <div
+          className="w-screen relative rounded-full"
+          style={{ height: "100vw", maxWidth: "160px", maxHeight: "160px" }}
+        >
           {" "}
           <Cropper
             image={imageDataURL}
@@ -166,9 +169,11 @@ export default function EditAvatar({ accountAddress, avatarUrl, onChange }: Edit
         onChange={handleImageSelect}
       />
       <button
-        className={`btn ${status !== "saved" ? "btn-primary" : "btn-secondary"} ${
+        className={`btn !shadow-none bg-white ${status !== "saved" ? "btn-primary" : "btn-secondary"} ${
           status === "editing" ? "animate-blink" : ""
-        } w-full max-w-md rounded-t-none ${status === "saving" ? "btn-disabled" : ""}`}
+        } w-full max-w-md ${
+          status === "saving" ? "btn-disabled" : ""
+        } rounded-xl mt-4 h-12 text-[#1CB260] font-bold bg-white bg-opacity-[0.08] active:bg-opacity-[0.04]`}
         onClick={handleChangeAvatar}
       >
         {status === "saving" && "Uploading..."}

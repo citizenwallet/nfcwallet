@@ -3,6 +3,12 @@ import EditProfile from "@/components/EditProfile";
 import Error from "@/components/Error";
 import CitizenWalletCommunity from "~~/lib/citizenwallet";
 
+const theme = {
+  primary: "#1CB260",
+  secondary: "#01392C",
+  text: "#fff",
+};
+
 export default async function WalletProfile({
   params,
   searchParams,
@@ -24,7 +30,7 @@ export default async function WalletProfile({
   }
 
   return (
-    <div>
+    <div className="min-h-screen" style={{ background: theme.secondary }}>
       <EditProfile config={config} accountAddress={accountAddress} owner={searchParams.owner} />
     </div>
   );

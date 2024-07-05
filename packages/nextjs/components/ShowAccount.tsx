@@ -28,7 +28,7 @@ export default function ShowAccount({
   accountAddress: string;
   config: any;
   theme: any;
-  poap: Poap;
+  poap?: Poap;
 }) {
   const communitySlug = config?.community.alias;
   const [profile] = useProfile(communitySlug, accountAddress);
@@ -125,8 +125,12 @@ export default function ShowAccount({
 
         {hasPlugin("poap") && (
           <div className="mb-8 mx-auto">
-            <h2 className="text-[#4C8477] font-bold text-center text-xl">POAPs collected</h2>
-            <PreviewAccountBadges limit={10} accountAddress={accountAddress} communitySlug={communitySlug} />
+            <PreviewAccountBadges
+              title="POAPs collected"
+              limit={10}
+              accountAddress={accountAddress}
+              communitySlug={communitySlug}
+            />
           </div>
         )}
 

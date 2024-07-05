@@ -2,7 +2,7 @@ import Image from "next/image";
 import DefaultAvatar from "~~/public/avatar.svg";
 import { getUrlFromIPFS } from "~~/utils/ipfs";
 
-export default function ProfileHeader({ greeting, profile, config }: { greeting: string; profile: any; config: any }) {
+export default function ProfileHeader({ greeting, profile, config }: { greeting?: string; profile: any; config: any }) {
   const avatarUrl = getUrlFromIPFS(profile?.image_medium);
 
   return (

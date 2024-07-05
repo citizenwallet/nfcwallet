@@ -26,7 +26,7 @@ export default async function WalletProfile({ params }: { params: { communitySlu
   }
 
   return (
-    <div style={{ background: darkenHexColor(config.community.theme.primary, 70) }}>
+    <div className="min-h-screen" style={{ background: darkenHexColor(config.community.theme.primary, 70) }}>
       <ShowAccount config={config} accountAddress={accountAddress} theme={theme} />
       <Footer />
     </div>

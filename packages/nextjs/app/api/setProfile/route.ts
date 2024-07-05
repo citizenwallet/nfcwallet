@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { NextRequest } from "next/server";
 import CitizenWalletCommunity from "../../../lib/citizenwallet";
 import { getServerPasswordHash } from "../../../utils/crypto";
+import { generateRandomUsername } from "../../../utils/username";
 import { BundlerService } from "@citizenwallet/sdk/dist/src/services/bundler";
 import pinataSDK from "@pinata/sdk";
 import { waitUntil } from "@vercel/functions";
@@ -74,6 +75,7 @@ export async function POST(request: NextRequest) {
     // }
     data.hashedPassword = existingProfile.hashedPassword;
   }
+  data.username = data.username || generateRandomUsername(data.name);
   data.image = data.image?.replace("https://ipfs.internal.citizenwallet.xyz/", "ipfs://");
   data.image_small = data.image_small?.replace("https://ipfs.internal.citizenwallet.xyz/", "ipfs://");
   data.image_medium = data.image_medium?.replace("https://ipfs.internal.citizenwallet.xyz/", "ipfs://");

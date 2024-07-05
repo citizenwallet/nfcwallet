@@ -8,17 +8,18 @@ export default function PreviewAccountBadges({
   accountAddress,
   communitySlug,
   limit,
+  title,
 }: {
   accountAddress: string;
   communitySlug: string;
   limit?: number;
+  title: string;
 }) {
   const { data: poaps } = usePoaps(accountAddress, limit);
 
-  console.log(">>> poaps", poaps);
-
   return (
     <Link href={`/${communitySlug}/${accountAddress}/badges`}>
+      {title && poaps && poaps.length > 0 && <h2 className="text-[#4C8477] font-bold text-center text-xl">{title}</h2>}
       <div className="w-fit mx-auto overflow-x-auto whitespace-nowrap max-w-full box-border scroll-smooth">
         {poaps &&
           poaps.length > 0 &&

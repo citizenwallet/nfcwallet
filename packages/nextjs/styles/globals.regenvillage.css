@@ -60,13 +60,34 @@ li {
   @apply bg-gray-900 scale-90;
 }
 
+.label {
+  margin-top: 16px;
+  margin-bottom: 4px;
+}
+
 .label-text {
-  color: white;
+  color: #2fa087;
+  font-weight: 600;
+}
+.label-text-alt {
+  color: rgba(255, 255, 255, 0.5);
+  margin-left: 8px;
+  font-size: 0.8rem;
 }
 
 .input,
 .textarea {
-  color: black;
+  color: white;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 0.5rem;
+  margin-bottom: 4px;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .socialIcon {

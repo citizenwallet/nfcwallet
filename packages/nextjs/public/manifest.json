@@ -1,5 +1,21 @@
 {
-  "name": "Scaffold-ETH 2 DApp",
-  "description": "A DApp built with Scaffold-ETH",
-  "iconPath": "logo.svg"
+  "name": "nfcwallet.xyz",
+  "short_name": "NFC Wallet Kiosk",
+  "description": "Here to welcome your visitors",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#01392C",
+  "theme_color": "#1CB260",
+  "icons": [
+    {
+      "src": "/nfcwallet-icon-small.png",
+      "sizes": "380x380",
+      "type": "image/png"
+    },
+    {
+      "src": "/nfcwallet-icon-small-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
 }
