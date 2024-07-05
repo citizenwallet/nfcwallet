@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import KioskProfile from "./KioskProfile";
 import NFCReaderRegenVillage from "@/components/NFCReaderRegenVillage";
@@ -19,7 +19,6 @@ export default function CommunityKiosk({
   poap: Poap | undefined;
   theme: any;
 }) {
-  const lastPageReload = new Date().getTime();
   const [writing, setWriting] = useState<boolean>(false);
   const [cardUrl, setCardUrl] = useState<string | null>(null);
   const [accountAddress, setAccountAddress] = useState<string | null>(null);
@@ -34,12 +33,14 @@ export default function CommunityKiosk({
       if (record.recordType === "url") {
         const urlstr = textDecoder.decode(record.data);
         console.log("URL:", urlstr);
+
         const lastToken = urlstr.split("/").pop();
         if (lastToken?.substring(0, 2) === "0x" && lastToken.length === 42) {
+          accountAddress = lastToken;
           setAccountAddress(accountAddress);
           setCardUrl(urlstr);
+          return;
         }
-        // return router.push(urlstr);
       }
     }
     if (!accountAddress) {
@@ -78,23 +79,10 @@ export default function CommunityKiosk({
     setWriting(false);
   };
 
-  const updateSoftware = useCallback(() => {
-    // bad idea as it would require people to press to activate the NFC reader again.
-    return;
-    // if (accountAddress) return; // don't update while someone is using the kiosk
-    // const d = new Date().getTime();
-    // if (d - lastPageReload > 1000 * 60 * 5) {
-    //   window.location.reload();
-    // }
-  }, [accountAddress, lastPageReload]);
-
   useEffect(() => {
     // for easy testing
     window.setAccount = (address: string) => setAccountAddress(address);
-    console.log(">>> setting up interval to updateSoftware");
-    // const interval = setInterval(updateSoftware, 1000 * 60 * 5); // every 5 minutes
-    // return () => clearInterval(interval);
-  }, [updateSoftware]);
+  }, []);
 
   if (accountAddress) {
     console.log(">>> card account address", accountAddress);
@@ -102,7 +90,6 @@ export default function CommunityKiosk({
 
   const onLogout = () => {
     setAccountAddress(null);
-    updateSoftware();
   };
 
   return (

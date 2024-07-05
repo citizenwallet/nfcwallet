@@ -96,9 +96,6 @@ export default function KioskProfile({
   };
 
   const profilePageUrl = `${process.env.NEXT_PUBLIC_WEBAPP_URL}/${communitySlug}/${accountAddress}`;
-  console.log(">>> profile", profile);
-  console.log(">>> primary color", config.community.theme.primary);
-  console.log(">>> secondary color", config.community.theme.secondary);
 
   return (
     <WagmiConfig config={wagmiConfig}>

@@ -68,7 +68,7 @@ export default function ClaimPoapModal({
           <Image src={profile?.image_url} alt="avatar" width="80" height="80" className="rounded-full mx-auto" />
         )}
         {!profile?.image_url && <DefaultAvatar className="w-20 h-20 mx-auto" />}
-        <h1 className="w-full text-center text-xl p-0 my-4 font-bold">Welcome, {profile.name}</h1>
+        <h1 className="w-full text-center text-xl p-0 my-4 font-bold">Welcome, {profile?.name || "regen"}</h1>
       </div>
       <div className="flex justify-center items-center flex-col">
         <Image src={data?.image_url} alt={data?.name} width={500} height={500} className="mx-auto my-8" />
