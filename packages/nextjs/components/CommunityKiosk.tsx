@@ -19,7 +19,7 @@ export default function CommunityKiosk({
   poap: Poap | undefined;
   theme: any;
 }) {
-  const [writing, setWriting] = useState(false);
+  const [writing, setWriting] = useState<boolean>(false);
   const [cardUrl, setCardUrl] = useState<string | null>(null);
   const [accountAddress, setAccountAddress] = useState<string | null>(null);
   const router = useRouter();
@@ -99,7 +99,7 @@ export default function CommunityKiosk({
         <div>
           <DefaultAvatar className="mt-16 w-32 h-32 mx-auto" />
           <h1 className="text-4xl font-bold">Hello, regen!</h1>
-          <NFCReaderRegenVillage onChange={handleNFCData} isWriting={true} />
+          <NFCReaderRegenVillage onChange={handleNFCData} isWriting={writing} />
         </div>
       )}
       {accountAddress && (

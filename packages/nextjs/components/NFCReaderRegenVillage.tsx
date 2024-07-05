@@ -12,11 +12,11 @@ const Scan = ({
   onChange: (event: NDEFReadingEvent) => any;
   ignoreRead?: boolean;
 }) => {
-  const [nfcAvailable, setNfcAvailable] = useState(undefined);
+  const [nfcAvailable, setNfcAvailable] = useState<boolean | undefined>(undefined);
   const [errorMsg, setErrorMsg] = useState("");
   const [scanning, setScanning] = useState(false);
 
-  const startScanner = async () => {
+  const startScanner = useCallback(async () => {
     try {
       const ndef = new NDEFReader();
       console.log("Starting scanner...", ndef.scan);
@@ -38,7 +38,7 @@ const Scan = ({
       console.log(`Error! Scan failed to start: ${error}.`);
       setErrorMsg(`Scanner failed to start: ${error}.`);
     }
-  };
+  }, [ignoreRead, onChange]);
 
   const scan = useCallback(async () => {
     try {
@@ -51,7 +51,7 @@ const Scan = ({
       setNfcAvailable(true); // toggle
       setScanning(true); // remove
     }
-  }, []);
+  }, [startScanner]);
 
   useEffect(() => {
     scan();
@@ -67,7 +67,7 @@ const Scan = ({
               width={254}
               height={140}
               alt="heart NFC"
-              className={`${isWriting ? "heartBeating" : ""}`}
+              className={`${isWriting ? "" : "heartBeating"}`}
             />
           </div>
           <div className="pb-4 font-bold text-4xl whitespace-nowrap text-center">

@@ -55,7 +55,7 @@ export default function KioskProfile({
 
     // Cleanup on component unmount
     return () => clearInterval(interval);
-  }, []); // Empty dependency array ensures this effect runs only once on mount
+  }, [onLogout, timeleft]); // Empty dependency array ensures this effect runs only once on mount
 
   useSafeEffect(() => {
     window.localStorage.setItem("communitySlug", config.community.alias);
