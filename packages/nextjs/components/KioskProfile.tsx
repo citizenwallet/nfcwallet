@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import PreviewAccountBadges from "./PreviewAccountBadges";
 import EditProfileQRModal from "@/components/EditProfileQRModal";
+import KioskProfileHeader from "@/components/KioskProfileHeader";
 import PoapOfTheDay from "@/components/PoapOfTheDay";
-import ProfileHeader from "@/components/ProfileHeader";
 import { TokenBalance } from "@/components/scaffold-eth";
 import { Poap } from "@/lib/poap";
 import EditProfileIcon from "@/public/editProfileIcon.svg";
@@ -14,7 +14,6 @@ import { useSafeEffect } from "@citizenwallet/sdk";
 import QRCode from "react-qr-code";
 import { createPublicClient, http } from "viem";
 import { WagmiConfig, createConfig } from "wagmi";
-import { Address } from "~~/components/scaffold-eth";
 import { useProfile } from "~~/hooks/citizenwallet";
 import chains from "~~/lib/chains";
 import { hexToRgba } from "~~/lib/colors";
@@ -113,7 +112,7 @@ export default function KioskProfile({
 
         {poap?.id && <PoapOfTheDay accountAddress={accountAddress} poap={poap} profile={profile} theme={theme} />}
 
-        <ProfileHeader greeting={`Hey, ${profile?.name || "regen"}!`} profile={profile} config={config} />
+        <KioskProfileHeader greeting={`Hey, ${profile?.name || "regen"}!`} profile={profile} config={config} />
 
         {accountAddress && showEditProfileModal && (
           <EditProfileQRModal
@@ -129,7 +128,6 @@ export default function KioskProfile({
               onClick={toggleProfileQR}
             >
               <QRCode value={profilePageUrl} size={256} style={{ height: "auto", maxWidth: "300px", width: "100%" }} />
-              <Address address={accountAddress} format="short" className="justify-center my-2" />
             </div>
           </div>
         )}

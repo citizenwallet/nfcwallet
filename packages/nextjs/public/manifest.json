@@ -4,8 +4,8 @@
   "description": "Here to welcome your visitors",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#01392C",
-  "theme_color": "#1CB260",
+  "background_color": "#1CB260",
+  "theme_color": "#01392C",
   "icons": [
     {
       "src": "/nfcwallet-icon-small.png",

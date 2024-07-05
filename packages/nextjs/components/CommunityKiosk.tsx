@@ -19,6 +19,7 @@ export default function CommunityKiosk({
   poap: Poap | undefined;
   theme: any;
 }) {
+  const lastPageReload = new Date().getTime();
   const [writing, setWriting] = useState<boolean>(false);
   const [cardUrl, setCardUrl] = useState<string | null>(null);
   const [accountAddress, setAccountAddress] = useState<string | null>(null);
@@ -80,17 +81,29 @@ export default function CommunityKiosk({
     setWriting(false);
   };
 
-  // remove
   useEffect(() => {
+    // for easy testing
     window.setAccount = (address: string) => setAccountAddress(address);
+    console.log(">>> setting up interval to updateSoftware");
+    const interval = setInterval(updateSoftware, 1000 * 60 * 5); // every 5 minutes
+    return () => clearInterval(interval);
   }, []);
 
   if (accountAddress) {
     console.log(">>> card account address", accountAddress);
   }
 
+  const updateSoftware = () => {
+    if (accountAddress) return; // don't update while someone is using the kiosk
+    const d = new Date().getTime();
+    if (d - lastPageReload > 1000 * 60 * 5) {
+      window.location.reload();
+    }
+  };
+
   const onLogout = () => {
     setAccountAddress(null);
+    updateSoftware();
   };
 
   return (
