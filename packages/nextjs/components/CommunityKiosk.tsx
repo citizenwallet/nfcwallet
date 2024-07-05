@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import KioskProfile from "./KioskProfile";
 import NFCReaderRegenVillage from "@/components/NFCReaderRegenVillage";
@@ -81,13 +81,13 @@ export default function CommunityKiosk({
     setWriting(false);
   };
 
-  const updateSoftware = () => {
+  const updateSoftware = useCallback(() => {
     if (accountAddress) return; // don't update while someone is using the kiosk
     const d = new Date().getTime();
     if (d - lastPageReload > 1000 * 60 * 5) {
       window.location.reload();
     }
-  };
+  }, [accountAddress, lastPageReload]);
 
   useEffect(() => {
     // for easy testing
