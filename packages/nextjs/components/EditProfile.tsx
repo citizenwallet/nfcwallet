@@ -133,8 +133,8 @@ export default function EditProfile({
     setBearer(bearer);
   }
 
-  async function handleSubmit(e?: any) {
-    e?.preventDefault();
+  async function handleSubmit(e: any) {
+    e.preventDefault();
     if (showChangePassword && !formData.password) {
       setErrorMsg("Please enter a new password");
       setTimeout(() => setErrorMsg(null), 3000);

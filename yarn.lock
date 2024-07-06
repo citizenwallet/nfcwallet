@@ -3812,7 +3812,7 @@ __metadata:
     jest-fetch-mock: ^3.0.3
     lodash: ^4.17.21
     moment: ^2.30.1
-    next: ^14.2.3
+    next: ^14.2.4
     next-images: ^1.8.5
     next-themes: ~0.2.1
     nprogress: ~0.2.0
@@ -14001,7 +14001,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:^14.2.3":
+"next@npm:^14.2.4":
   version: 14.2.4
   resolution: "next@npm:14.2.4"
   dependencies:

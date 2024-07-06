@@ -12,28 +12,14 @@ const theme = {
   text: "#fff",
 };
 
-const poaps = {
-  "2024-07-04": { id: 175275, editCode: 599254 },
-  "2024-07-05": { id: 175275, editCode: 599254 },
-  "2024-07-06": { id: 175651, editCode: 126425 },
-  "2024-07-07": { id: 175651, editCode: 126425 },
-  "2024-07-08": { id: 175275, editCode: 599254 },
-  "2024-07-09": { id: 175275, editCode: 599254 },
-  "2024-07-10": { id: 175275, editCode: 599254 },
-  "2024-07-11": { id: 175275, editCode: 599254 },
-  "2024-07-12": { id: 175275, editCode: 599254 },
-};
+const poaps = JSON.parse(process.env.POAP_CODES || "{}");
 
 const poapOfTheDay = poaps[moment().format("YYYY-MM-DD")];
 
-let hashes, renewPoapOfTheDayInterval;
+let hashes;
 
-if (poapOfTheDay && !renewPoapOfTheDayInterval) {
+if (poapOfTheDay) {
   hashes = await getPoapHashes(poapOfTheDay.id, poapOfTheDay.editCode);
-  renewPoapOfTheDayInterval = setInterval(async () => {
-    // update list of poaps
-    hashes = await getPoapHashes(poapOfTheDay.id, poapOfTheDay.editCode);
-  }, 20000);
 }
 
 export default async function KioskPage({ params }: { params: { communitySlug: string } }) {

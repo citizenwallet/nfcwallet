@@ -79,7 +79,11 @@ export default class CitizenWalletCommunity {
         ipfsHash,
       };
     } catch (e) {
-      console.error("Unable to fetch profile", e);
+      if (e.message && e.message.match(/invalid token ID/)) {
+        console.error("Profile not found for", account);
+      } else {
+        console.error("Error while fetching profile for", account, e);
+      }
       return null;
     }
   };

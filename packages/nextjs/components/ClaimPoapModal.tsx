@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Poap } from "@/lib/poap";
-import { pickRandom } from "@/lib/utils";
 import Confetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
 import { useGetEvent } from "~~/hooks/usePoap";
@@ -39,9 +38,16 @@ export default function ClaimPoapModal({
   }
 
   useEffect(() => {
-    const randomPoap = pickRandom(poap.hashes.filter(h => !h.claimed));
-    getPoapSecret(randomPoap.qr_hash).then(s => {
-      setPoapHashToClaim({ hash: randomPoap.qr_hash, secret: s });
+    const startIndex = parseInt(process.env.POAP_HASHES_START_INDEX || "0", 10) || 0; // Provide a default value in case it's not set
+    const endIndex = parseInt(process.env.POAP_HASHES_END_INDEX || "", 10) || poap.hashes.length; // Use the array length if the end index is not set
+
+    const selectedPoapHash = poap.hashes.slice(startIndex, endIndex).find(h => !h.claimed);
+    if (!selectedPoapHash) {
+      console.error(">>> No POAP hashes available to claim");
+      return;
+    }
+    getPoapSecret(selectedPoapHash.qr_hash).then(s => {
+      setPoapHashToClaim({ hash: selectedPoapHash.qr_hash, secret: s });
     });
   }, [setPoapHashToClaim]);
 
