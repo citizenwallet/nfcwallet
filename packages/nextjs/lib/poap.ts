@@ -9,7 +9,7 @@ export type PoapHash = {
 
 export type Poap = {
   id: number;
-  hashes: PoapHash[];
+  editCode: number;
 };
 
 let accessToken: AccessTokenType = {

@@ -32,7 +32,7 @@ export default function PreviewAccountBadges({
   };
 
   return (
-    <Link href={`/${communitySlug}/${accountAddress}/badges`}>
+    <div>
       {poapToClaim?.id && (
         <PoapOfTheDay
           accountAddress={accountAddress}
@@ -42,29 +42,33 @@ export default function PreviewAccountBadges({
           onClaimed={onPoapClaimed}
         />
       )}
-      {title && poaps && poaps.length > 0 && <h2 className="text-[#4C8477] font-bold text-center text-xl">{title}</h2>}
-      <div className="w-fit mx-auto overflow-x-auto whitespace-nowrap max-w-full box-border scroll-smooth">
-        {claimedPoap && (
-          <div key={claimedPoap.tokenId} className="inline-block rounded-full overflow-hidden my-2 mx-2">
-            <Image
-              src={`${claimedPoap.event.image_url}?size=small`}
-              width={80}
-              height={80}
-              alt={claimedPoap.event.name}
-            />
-          </div>
+      <Link href={`/${communitySlug}/${accountAddress}/badges`}>
+        {title && poaps && poaps.length > 0 && (
+          <h2 className="text-[#4C8477] font-bold text-center text-xl">{title}</h2>
         )}
-        {poaps &&
-          poaps.length > 0 &&
-          poaps.map(
-            poap =>
-              poap.tokenId != claimedPoap?.tokenId && (
-                <div key={poap.tokenId} className="inline-block rounded-full overflow-hidden my-2 mx-2">
-                  <Image src={`${poap.event.image_url}?size=small`} width={80} height={80} alt={poap.event.name} />
-                </div>
-              ),
+        <div className="w-fit mx-auto overflow-x-auto whitespace-nowrap max-w-full box-border scroll-smooth">
+          {claimedPoap && (
+            <div key={claimedPoap.tokenId} className="inline-block rounded-full overflow-hidden my-2 mx-2">
+              <Image
+                src={`${claimedPoap.event.image_url}?size=small`}
+                width={80}
+                height={80}
+                alt={claimedPoap.event.name}
+              />
+            </div>
           )}
-      </div>
-    </Link>
+          {poaps &&
+            poaps.length > 0 &&
+            poaps.map(
+              poap =>
+                poap.tokenId != claimedPoap?.tokenId && (
+                  <div key={poap.tokenId} className="inline-block rounded-full overflow-hidden my-2 mx-2">
+                    <Image src={`${poap.event.image_url}?size=small`} width={80} height={80} alt={poap.event.name} />
+                  </div>
+                ),
+            )}
+        </div>
+      </Link>
+    </div>
   );
 }

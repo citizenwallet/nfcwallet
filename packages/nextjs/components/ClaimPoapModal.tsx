@@ -25,31 +25,18 @@ export default function ClaimPoapModal({
   const [showConfetti, setShowConfetti] = useState(false);
   const { width, height } = useWindowSize();
 
-  async function getPoapSecret(hash: string) {
-    try {
-      const res = await fetch(`/api/poap/claim/${hash}`);
-      const data = await res.json();
-      console.log(">>> getPoapSecret", poap.id, "response", data);
-      return data.secret;
-    } catch (e) {
-      console.error("getPoapSecret error", e);
-      return null;
-    }
-  }
-
   useEffect(() => {
-    const startIndex = parseInt(process.env.POAP_HASHES_START_INDEX || "0", 10) || 0; // Provide a default value in case it's not set
-    const endIndex = parseInt(process.env.POAP_HASHES_END_INDEX || "", 10) || poap.hashes.length; // Use the array length if the end index is not set
-
-    const selectedPoapHash = poap.hashes.slice(startIndex, endIndex).find(h => !h.claimed);
-    if (!selectedPoapHash) {
-      console.error(">>> No POAP hashes available to claim");
-      return;
-    }
-    getPoapSecret(selectedPoapHash.qr_hash).then(s => {
-      setPoapHashToClaim({ hash: selectedPoapHash.qr_hash, secret: s });
-    });
-  }, [setPoapHashToClaim]);
+    const prepareClaim = async () => {
+      const res = await fetch(`/api/poap/event/${poap.id}/getHash`);
+      const selectedPoapHash = await res.json();
+      if (!selectedPoapHash) {
+        console.error(">>> No POAP hashes available to claim");
+        return;
+      }
+      setPoapHashToClaim(selectedPoapHash);
+    };
+    prepareClaim();
+  }, [setPoapHashToClaim, poap]);
 
   async function claimPoapNow() {
     setStatus("claiming");
