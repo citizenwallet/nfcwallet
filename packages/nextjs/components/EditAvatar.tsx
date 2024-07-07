@@ -178,7 +178,7 @@ export default function EditAvatar({ accountAddress, avatarUrl, onChange }: Edit
       >
         {status === "saving" && "Uploading..."}
         {status === "saved" && "Change avatar"}
-        {status === "editing" && "Upload avatar"}
+        {status === "editing" && "Save new avatar"}
       </button>
     </div>
   );

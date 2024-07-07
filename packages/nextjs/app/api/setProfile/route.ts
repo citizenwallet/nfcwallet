@@ -69,10 +69,10 @@ export async function POST(request: NextRequest) {
     // we fetch the existing password hash
     const existingProfile = await cw.getProfile(data.account);
     console.log(">>> existing profile", existingProfile);
-    // if (existingProfile && existingProfile.ipfsHash !== ipfsHash) {
-    //   return Response.json({ error: "Invalid bearer: ipfsHash mismatch" });
-    // }
-    data.hashedPassword = existingProfile.hashedPassword;
+    // we keep the old password
+    if (existingProfile && existingProfile.hashedPassword) {
+      data.hashedPassword = existingProfile.hashedPassword;
+    }
   }
   data.username = data.username || generateRandomUsername(data.name);
   data.image = data.image?.replace("https://ipfs.internal.citizenwallet.xyz/", "ipfs://");

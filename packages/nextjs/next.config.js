@@ -15,6 +15,15 @@ const nextConfig = {
         hostname: "api.multiavatar.com",
       },
       {
+        hostname: "live.citizenwallet.xyz",
+      },
+      {
+        hostname: "citizenwallet.xyz",
+      },
+      {
+        hostname: "nfcwallet.xyz",
+      },
+      {
         hostname: "assets.poap.xyz",
       },
       {

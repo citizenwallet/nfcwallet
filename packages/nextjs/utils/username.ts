@@ -1,4 +1,7 @@
-export function generateRandomUsername(str) {
+export function generateRandomUsername(str?: string) {
+  if (!str) {
+    return "anon_" + Math.random().toString(36).substring(6);
+  }
   // List of positive adjectives related to regeneration, sustainability, etc.
   const adjectives = [
     "Green",

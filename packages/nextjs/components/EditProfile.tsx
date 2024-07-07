@@ -80,8 +80,9 @@ export default function EditProfile({
     setFormData(prev => ({ ...prev, [name]: value.trim() }));
   }
 
-  async function saveProfile() {
+  async function saveProfile(formData: any) {
     setSaving(true);
+    console.log(">>> saveProfile", formData);
     defaults(formData, profile);
     if (formData.password) {
       formData.password = getPasswordHash(formData.password, config.node.chain_id, config.profile.address);
@@ -108,8 +109,7 @@ export default function EditProfile({
       setSaving(false);
       const cacheKey = `useProfile-${communitySlug}-${accountAddress}`;
       setCache(cacheKey, data.profile);
-      router.push(`/${config.community.alias}/${accountAddress}`);
-      return false;
+      return true;
     } catch (e) {
       console.error("Unable to save profile", e);
       setErrorMsg(e.message);
@@ -120,13 +120,15 @@ export default function EditProfile({
   }
 
   function handleAvatarChange(images: any) {
-    setFormData(prev => ({
-      ...prev,
+    console.log(">>> handleAvatarChange", images);
+    const newFormData = {
+      ...formData,
       image: "ipfs://" + images.image,
       image_medium: "ipfs://" + images.image_medium,
       image_small: "ipfs://" + images.image_small,
-    }));
-    saveProfile();
+    };
+    setFormData(newFormData);
+    saveProfile(newFormData);
   }
 
   function handleAuthentication(bearer: string) {
@@ -145,7 +147,10 @@ export default function EditProfile({
       setTimeout(() => setErrorMsg(null), 3000);
       return false;
     }
-    await saveProfile();
+    const res = await saveProfile(formData);
+    if (res) {
+      router.push(`/${config.community.alias}/${accountAddress}`);
+    }
   }
 
   // Request a bearer token to edit this version of the profile
