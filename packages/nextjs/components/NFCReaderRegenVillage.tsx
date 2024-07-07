@@ -5,16 +5,18 @@ import Image from "next/image";
 
 const Scan = ({
   onChange,
+  state,
   ignoreRead,
   isWriting,
 }: {
   isWriting: boolean;
+  state: string;
   onChange: (event: NDEFReadingEvent) => any;
   ignoreRead?: boolean;
 }) => {
   const [nfcAvailable, setNfcAvailable] = useState<boolean | undefined>(undefined);
   const [errorMsg, setErrorMsg] = useState("");
-  const [scanning, setScanning] = useState(true);
+  const [scanning, setScanning] = useState(state === "scanning");
 
   const startScanner = useCallback(async () => {
     try {
@@ -45,12 +47,10 @@ const Scan = ({
     try {
       new NDEFReader();
       setNfcAvailable(true);
-      setScanning(false);
     } catch (error) {
       console.log(`Error! Scan failed to start: ${error}.`);
       // setErrorMsg(`setNfcAvailable error: ${error}.`);
       setNfcAvailable(false); // toggle
-      setScanning(false);
     }
   }, []);
 

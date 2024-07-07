@@ -21,6 +21,7 @@ export default function CommunityKiosk({
 }) {
   const [writing, setWriting] = useState<boolean>(false);
   const [cardUrl, setCardUrl] = useState<string | null>(null);
+  const [nfcReaderState, setNFCReaderState] = useState<string>("idle");
   const [accountAddress, setAccountAddress] = useState<string | null>(null);
   const router = useRouter();
 
@@ -90,6 +91,7 @@ export default function CommunityKiosk({
 
   const onLogout = () => {
     setAccountAddress(null);
+    setNFCReaderState("scanning");
   };
 
   return (
@@ -98,7 +100,7 @@ export default function CommunityKiosk({
         <div className="flex items-center flex-col">
           <DefaultAvatar className="mt-16 w-48 h-48 mx-auto" />
           <h1 className="text-6xl font-bold">Hello, regen!</h1>
-          <NFCReaderRegenVillage onChange={handleNFCData} isWriting={writing} />
+          <NFCReaderRegenVillage onChange={handleNFCData} isWriting={writing} state={nfcReaderState} />
         </div>
       )}
       {accountAddress && (
