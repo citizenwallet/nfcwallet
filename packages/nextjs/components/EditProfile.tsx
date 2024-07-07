@@ -162,7 +162,6 @@ export default function EditProfile({
       },
     );
     const data = await res.json();
-    console.log(">>> getBearer", data);
     if (data.bearer) {
       setBearer(data.bearer);
     } else if (data.error === "Invalid password") {

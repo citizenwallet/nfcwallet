@@ -14,7 +14,7 @@ const Scan = ({
 }) => {
   const [nfcAvailable, setNfcAvailable] = useState<boolean | undefined>(undefined);
   const [errorMsg, setErrorMsg] = useState("");
-  const [scanning, setScanning] = useState(false);
+  const [scanning, setScanning] = useState(true);
 
   const startScanner = useCallback(async () => {
     try {
@@ -35,6 +35,7 @@ const Scan = ({
 
       setScanning(true);
     } catch (error) {
+      setScanning(false);
       console.log(`Error! Scan failed to start: ${error}.`);
       setErrorMsg(`Scanner failed to start: ${error}.`);
     }
@@ -44,10 +45,12 @@ const Scan = ({
     try {
       new NDEFReader();
       setNfcAvailable(true);
+      setScanning(false);
     } catch (error) {
       console.log(`Error! Scan failed to start: ${error}.`);
       // setErrorMsg(`setNfcAvailable error: ${error}.`);
-      setNfcAvailable(true); // toggle
+      setNfcAvailable(false); // toggle
+      setScanning(false);
     }
   }, []);
 

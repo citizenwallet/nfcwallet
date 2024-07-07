@@ -73,6 +73,7 @@ export const useProfile = (communitySlug: string, account: string) => {
     if (account.substring(0, 2) === "0x") {
       community.getProfile(account).then(profile => {
         setProfileCache(profile);
+        console.log(">>> profile loaded", profile);
         setLoading(false);
       });
     } else {

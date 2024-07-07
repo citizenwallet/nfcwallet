@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import KioskProfileHeader from "./KioskProfileHeader";
+import KioskProfileHeader from "../components/KioskProfileHeader";
 import moment from "moment";
 import { createPublicClient, http } from "viem";
 import { WagmiConfig, createConfig } from "wagmi";

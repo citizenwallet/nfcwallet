@@ -95,7 +95,7 @@ export default function CommunityKiosk({
   return (
     <div className="text-center">
       {!accountAddress && (
-        <div className="flex items-center h-screen flex-col">
+        <div className="flex items-center flex-col">
           <DefaultAvatar className="mt-16 w-48 h-48 mx-auto" />
           <h1 className="text-6xl font-bold">Hello, regen!</h1>
           <NFCReaderRegenVillage onChange={handleNFCData} isWriting={writing} />

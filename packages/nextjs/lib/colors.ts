@@ -23,3 +23,19 @@ export function hexToRgba(hex: string, alpha?: number) {
   const [r, g, b] = hexToRgb(hex);
   return `rgba(${r}, ${g}, ${b}, ${alpha || 1})`;
 }
+
+function getLuminance(r: number, g: number, b: number): number {
+  const [R, G, B] = [r, g, b].map(v => {
+    v /= 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * R + 0.7152 * G + 0.0722 * B;
+}
+
+// Returns the text color that should be used based on the luminosity of the background color
+export function getTextColor(hex: string): "black" | "white" {
+  const rgb = hexToRgb(hex);
+  const luminance = getLuminance(...rgb);
+  // Use a threshold of 0.5 for luminance
+  return luminance > 0.5 ? "black" : "white";
+}

@@ -5,7 +5,6 @@ import { getServerPasswordHash } from "../../../utils/crypto";
 import { generateRandomUsername } from "../../../utils/username";
 import { BundlerService } from "@citizenwallet/sdk/dist/src/services/bundler";
 import pinataSDK from "@pinata/sdk";
-import { waitUntil } from "@vercel/functions";
 import { Contract, JsonRpcProvider, Wallet } from "ethers";
 import accountFactoryContractAbi from "smartcontracts/build/contracts/accfactory/AccountFactory.abi.json";
 
@@ -98,7 +97,19 @@ export async function POST(request: NextRequest) {
   console.log(">>> serverAccountAddress", serverAccountAddress);
 
   const bundler = new BundlerService(cw.config);
-  waitUntil(bundler.setProfile(signer, serverAccountAddress, data.account, data.username, newIpfsHash));
+  // for debugging, we wait until it's confirmed:
+  const bundlerResponse = await bundler.setProfile(
+    signer,
+    serverAccountAddress,
+    data.account,
+    data.username,
+    newIpfsHash,
+  );
+  console.log(">>> bundlerResponse", bundlerResponse);
+  console.log(">>> env", process.env.NODE_ENV);
+
+  // on production, we can fire and forget
+  // waitUntil(bundler.setProfile(signer, serverAccountAddress, data.account, data.username, newIpfsHash));
   return Response.json({ success: true, profile: data, ipfsHash: newIpfsHash });
 }
 

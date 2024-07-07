@@ -1,6 +1,6 @@
 import React from "react";
 import Error from "@/components/Error";
-import ShowAccountBadges from "@/components/ShowAccountBadges";
+import ShowAccountBadges from "@/containers/ShowAccountBadges";
 import CitizenWalletCommunity from "~~/lib/citizenwallet";
 
 export default async function WalletProfile({ params }: { params: { communitySlug: string; accountAddress: string } }) {
