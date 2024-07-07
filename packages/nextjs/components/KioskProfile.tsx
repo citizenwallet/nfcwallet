@@ -18,7 +18,7 @@ import chains from "~~/lib/chains";
 import { hexToRgba } from "~~/lib/colors";
 import QRCodeIcon from "~~/public/qrcode.svg";
 
-const INACTIVITY_TIMEOUT_SECONDS = 30;
+const INACTIVITY_TIMEOUT_SECONDS = 20;
 
 export default function KioskProfile({
   accountAddress,
