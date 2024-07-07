@@ -12,7 +12,13 @@ const theme = {
   text: "#fff",
 };
 
-const poaps = JSON.parse(process.env.POAP_CODES || "{}");
+let poaps = {};
+try {
+  poaps = JSON.parse(process.env.POAP_CODES || "{}");
+} catch (e) {
+  console.error("Error parsing process.env.POAP_CODES", process.env.POAP_CODES, "error trace:", e);
+  throw e;
+}
 const poapOfTheDay = poaps[moment().format("YYYY-MM-DD")];
 
 const version = process.env.VERCEL_GIT_COMMIT_SHA ? process.env.VERCEL_GIT_COMMIT_SHA.slice(0, 7) : "git sha";
