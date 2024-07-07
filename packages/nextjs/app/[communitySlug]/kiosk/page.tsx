@@ -1,6 +1,7 @@
 "use server";
 
 import Error from "@/components/Error";
+import CitizenWalletText from "@/public/citizenwallet-logo-text.svg";
 import moment from "moment";
 import CommunityKiosk from "~~/components/CommunityKiosk";
 import CitizenWalletCommunity from "~~/lib/citizenwallet";
@@ -31,6 +32,14 @@ export default async function KioskPage({ params }: { params: { communitySlug: s
   return (
     <div style={{ backgroundColor: theme.secondary }}>
       <CommunityKiosk config={config} communitySlug={params.communitySlug} theme={theme} poap={poapOfTheDay} />
+      <div className="text-center p-4 mt-8 flex justify-center items-center">
+        <a href="https://citizenwallet.xyz">
+          <div className="text-xs text-[#2FA087]">Powered by</div>
+          <div className="flex justify-center items-center">
+            <CitizenWalletText className="w-32 h-6 mr-2 text-white opacity-60" />
+          </div>
+        </a>
+      </div>
       <div className="text-gray-500 text-opacity-50 text-center text-xs">{version}</div>
     </div>
   );
