@@ -2,13 +2,37 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+
+  --primary-purple: "#9563D3";
+  --grey-500: "#8F8A9D";
+  --grey-350: "#B7ADC4";
+  --grey-50: "#F1EDF2";
+  --income-green: "#41BA47";
+  --label-green: "#E0F2E1";
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-end-rgb));
+}
+
 html,
 body {
   min-height: 100vh;
-  background-color: white;
   padding: 0;
   margin: 0;
-  color: white;
   font-family: "Inter", sans-serif;
 }
 
