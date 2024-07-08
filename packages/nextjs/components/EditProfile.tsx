@@ -257,6 +257,7 @@ export default function EditProfile({
                 onChange={handleChange}
                 onBlur={checkUsername}
                 type="text"
+                autoComplete="username"
                 defaultValue={profile?.username}
                 placeholder="Type here"
                 className="input input-bordered w-full max-w-sm"
