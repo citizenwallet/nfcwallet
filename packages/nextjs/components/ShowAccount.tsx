@@ -12,21 +12,23 @@ import { Poap } from "@lib/poap";
 import QRCode from "react-qr-code";
 import { createPublicClient, http } from "viem";
 import { WagmiConfig, createConfig } from "wagmi";
+import CWTokenBalance from "~~/components/CWTokenBalance";
 import { useProfile } from "~~/hooks/citizenwallet";
 import chains from "~~/lib/chains";
 import { hexToRgba } from "~~/lib/colors";
-import PlusIcon from "~~/public/plus.svg";
 import QRCodeIcon from "~~/public/qrcode.svg";
 import SettingsIcon from "~~/public/settings.svg";
 
 export default function ShowAccount({
   accountAddress,
   config,
+  secondConfig,
   theme,
   poap,
 }: {
   accountAddress: string;
   config: any;
+  secondConfig?: any;
   theme: any;
   poap?: Poap;
 }) {
@@ -90,7 +92,7 @@ export default function ShowAccount({
           </div>
         )}
 
-        <div className="mx-4 mb-8 flex flex-row gap-2">
+        <div className="mb-8 flex flex-col gap-2 max-w-sm mx-auto">
           <div
             style={{ backgroundColor: hexToRgba(config.community.theme.primary, 0.1) }}
             className="w-full text-center rounded-2xl box-border overflow-hidden h-16 items-center flex"
@@ -105,19 +107,8 @@ export default function ShowAccount({
               />
             )}
           </div>
-          {hasPlugin("topup") && (
-            <Link
-              href={`${getPlugin("Top Up").url}?account=${accountAddress}&redirectUrl=${encodeURIComponent(
-                profilePageUrl,
-              )}`}
-            >
-              <div
-                style={{ backgroundColor: hexToRgba(config.community.theme.primary, 0.1) }}
-                className="flex-shrink-0 w-16 h-16 text-center rounded-2xl box-border overflow-hidden flex justify-center items-center"
-              >
-                <PlusIcon />
-              </div>
-            </Link>
+          {communitySlug === "wallet.regenvillage.brussels" && secondConfig && (
+            <CWTokenBalance config={secondConfig} accountAddress={accountAddress} />
           )}
         </div>
 

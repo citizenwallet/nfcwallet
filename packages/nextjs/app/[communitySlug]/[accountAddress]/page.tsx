@@ -25,9 +25,15 @@ export default async function WalletProfile({ params }: { params: { communitySlu
     return <Error msg={`Unable to load the ${params.communitySlug} community`} />;
   }
 
+  let secondConfig;
+  if (config.community.alias === "wallet.regenvillage.brussels") {
+    const cw2 = new CitizenWalletCommunity("wallet.pay.brussels");
+    secondConfig = await cw2.loadConfig();
+  }
+
   return (
     <div className="min-h-screen" style={{ background: darkenHexColor(config.community.theme.primary, 70) }}>
-      <ShowAccount config={config} accountAddress={accountAddress} theme={theme} />
+      <ShowAccount config={config} accountAddress={accountAddress} secondConfig={secondConfig} theme={theme} />
       <Footer />
     </div>
   );
