@@ -1,4 +1,5 @@
-import { encodeBytes32String, formatUnits } from "ethers";
+import { ProfileService } from "@citizenwallet/sdk";
+import { formatUnits } from "ethers";
 import CardFactoryABI from "smartcontracts/build/contracts/cardFactory/CardFactory.abi.json";
 import ERC20ABI from "smartcontracts/build/contracts/erc20/ERC20.abi.json";
 import ProfileABI from "smartcontracts/build/contracts/profile/Profile.abi.json";
@@ -90,22 +91,9 @@ export default class CitizenWalletCommunity {
 
   getProfileFromUsername = async (username: string) => {
     await this.initClient();
-    const contractAddress = this.config.profile.address;
-
-    const username32 = encodeBytes32String(username);
-    try {
-      const ipfsHash = await this.client.readContract({
-        address: contractAddress,
-        abi: ProfileABI,
-        functionName: "getFromUsername",
-        args: [username32],
-      });
-      return await this.fetchJSON(ipfsHash);
-    } catch (e) {
-      // console.error(JSON.stringify(e, null, 2));
-      console.error(e.shortMessage);
-      return null;
-    }
+    const profileService = new ProfileService(this.config);
+    const profile = await profileService.getProfileFromUsername(username);
+    return profile;
   };
 
   getCardAccountAddress = async (serialNumber: string): Promise<string | null> => {
