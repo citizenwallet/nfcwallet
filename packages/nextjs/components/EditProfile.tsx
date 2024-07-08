@@ -92,7 +92,7 @@ export default function EditProfile({
     community
       .getProfileFromUsername(event.target.value)
       .then(profile => {
-        if (profile?.account !== accountAddress) {
+        if (profile && profile.account !== accountAddress) {
           setUsernameError("Username already taken");
         } else {
           setUsernameError("");
