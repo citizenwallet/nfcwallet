@@ -27,7 +27,14 @@ export default function ClaimPoapModal({
 
   useEffect(() => {
     const prepareClaim = async () => {
-      const res = await fetch(`/api/poap/event/${poap.id}/getHash`);
+      const res = await fetch(`/api/poap/event/${poap.id}/getHash`, {
+        method: "GET",
+        headers: {
+          "Accept-Type": "application/json",
+          cache: "no-store",
+        },
+      });
+
       const selectedPoapHash = await res.json();
       if (!selectedPoapHash) {
         console.error(">>> No POAP hashes available to claim");
