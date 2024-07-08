@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import KioskPreviewBadges from "./KioskPreviewBadges";
+import CWTokenBalance from "@/components/CWTokenBalance";
 import EditProfileQRModal from "@/components/EditProfileQRModal";
 import KioskProfileHeader from "@/components/KioskProfileHeader";
 import { TokenBalance } from "@/components/scaffold-eth";
@@ -23,12 +24,14 @@ const INACTIVITY_TIMEOUT_SECONDS = 20;
 export default function KioskProfile({
   accountAddress,
   config,
+  secondConfig,
   theme,
   poap,
   onLogout,
 }: {
   accountAddress: string;
   config: any;
+  secondConfig?: any;
   theme: any;
   poap: Poap | undefined;
   onLogout: () => void;
@@ -129,7 +132,7 @@ export default function KioskProfile({
         <div className="mx-4 mb-8 flex flex-row gap-2">
           <div
             style={{ backgroundColor: hexToRgba(config.community.theme.primary, 0.1) }}
-            className="w-full text-center rounded-2xl box-border overflow-hidden h-16 items-center flex"
+            className="w-full text-center max-w-sm mx-auto rounded-2xl box-border overflow-hidden h-16 items-center flex"
           >
             {config?.token.address && (
               <TokenBalance
@@ -139,6 +142,9 @@ export default function KioskProfile({
                 tokenAddress={config.token.address}
                 className="justify-center my-2"
               />
+            )}
+            {communitySlug === "wallet.regenvillage.brussels" && secondConfig && (
+              <CWTokenBalance config={secondConfig} accountAddress={accountAddress} />
             )}
           </div>
           {hasPlugin("topup") && (

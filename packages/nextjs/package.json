@@ -25,6 +25,7 @@
     "@vercel/functions": "^1.0.2",
     "blo": "~1.0.1",
     "daisyui": "4.5.0",
+    "debounce": "^2.1.0",
     "ethers": "^6.11.1",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
@@ -48,7 +49,7 @@
     "usehooks-ts": "2.13.0",
     "viem": "1.19.9",
     "wagmi": "1.4.12",
-    "zustand": "~4.1.2"
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "~4.1.1",
