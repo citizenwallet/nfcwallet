@@ -12,21 +12,6 @@ export type Poap = {
   editCode: string;
 };
 
-let accessToken: AccessTokenType = {
-  access_token: "",
-  token_type: "",
-  scope: "",
-  expires_in: 0,
-};
-
-const interval = setInterval(() => {
-  renewAccessToken();
-}, 1000 * 60 * 60 * 4); // renew accessToken every 4h
-
-export function stopRenewAccessToken() {
-  clearInterval(interval);
-}
-
 export type AccessTokenType = {
   access_token: string;
   token_type: string;
@@ -54,18 +39,26 @@ export async function renewAccessToken() {
       body: body,
     });
     const data = await response.json();
-    accessToken = data;
     return data;
   } catch (error) {
     console.error("Error:", error);
   }
 }
 
+let accessToken: AccessTokenType = await renewAccessToken();
+
+const interval = setInterval(async () => {
+  accessToken = await renewAccessToken();
+}, 1000 * 60 * 60 * 12); // renew accessToken every 12h
+
+export function stopRenewAccessToken() {
+  clearInterval(interval);
+}
+
 export async function getPoapData(hash: string) {
   if (!accessToken.access_token) {
-    await renewAccessToken();
+    throw new Error("Access token not found");
   }
-
   const url = ` https://api.poap.tech/actions/claim-qr?qr_hash=${hash}`;
   const headers = {
     accept: "application/json",
@@ -88,9 +81,8 @@ export async function getPoapData(hash: string) {
 
 export async function claimPoap(address: string, hash: string, secret: string) {
   if (!accessToken.access_token) {
-    await renewAccessToken();
+    throw new Error("Access token not found");
   }
-
   const url = ` https://api.poap.tech/actions/claim-qr`;
   const headers = {
     "Content-Type": "application/json",
@@ -116,10 +108,9 @@ export async function claimPoap(address: string, hash: string, secret: string) {
 }
 
 export async function getPoapHashes(eventId: string, secret: string) {
-  // if (!accessToken.access_token) {
-  //   await renewAccessToken();
-  // }
-  await renewAccessToken(); // to be safe (what if the token has been renewed by the other kiosk?)
+  if (!accessToken.access_token) {
+    throw new Error("Access token not found");
+  }
   const url = ` https://api.poap.tech/event/${eventId}/qr-codes`;
   const headers = {
     "Content-Type": "application/json",
