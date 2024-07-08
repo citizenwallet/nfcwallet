@@ -9,7 +9,7 @@ type paramsType = {
 
 const poaps = JSON.parse(process.env.POAP_CODES || "{}");
 
-function getEditCode(eventId: number) {
+function getEditCode(eventId: string) {
   for (const key in poaps) {
     const poap = poaps[key];
     if (poap.id === eventId) return poap.editCode;
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest, { params }: { params: paramsType
   // Get the secret for the POAP
   const eventId = params.eventId || "";
   try {
-    const editCode = getEditCode(parseInt(eventId));
+    const editCode = getEditCode(eventId);
     if (!editCode) {
       return Response.json({ error: `Unknown event ID (${eventId})` }, { status: 400 });
     }

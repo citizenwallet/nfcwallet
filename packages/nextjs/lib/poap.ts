@@ -8,8 +8,8 @@ export type PoapHash = {
 };
 
 export type Poap = {
-  id: number;
-  editCode: number;
+  id: string;
+  editCode: string;
 };
 
 let accessToken: AccessTokenType = {
@@ -115,7 +115,7 @@ export async function claimPoap(address: string, hash: string, secret: string) {
   return data;
 }
 
-export async function getPoapHashes(eventId: string, secret: number) {
+export async function getPoapHashes(eventId: string, secret: string) {
   if (!accessToken.access_token) {
     await renewAccessToken();
   }
@@ -125,6 +125,7 @@ export async function getPoapHashes(eventId: string, secret: number) {
     authorization: `Bearer ${accessToken.access_token}`,
     "x-api-key": apiKey,
   };
+  console.log(">>> getPoapHashes", eventId, secret, url, headers);
   const response = await fetch(url, {
     method: "POST",
     headers,

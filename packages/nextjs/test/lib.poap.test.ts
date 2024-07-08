@@ -1,8 +1,8 @@
 import { claimPoap, getPoapData, getPoapHashes, hasPoap, stopRenewAccessToken } from "../lib/poap";
 
 // Mock data for the test
-const mockEventId = 175275;
-const mockSecret = 599254;
+const mockEventId = "175275";
+const mockSecret = "599254";
 const mockHash = "yrnj21";
 const collectorAddress = "0x1057caa45bdb449483c81877360358e7d185f304";
 
