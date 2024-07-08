@@ -50,7 +50,7 @@ export default function CommunityKiosk({
     }
   };
 
-  const setupCard = async accountAddress => {
+  const setupCard = async (accountAddress: any) => {
     if (!accountAddress) {
       console.error("Account address is required");
       return null;
@@ -82,6 +82,7 @@ export default function CommunityKiosk({
 
   useEffect(() => {
     // for easy testing
+    // @ts-ignore
     window.setAccount = (address: string) => setAccountAddress(address);
   }, []);
 

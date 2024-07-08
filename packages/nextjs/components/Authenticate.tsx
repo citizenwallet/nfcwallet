@@ -74,6 +74,7 @@ export default function Authenticate({
             name="password"
             onChange={handlePasswordChange}
             type="password"
+            autoComplete="current-password"
             placeholder=""
             className="input input-bordered w-full max-w-sm"
           />

@@ -10,6 +10,7 @@ import { createPublicClient, http } from "viem";
 import { WagmiConfig, createConfig } from "wagmi";
 import { setCache, useProfile } from "~~/hooks/citizenwallet";
 import chains from "~~/lib/chains";
+import CitizenWalletCommunity from "~~/lib/citizenwallet";
 import { getPasswordHash } from "~~/utils/crypto";
 import { getUrlFromIPFS } from "~~/utils/ipfs";
 
@@ -22,9 +23,15 @@ export default function EditProfile({
   config: any;
 }) {
   const communitySlug = config?.community.alias;
+  const configUrl = `${window.location.protocol}//${window.location.host}/api/getConfig`;
+
+  const community = new CitizenWalletCommunity(communitySlug);
+  community.configUrl = configUrl;
+
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [profile, loading] = useProfile(config?.community.alias, accountAddress);
+  const [usernameError, setUsernameError] = useState<string | null>(null);
+  const [profile, loading] = useProfile(communitySlug, accountAddress);
   const avatarUrl = profile ? getUrlFromIPFS(profile.image_medium) : "/nfcwallet-icon.jpg";
   const [saving, setSaving] = useState(false);
   const [bearer, setBearer] = useState("");
@@ -78,6 +85,22 @@ export default function EditProfile({
   function handleChange(event: any) {
     const { name, value } = event.target;
     setFormData(prev => ({ ...prev, [name]: value.trim() }));
+  }
+
+  function checkUsername(event: any) {
+    console.log(">>> checkUsername", event.target.value);
+    community
+      .getProfileFromUsername(event.target.value)
+      .then(profile => {
+        if (profile?.account !== accountAddress) {
+          setUsernameError("Username already taken");
+        } else {
+          setUsernameError("");
+        }
+      })
+      .catch(() => {
+        setUsernameError("");
+      });
   }
 
   async function saveProfile(formData: any) {
@@ -232,14 +255,18 @@ export default function EditProfile({
               <input
                 name="username"
                 onChange={handleChange}
+                onBlur={checkUsername}
                 type="text"
                 defaultValue={profile?.username}
                 placeholder="Type here"
                 className="input input-bordered w-full max-w-sm"
               />
-              <div className="info">
-                <div className="label-text-alt">Something short, sweet and unique</div>
-              </div>
+              {usernameError && <div className="text-red-500 text-sm">{usernameError}</div>}
+              {!usernameError && (
+                <div className="info">
+                  <div className="label-text-alt">Pick something short, sweet and unique</div>
+                </div>
+              )}
             </label>
 
             <label className="form-control w-full max-w-sm">
@@ -349,6 +376,7 @@ export default function EditProfile({
                     name="password"
                     onChange={handleChange}
                     type="password"
+                    autoComplete="new-password"
                     placeholder=""
                     className="input input-bordered w-full max-w-sm"
                     required
@@ -369,6 +397,7 @@ export default function EditProfile({
                     name="password"
                     onChange={handleChange}
                     type="password"
+                    autoComplete="new-password"
                     placeholder=""
                     className="input input-bordered w-full max-w-sm"
                     required

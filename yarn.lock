@@ -1599,9 +1599,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@citizenwallet/sdk@npm:^1.2.39":
-  version: 1.2.39
-  resolution: "@citizenwallet/sdk@npm:1.2.39"
+"@citizenwallet/sdk@npm:^1.2.40":
+  version: 1.2.40
+  resolution: "@citizenwallet/sdk@npm:1.2.40"
   dependencies:
     "@openzeppelin/contracts-upgradeable": ^5.0.2
     ethers: ^6.11.1
@@ -1609,7 +1609,7 @@ __metadata:
     react: ^18.2.0
     smartcontracts: "github:citizenwallet/smartcontracts#v0.0.106"
     zustand: ^4.5.2
-  checksum: 9e162e45823bb8464a666e1ab9475b2b76bbaa0eb8debf6d6ec723ca47bc22a472d1fdacb36b83f78123805ad41a0a5db95f97b2d141cc0c64f5b536c3275dcc
+  checksum: 4cea6d8f9a5aebe7d3918cf422262694648c28df7ce5dae3824ca47caf0e3c73a0bbd99eb36fa372d12ddff2a3998aaefcdd144161c875f9681fd7fcbb844b67
   languageName: node
   linkType: hard
 
@@ -3784,7 +3784,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@se-2/nextjs@workspace:packages/nextjs"
   dependencies:
-    "@citizenwallet/sdk": ^1.2.39
+    "@citizenwallet/sdk": ^1.2.40
     "@ethersproject/providers": ~5.7.2
     "@heroicons/react": ~2.0.11
     "@pinata/sdk": ^2.1.0

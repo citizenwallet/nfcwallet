@@ -98,15 +98,20 @@ export async function POST(request: NextRequest) {
 
   const bundler = new BundlerService(cw.config);
   // for debugging, we wait until it's confirmed:
-  const bundlerResponse = await bundler.setProfile(
-    signer,
-    serverAccountAddress,
-    data.account,
-    data.username,
-    newIpfsHash,
-  );
-  console.log(">>> bundlerResponse", bundlerResponse);
-  console.log(">>> env", process.env.NODE_ENV);
+  try {
+    const bundlerResponse = await bundler.setProfile(
+      signer,
+      serverAccountAddress,
+      data.account,
+      data.username,
+      newIpfsHash,
+    );
+    console.log(">>> bundlerResponse", bundlerResponse);
+    console.log(">>> env", process.env.NODE_ENV);
+  } catch (e) {
+    console.error(">>> error", e);
+    return Response.json({ error: "Unable to save profile. Try with a different username." });
+  }
 
   // on production, we can fire and forget
   // waitUntil(bundler.setProfile(signer, serverAccountAddress, data.account, data.username, newIpfsHash));
