@@ -20,14 +20,10 @@ export async function GET(request: NextRequest, { params }: { params: paramsType
     method: "GET",
     headers,
   });
-  console.log(">>> GET", apiCall);
-  console.log(">>> headers", headers);
   const data = await res.json();
   if (limit && Number(limit) > 0) {
-    console.log(">>> Returning limited data", data.length, limit, data);
     return Response.json(data.slice(0, Number(limit)));
   } else {
-    console.log(">>> Returning data", data.length, data);
     return Response.json(data);
   }
 }
