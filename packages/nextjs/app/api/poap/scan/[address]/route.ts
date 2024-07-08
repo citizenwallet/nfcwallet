@@ -9,12 +9,15 @@ type paramsType = {
 export async function GET(request: NextRequest, { params }: { params: paramsType }) {
   const apiKey = process.env.POAP_API_KEY || "";
   const limit = request.nextUrl.searchParams.get("limit");
-  console.log(">>> GET /api/poap/scan/[address]", params.address, limit, apiKey);
-  const response = await fetch(`https://api.poap.tech/actions/scan/${params.address}`, {
-    headers: { "x-api-key": apiKey },
+  const apiCall = `https://api.poap.tech/actions/scan/${params.address}`;
+  const headers = { "x-api-key": apiKey, "accept-type": "application/json" };
+  const res = await fetch(apiCall, {
+    method: "GET",
+    headers,
   });
-  console.log(">>> headers", { "x-api-key": apiKey });
-  const data = await response.json();
+  console.log(">>> GET", apiCall);
+  console.log(">>> headers", headers);
+  const data = await res.json();
   if (limit && Number(limit) > 0) {
     console.log(">>> Returning limited data", data.length, limit, data);
     return Response.json(data.slice(0, Number(limit)));
