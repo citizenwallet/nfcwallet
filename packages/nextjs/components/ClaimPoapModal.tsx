@@ -29,9 +29,9 @@ export default function ClaimPoapModal({
     const prepareClaim = async () => {
       const res = await fetch(`/api/poap/event/${poap.id}/getHash`, {
         method: "GET",
+        cache: "no-store",
         headers: {
           "Accept-Type": "application/json",
-          cache: "no-store",
         },
       });
 

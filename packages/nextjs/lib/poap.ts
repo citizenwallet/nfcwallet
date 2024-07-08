@@ -63,13 +63,13 @@ export async function getPoapData(hash: string) {
   const headers = {
     accept: "application/json",
     "Content-Type": "application/json",
-    cache: "no-store",
     authorization: `Bearer ${accessToken.access_token}`,
     "x-api-key": apiKey,
   };
   try {
     const response = await fetch(url, {
       method: "GET",
+      cache: "no-store",
       headers: headers,
     });
     const data = await response.json();
@@ -141,11 +141,11 @@ export async function getEvent(eventId: number) {
   const url = ` https://api.poap.tech/events/id/${eventId}`;
   const headers = {
     "Content-Type": "application/json",
-    cache: "no-store",
     "x-api-key": apiKey,
   };
   const response = await fetch(url, {
     method: "GET",
+    cache: "no-store",
     headers,
   });
   const data = await response.json();
@@ -164,11 +164,11 @@ export async function hasPoap(address: string, eventId: number) {
   const url = ` https://api.poap.tech/actions/scan/${address}/${eventId}`;
   const headers = {
     "Content-Type": "application/json",
-    cache: "no-store",
     "x-api-key": apiKey,
   };
   const response = await fetch(url, {
     method: "GET",
+    cache: "no-store",
     headers,
   });
   const data = await response.json();

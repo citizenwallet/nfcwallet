@@ -14,10 +14,10 @@ export async function GET(request: NextRequest, { params }: { params: paramsType
     "x-api-key": apiKey,
     "accept-type": "application/json",
     "Cache-Control": "no-cache",
-    cache: "no-store",
   };
   const res = await fetch(apiCall, {
     method: "GET",
+    cache: "no-store",
     headers,
   });
   const data = await res.json();
