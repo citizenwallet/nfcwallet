@@ -116,9 +116,10 @@ export async function claimPoap(address: string, hash: string, secret: string) {
 }
 
 export async function getPoapHashes(eventId: string, secret: string) {
-  if (!accessToken.access_token) {
-    await renewAccessToken();
-  }
+  // if (!accessToken.access_token) {
+  //   await renewAccessToken();
+  // }
+  await renewAccessToken(); // to be safe (what if the token has been renewed by the other kiosk?)
   const url = ` https://api.poap.tech/event/${eventId}/qr-codes`;
   const headers = {
     "Content-Type": "application/json",
