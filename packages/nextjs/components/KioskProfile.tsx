@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import PreviewAccountBadges from "./PreviewAccountBadges";
+import KioskPreviewBadges from "./KioskPreviewBadges";
 import EditProfileQRModal from "@/components/EditProfileQRModal";
 import KioskProfileHeader from "@/components/KioskProfileHeader";
 import { TokenBalance } from "@/components/scaffold-eth";
@@ -17,6 +17,7 @@ import { useProfile } from "~~/hooks/citizenwallet";
 import chains from "~~/lib/chains";
 import { hexToRgba } from "~~/lib/colors";
 import QRCodeIcon from "~~/public/qrcode.svg";
+import KioskPreviewBadges from "./KioskPreviewBadges";
 
 const INACTIVITY_TIMEOUT_SECONDS = 20;
 
@@ -152,14 +153,13 @@ export default function KioskProfile({
 
         {hasPlugin("poap") && (
           <div className="mb-8 mx-auto">
-            <PreviewAccountBadges
+            <KioskPreviewBadges
               title="POAPs collected"
               theme={theme}
               limit={10}
               profile={profile}
               poapToClaim={poap}
               accountAddress={accountAddress}
-              communitySlug={communitySlug}
             />
           </div>
         )}
