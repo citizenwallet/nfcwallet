@@ -50,10 +50,10 @@ export default function PreviewAccountBadges({
           {claimedPoap && (
             <div key={claimedPoap.tokenId} className="inline-block rounded-full overflow-hidden my-2 mx-2">
               <Image
-                src={`${claimedPoap.event.image_url}?size=small`}
+                src={`${claimedPoap.event?.image_url}?size=small`}
                 width={80}
                 height={80}
-                alt={claimedPoap.event.name}
+                alt={claimedPoap.event?.name}
               />
             </div>
           )}

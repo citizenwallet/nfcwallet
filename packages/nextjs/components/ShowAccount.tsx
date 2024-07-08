@@ -58,10 +58,6 @@ export default function ShowAccount({
     return config.plugins?.includes(plugin);
   };
 
-  const getPlugin = (plugin: string) => {
-    return config.plugins?.find((p: any) => p.name === plugin);
-  };
-
   const toggleModal = () => {
     setShowProfileQR(!showProfileQR);
   };
