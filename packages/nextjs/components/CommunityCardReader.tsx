@@ -74,7 +74,7 @@ export default function CommunityCardReader({ communitySlug }: { communitySlug: 
 
   return (
     <div>
-      <Image src="/nfcwallet-logo.png" alt="NFC Wallet" width="300" height="124" className={`mx-auto my-10`} />
+      <Image src="/nfcwallet-logo.png" alt="NFC Wallet" width="300" height="124" className={`mx-auto py-10`} />
 
       {/* <p>Serial Number: {serialNumber}</p> */}
       <NFCReader onChange={handleNFCData} />
