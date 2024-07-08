@@ -108,7 +108,7 @@ export default class CitizenWalletCommunity {
     }
   };
 
-  getCardAccountAddress = async function (this: any, serialNumber: string): Promise<string | null> {
+  getCardAccountAddress = async (serialNumber: string): Promise<string | null> => {
     await this.initClient();
     const contractAddress: string | undefined = this.config.cards?.card_factory_address;
     if (!contractAddress) {
@@ -118,12 +118,7 @@ export default class CitizenWalletCommunity {
     if (!contractAddress) return null;
     if (!serialNumber) return null;
 
-    const hash = getHash(
-      serialNumber,
-      BigInt(this.config.node.chain_id || 0),
-      this.config.cards.card_factory_address || "",
-    );
-
+    const hash = getHash(serialNumber, this.config.cards.card_factory_address || "");
     const accountAddress = await this.client.readContract({
       address: contractAddress,
       abi: CardFactoryABI,
