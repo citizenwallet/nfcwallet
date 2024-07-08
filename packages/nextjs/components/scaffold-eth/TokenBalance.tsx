@@ -1,5 +1,6 @@
 "use client";
 
+import RegenBxlIcon from "@/public/RegenBxlIcon.svg";
 import EURbIcon from "@/public/eurb.svg";
 import { Address } from "viem";
 import { useContractRead } from "wagmi";
@@ -63,6 +64,11 @@ export const TokenBalance = ({
         {symbol === "EURb" && (
           <span>
             <EURbIcon width={32} height={32} className="w-8 h-8" />
+          </span>
+        )}
+        {symbol === "RegenBXL" && (
+          <span>
+            <RegenBxlIcon width={32} height={32} className="w-8 h-8" />
           </span>
         )}
         <span className="font-bold text-2xl">{balance?.toFixed(precision)}</span>

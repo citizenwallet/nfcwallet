@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import PreviewAccountBadges from "./PreviewAccountBadges";
+import CWTokenBalance from "@/components/CWTokenBalance";
 import Linktree from "@/components/Linktree";
 import PoapOfTheDay from "@/components/PoapOfTheDay";
 import ProfileHeader from "@/components/ProfileHeader";
@@ -22,11 +23,13 @@ import SettingsIcon from "~~/public/settings.svg";
 export default function ShowAccount({
   accountAddress,
   config,
+  secondConfig,
   theme,
   poap,
 }: {
   accountAddress: string;
   config: any;
+  secondConfig?: any;
   theme: any;
   poap?: Poap;
 }) {
@@ -90,7 +93,7 @@ export default function ShowAccount({
           </div>
         )}
 
-        <div className="mx-4 mb-8 flex flex-row gap-2">
+        <div className="mx-4 mb-8 flex flex-col gap-2 max-w-sm mx-auto">
           <div
             style={{ backgroundColor: hexToRgba(config.community.theme.primary, 0.1) }}
             className="w-full text-center rounded-2xl box-border overflow-hidden h-16 items-center flex"
@@ -105,6 +108,15 @@ export default function ShowAccount({
               />
             )}
           </div>
+          {communitySlug === "wallet.regenvillage.brussels" && secondConfig && (
+            <div
+              style={{ backgroundColor: hexToRgba(config.community.theme.primary, 0.1) }}
+              className="w-full text-center rounded-2xl box-border overflow-hidden h-16 items-center flex"
+            >
+              <CWTokenBalance config={secondConfig} accountAddress={accountAddress} />
+            </div>
+          )}
+
           {hasPlugin("topup") && (
             <Link
               href={`${getPlugin("Top Up").url}?account=${accountAddress}&redirectUrl=${encodeURIComponent(

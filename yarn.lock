@@ -3803,6 +3803,7 @@ __metadata:
     autoprefixer: ~10.4.12
     blo: ~1.0.1
     daisyui: 4.5.0
+    debounce: ^2.1.0
     dotenv: ^16.4.5
     eslint: ~8.24.0
     eslint-config-next: ~14.0.4
@@ -3837,7 +3838,7 @@ __metadata:
     usehooks-ts: 2.13.0
     viem: 1.19.9
     wagmi: 1.4.12
-    zustand: ~4.1.2
+    zustand: ^4.5.4
   languageName: unknown
   linkType: soft
 
@@ -8250,6 +8251,13 @@ __metadata:
   version: 1.1.0
   resolution: "death@npm:1.1.0"
   checksum: 8010ba9a320752f9580eb474985ed214572c0595cf83e92859e3c5a014a01fc8e8f2f2908b80b5f8bca9cb3f94adb546cf55810df6b80e282452e355cdce5aaa
+  languageName: node
+  linkType: hard
+
+"debounce@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "debounce@npm:2.1.0"
+  checksum: 9fa12d893b23f7f8574aceefeebd259f1058c74e80c3590d4dc319f35fd5feab08b8e7771ca2af626eb4d24562defb61c6b5a53a1741686de7732273579a5d50
   languageName: node
   linkType: hard
 
@@ -19278,7 +19286,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zustand@npm:^4.3.1, zustand@npm:^4.5.2":
+"zustand@npm:^4.3.1, zustand@npm:^4.5.2, zustand@npm:^4.5.4":
   version: 4.5.4
   resolution: "zustand@npm:4.5.4"
   dependencies:
@@ -19295,22 +19303,5 @@ __metadata:
     react:
       optional: true
   checksum: 8e824aea8b5232f9a719c6d33e016272a0dae8c69a0980a3e2aefbcf2a89379b343af1f2dace340f45f788ec8d8a55a56d037c53498b3b05b91e985d26cae047
-  languageName: node
-  linkType: hard
-
-"zustand@npm:~4.1.2":
-  version: 4.1.5
-  resolution: "zustand@npm:4.1.5"
-  dependencies:
-    use-sync-external-store: 1.2.0
-  peerDependencies:
-    immer: ">=9.0"
-    react: ">=16.8"
-  peerDependenciesMeta:
-    immer:
-      optional: true
-    react:
-      optional: true
-  checksum: 13190ee8e8a797c5347b525a7c392be62b2addacdd9645dd20d37ea053f96c7c7067c099c6201e98ebb8d54991f2e04e241cc323f9a25b841d44f0ae048e3afc
   languageName: node
   linkType: hard

@@ -39,8 +39,17 @@
       "@/containers/*": [
         "containers/*"
       ],
+      "@/utils/*": [
+        "utils/*"
+      ],
       "@/lib/*": [
         "lib/*"
+      ],
+      "@/state/*": [
+        "state/*"
+      ],
+      "@/services/*": [
+        "services/*"
       ],
       "@/hooks/*": [
         "hooks/*"
