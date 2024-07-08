@@ -10,7 +10,11 @@ export async function GET(request: NextRequest, { params }: { params: paramsType
   const apiKey = process.env.POAP_API_KEY || "";
   const limit = request.nextUrl.searchParams.get("limit");
   const apiCall = `https://api.poap.tech/actions/scan/${params.address}`;
-  const headers = { "x-api-key": apiKey, "accept-type": "application/json" };
+  const headers = {
+    "x-api-key": apiKey,
+    "accept-type": "application/json",
+    "Cache-Control": "no-cache",
+  };
   const res = await fetch(apiCall, {
     method: "GET",
     headers,
