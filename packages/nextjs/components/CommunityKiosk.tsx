@@ -55,12 +55,12 @@ export default function CommunityKiosk({
       console.error("Account address is required");
       return null;
     }
-    if (cardUrl) {
+    const urlstr = `https://nfcwallet.xyz/${communitySlug}/${accountAddress}`;
+    if (cardUrl && cardUrl === urlstr) {
       router.push(cardUrl);
     }
     setWriting(true);
     try {
-      const urlstr = `https://nfcwallet.xyz/${communitySlug}/${accountAddress}`;
       const ndef = new NDEFReader();
       await ndef.write({
         records: [{ recordType: "url", data: urlstr }],
