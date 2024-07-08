@@ -17,7 +17,6 @@ import { useProfile } from "~~/hooks/citizenwallet";
 import chains from "~~/lib/chains";
 import { hexToRgba } from "~~/lib/colors";
 import QRCodeIcon from "~~/public/qrcode.svg";
-import KioskPreviewBadges from "./KioskPreviewBadges";
 
 const INACTIVITY_TIMEOUT_SECONDS = 20;
 
