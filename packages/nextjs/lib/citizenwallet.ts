@@ -106,7 +106,7 @@ export default class CitizenWalletCommunity {
     if (!contractAddress) return null;
     if (!serialNumber) return null;
 
-    const hash = getHash(serialNumber, this.config.cards.card_factory_address || "");
+    const hash = getHash(serialNumber, contractAddress);
     const accountAddress = await this.client.readContract({
       address: contractAddress,
       abi: CardFactoryABI,
