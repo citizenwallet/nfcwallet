@@ -50,12 +50,12 @@ const Scan = ({ onChange, ignoreRead }: { onChange: (event: NDEFReadingEvent) =>
     <center>
       {nfcAvailable && (
         <button
-          className={`btn w-64 h-60 flex flex-row align-middle mt-24 text-xl rounded-2xl ${
+          className={`btn w-64 h-60 flex flex-col align-middle text-center mt-24 text-xl rounded-2xl ${
             scanning ? "disabled btn-secondary" : "btn-primary"
           }`}
           onClick={startScanner}
         >
-          <div>
+          <div className="w-full flex justify-center">
             <svg
               fill="#fff"
               width="200px"
@@ -70,7 +70,7 @@ const Scan = ({ onChange, ignoreRead }: { onChange: (event: NDEFReadingEvent) =>
               </g>
             </svg>
           </div>
-          <div className="pb-4">{scanning ? "Scanning..." : "Start scanning"}</div>
+          <div className="pb-4 w-full text-center">{scanning ? "Scanning..." : "Start scanning"}</div>
         </button>
       )}
       {nfcAvailable === undefined && (
