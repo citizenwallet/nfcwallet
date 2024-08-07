@@ -21,7 +21,7 @@ export default function KioskPreviewBadges({
   poapToClaim?: Poap | undefined;
   theme: any;
 }) {
-  const { data: poaps } = usePoaps(accountAddress, limit);
+  const { data: poaps } = usePoaps(profile?.ownerAddress || accountAddress, limit);
   const [claimedPoap, setClaimedPoap] = useState(undefined);
 
   const onPoapClaimed = poapData => {

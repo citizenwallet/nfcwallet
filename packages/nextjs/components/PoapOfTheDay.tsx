@@ -15,7 +15,7 @@ export default function PoapOfTheDay({
   poap: Poap;
   onClaimed: (data: any) => void;
 }) {
-  const { hasPoap, isLoading } = useHasPoap(accountAddress, poap.id);
+  const { hasPoap, isLoading } = useHasPoap(profile?.ownerAddress || accountAddress, poap.id);
 
   if (isLoading) return <></>;
   if (hasPoap) return <></>;
