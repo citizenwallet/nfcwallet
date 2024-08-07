@@ -6,7 +6,6 @@ import PreviewAccountBadges from "./PreviewAccountBadges";
 import Linktree from "@/components/Linktree";
 import PoapOfTheDay from "@/components/PoapOfTheDay";
 import ProfileHeader from "@/components/ProfileHeader";
-import { TokenBalance } from "@/components/scaffold-eth";
 import { useSafeEffect } from "@citizenwallet/sdk";
 import { Poap } from "@lib/poap";
 import QRCode from "react-qr-code";
@@ -15,7 +14,6 @@ import { WagmiConfig, createConfig } from "wagmi";
 import CWTokenBalance from "~~/components/CWTokenBalance";
 import { useProfile } from "~~/hooks/citizenwallet";
 import chains from "~~/lib/chains";
-import { hexToRgba } from "~~/lib/colors";
 import QRCodeIcon from "~~/public/qrcode.svg";
 import SettingsIcon from "~~/public/settings.svg";
 
