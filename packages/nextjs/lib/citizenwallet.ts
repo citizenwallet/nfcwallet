@@ -66,7 +66,6 @@ export default class CitizenWalletCommunity {
   getProfile = async (account: string) => {
     await this.initClient();
     const contractAddress = this.config.profile.address;
-    console.log(">>> getProfile", account, contractAddress);
     try {
       const ipfsHash = await this.client.readContract({
         address: contractAddress,
@@ -152,7 +151,6 @@ export default class CitizenWalletCommunity {
   fetchJSON = async (ipfsHash: string) => {
     const data = await this.fetchFromIPFS(ipfsHash);
     const json = JSON.parse(data);
-    console.log(">>> fetched json from ipfs", ipfsHash, json);
     return json;
   };
 
