@@ -20,8 +20,9 @@ export default async function WalletProfile({ params }: { params: { communitySlu
     return <Error msg={`Unable to load the ${params.communitySlug} community`} />;
   }
 
+  // Add a EURb balance to regen village and commonshub wallets
   let secondConfig;
-  if (config.community.alias === "wallet.regenvillage.brussels") {
+  if (["wallet.commonshub.brussels", "wallet.regenvillage.brussels"].includes(config.community.alias)) {
     const cw2 = new CitizenWalletCommunity("wallet.pay.brussels");
     secondConfig = await cw2.loadConfig();
   }
