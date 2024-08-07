@@ -11,17 +11,31 @@ const client = createEnsPublicClient({
   transport: http(),
 });
 
+interface Cache {
+  [key: string]: string;
+}
+const cache: Cache = {};
+
 export async function resolveAddress(ensname: string, chain?: string) {
+  const cacheKey = `${ensname}-${chain || "eth"}`;
+  if (cache[cacheKey]) {
+    return cache[cacheKey];
+  }
+  let addr: string;
   if (chain && chain.toLowerCase() !== "eth") {
     const records = await client.getRecords({ name: ensname, coins: ["eth", chain] });
     const coins: Coins = {};
     records.coins.map(coin => {
       coins[coin.name] = coin.value;
     });
-    return coins[chain] || coins["eth"];
+    addr = coins[chain] || coins["eth"];
+    cache[cacheKey] = addr;
+    return addr;
   }
   const ethAddress = await client.getAddressRecord({ name: ensname, coin: chain });
-  return ethAddress?.value;
+  addr = ethAddress?.value || "";
+  cache[cacheKey] = addr;
+  return addr;
 }
 
 export async function getRecords(ensname: string, coins?: string[]) {
