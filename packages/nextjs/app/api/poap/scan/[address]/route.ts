@@ -12,7 +12,7 @@ export async function GET(request: NextRequest, { params }: { params: paramsType
   const limit = request.nextUrl.searchParams.get("limit");
   let addr = params.address;
   if (!addr.startsWith("0x")) {
-    addr = (await resolveAddress(params.address)) || "";
+    addr = (await resolveAddress(params.address, "gno")) || "";
   }
   const apiCall = `https://api.poap.tech/actions/scan/${params.address}`;
   const headers = {
