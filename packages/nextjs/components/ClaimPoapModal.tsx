@@ -4,6 +4,7 @@ import { Poap } from "@/lib/poap";
 import Confetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
 import { useGetEvent } from "~~/hooks/usePoap";
+import { Theme, darkenHexColor } from "~~/lib/colors";
 import DefaultAvatar from "~~/public/avatar.svg";
 
 export default function ClaimPoapModal({
@@ -15,7 +16,7 @@ export default function ClaimPoapModal({
 }: {
   accountAddress: string;
   poap: Poap;
-  theme: any;
+  theme: Theme;
   profile: any;
   onClaimed: (data: any) => void;
 }) {
@@ -70,7 +71,7 @@ export default function ClaimPoapModal({
   if (status === "claimed" && !showConfetti) return <></>;
 
   return (
-    <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundColor: theme.secondary }}>
+    <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundColor: darkenHexColor(theme.primary, 70) }}>
       {showConfetti && <Confetti width={width} height={height} />}
       <div className="w-full h-36 flex justify-center items-end flex-col mt-8">
         {profile?.image_url && (
