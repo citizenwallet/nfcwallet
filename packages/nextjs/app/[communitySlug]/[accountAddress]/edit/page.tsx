@@ -2,12 +2,7 @@ import React from "react";
 import EditProfile from "@/components/EditProfile";
 import Error from "@/components/Error";
 import CitizenWalletCommunity from "~~/lib/citizenwallet";
-
-const theme = {
-  primary: "#1CB260",
-  secondary: "#01392C",
-  text: "#fff",
-};
+import { darkenHexColor, theme } from "~~/lib/colors";
 
 export default async function WalletProfile({
   params,
@@ -30,8 +25,8 @@ export default async function WalletProfile({
   }
 
   return (
-    <div className="min-h-screen" style={{ background: theme.secondary }}>
-      <EditProfile config={config} accountAddress={accountAddress} owner={searchParams.owner} />
+    <div className="min-h-screen" style={{ background: darkenHexColor(theme(config).primary, 70) }}>
+      <EditProfile config={config} accountAddress={accountAddress} owner={searchParams.owner} theme={theme(config)} />
     </div>
   );
 }

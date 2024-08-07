@@ -11,16 +11,19 @@ import { WagmiConfig, createConfig } from "wagmi";
 import { setCache, useProfile } from "~~/hooks/citizenwallet";
 import chains from "~~/lib/chains";
 import CitizenWalletCommunity from "~~/lib/citizenwallet";
+import { Theme } from "~~/lib/colors";
 import { getPasswordHash } from "~~/utils/crypto";
 import { getUrlFromIPFS } from "~~/utils/ipfs";
 
 export default function EditProfile({
   accountAddress,
   config,
+  theme,
 }: {
   accountAddress: string;
   owner: string;
   config: any;
+  theme: Theme;
 }) {
   const communitySlug = config?.community.alias;
   const configUrl = `${window.location.protocol}//${window.location.host}/api/getConfig`;
@@ -210,8 +213,13 @@ export default function EditProfile({
   }
   if (profile?.hashedPassword && !bearer) {
     return (
-      <div className="p-4">
-        <Authenticate config={config} accountAddress={accountAddress} onChange={handleAuthentication} />
+      <div className="p-4" style={{ color: theme.text }}>
+        <Authenticate
+          config={config}
+          accountAddress={accountAddress}
+          username={profile?.username}
+          onChange={handleAuthentication}
+        />
       </div>
     );
   } else if (!bearer) {
@@ -230,7 +238,12 @@ export default function EditProfile({
         >
           <div>
             <div className="flex flex-row my-14 justify-center">
-              <EditAvatar accountAddress={accountAddress} avatarUrl={avatarUrl || ""} onChange={handleAvatarChange} />
+              <EditAvatar
+                theme={theme}
+                accountAddress={accountAddress}
+                avatarUrl={avatarUrl || ""}
+                onChange={handleAvatarChange}
+              />
             </div>
             <label className="form-control w-full max-w-sm">
               <div className="label">

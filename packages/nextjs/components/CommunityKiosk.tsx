@@ -6,6 +6,7 @@ import KioskProfile from "./KioskProfile";
 import NFCReaderRegenVillage from "@/components/NFCReaderRegenVillage";
 import { Poap } from "@/lib/poap";
 import { getCardAccountAddress } from "~~/hooks/citizenwallet";
+import { Theme } from "~~/lib/colors";
 import DefaultAvatar from "~~/public/avatar.svg";
 
 export default function CommunityKiosk({
@@ -17,7 +18,7 @@ export default function CommunityKiosk({
   config: any;
   communitySlug: string;
   poap: Poap | undefined;
-  theme: any;
+  theme: Theme;
 }) {
   const [writing, setWriting] = useState<boolean>(false);
   const [cardUrl, setCardUrl] = useState<string | null>(null);
@@ -100,7 +101,7 @@ export default function CommunityKiosk({
       {!accountAddress && (
         <div className="flex items-center flex-col">
           <DefaultAvatar className="mt-16 w-48 h-48 mx-auto" />
-          <h1 className="text-6xl font-bold">Hello, regen!</h1>
+          <h1 className="text-6xl font-bold">{theme.greating}</h1>
           <NFCReaderRegenVillage onChange={handleNFCData} isWriting={writing} state={nfcReaderState} />
         </div>
       )}

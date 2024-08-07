@@ -5,6 +5,7 @@ import Image from "next/image";
 import { getCroppedImg } from "../lib/canvasUtils";
 import Cropper from "react-easy-crop";
 import Resizer from "react-image-file-resizer";
+import { Theme } from "~~/lib/colors";
 
 const uploadBlobToBackend = async (blob: Blob, name: string) => {
   const data = new FormData();
@@ -22,6 +23,7 @@ const uploadBlobToBackend = async (blob: Blob, name: string) => {
 interface EditAvatarProps {
   accountAddress: string;
   avatarUrl: string;
+  theme: Theme;
   onChange: (
     value: null | {
       image: string;
@@ -31,7 +33,7 @@ interface EditAvatarProps {
   ) => void;
 }
 
-export default function EditAvatar({ accountAddress, avatarUrl, onChange }: EditAvatarProps) {
+export default function EditAvatar({ accountAddress, avatarUrl, theme, onChange }: EditAvatarProps) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [rotation, setRotation] = useState(0);
   const [zoom, setZoom] = useState(1);
@@ -173,7 +175,8 @@ export default function EditAvatar({ accountAddress, avatarUrl, onChange }: Edit
           status === "editing" ? "animate-blink" : ""
         } w-full max-w-md ${
           status === "saving" ? "btn-disabled" : ""
-        } rounded-xl mt-4 h-12 text-[#1CB260] font-bold bg-white bg-opacity-[0.08] active:bg-opacity-[0.04]`}
+        } rounded-xl mt-4 h-12 font-bold bg-white bg-opacity-[0.08] active:bg-opacity-[0.04]`}
+        style={{ color: theme.primary }}
         onClick={handleChangeAvatar}
       >
         {status === "saving" && "Uploading..."}

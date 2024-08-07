@@ -4,12 +4,7 @@ import ShowAccount from "@/components/ShowAccount";
 import { Footer } from "@/containers/Footer";
 import CitizenWalletCommunity from "~~/lib/citizenwallet";
 import { darkenHexColor } from "~~/lib/colors";
-
-const theme = {
-  primary: "#1CB260",
-  secondary: "#01392C",
-  text: "#fff",
-};
+import { theme } from "~~/lib/colors";
 
 export default async function WalletProfile({ params }: { params: { communitySlug: string; accountAddress: string } }) {
   // const [urlRecord, setUrlRecord] = useState("");
@@ -33,7 +28,7 @@ export default async function WalletProfile({ params }: { params: { communitySlu
 
   return (
     <div className="min-h-screen" style={{ background: darkenHexColor(config.community.theme.primary, 70) }}>
-      <ShowAccount config={config} accountAddress={accountAddress} secondConfig={secondConfig} theme={theme} />
+      <ShowAccount config={config} accountAddress={accountAddress} secondConfig={secondConfig} theme={theme(config)} />
       <Footer />
     </div>
   );

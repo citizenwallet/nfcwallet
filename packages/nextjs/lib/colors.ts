@@ -39,3 +39,40 @@ export function getTextColor(hex: string): "black" | "white" {
   // Use a threshold of 0.5 for luminance
   return luminance > 0.5 ? "black" : "white";
 }
+
+export type Theme = {
+  primary: string;
+  secondary?: string;
+  text?: string;
+  greating: string;
+};
+
+type Config = {
+  community: {
+    alias: string;
+    theme?: Theme;
+  };
+};
+export const theme = (config: Config) => {
+  const theme: Theme = config.community.theme || { primary: "#2FA087" };
+  theme.greating = "Hello, citizen!";
+  switch (config.community.alias) {
+    case "wallet.regenvillage.brussels":
+      theme.primary = "#1CB260";
+      theme.secondary = "#01392C";
+      theme.text = "#fff";
+      theme.greating = "Hello, regen!";
+      break;
+    case "wallet.pay.brussels":
+      theme.primary = "#4a90e2";
+      theme.secondary = "#4a90e2";
+      theme.text = "#fff";
+      break;
+    default:
+      theme.primary = "#2FA087";
+      theme.secondary = "#01392C";
+      theme.text = "#fff";
+      break;
+  }
+  return theme;
+};
