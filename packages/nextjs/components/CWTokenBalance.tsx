@@ -33,8 +33,7 @@ export default function CWTokenBalance({
 
   const symbol = config.token.symbol;
   const communitySlug = config.community.alias;
-  const profilePageUrl = `${process.env.NEXT_PUBLIC_WEBAPP_URL}/wallet.regenvillage.brussels/${accountAddress}`;
-  // const profilePageUrl = `${process.env.NEXT_PUBLIC_WEBAPP_URL}/${communitySlug}/${accountAddress}`;
+  const profilePageUrl = `${process.env.NEXT_PUBLIC_WEBAPP_URL}/${communitySlug}/${accountAddress}`;
   const hasPlugin = (plugin: string) => {
     if (communitySlug === "wallet.regenvillage.brussels" && plugin === "poap") return true;
     if (communitySlug === "wallet.pay.brussels") return true;
