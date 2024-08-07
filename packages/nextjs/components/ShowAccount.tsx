@@ -89,23 +89,8 @@ export default function ShowAccount({
         )}
 
         <div className="mb-8 flex flex-col gap-2 max-w-sm mx-auto">
-          <div
-            style={{ backgroundColor: hexToRgba(config.community.theme.primary, 0.1) }}
-            className="w-full text-center rounded-2xl box-border overflow-hidden h-16 items-center flex"
-          >
-            {config?.token.address && (
-              <TokenBalance
-                address={accountAddress}
-                symbol={config.token.symbol}
-                precision={2}
-                tokenAddress={config.token.address}
-                className="justify-center my-2"
-              />
-            )}
-          </div>
-          {communitySlug === "wallet.regenvillage.brussels" && secondConfig && (
-            <CWTokenBalance config={secondConfig} accountAddress={accountAddress} />
-          )}
+          {config?.token.address && <CWTokenBalance config={config} accountAddress={accountAddress} />}
+          {secondConfig && <CWTokenBalance config={secondConfig} accountAddress={accountAddress} />}
         </div>
 
         {hasPlugin("poap") && (
