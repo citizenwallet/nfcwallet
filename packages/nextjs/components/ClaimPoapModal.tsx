@@ -47,6 +47,9 @@ export default function ClaimPoapModal({
   }, [setPoapHashToClaim, poap]);
 
   async function claimPoapNow() {
+    if (status === "claiming") {
+      return;
+    }
     setStatus("claiming");
     if (!poapHashToClaim) return null;
     console.log(">>> Claiming POAP", poap.id, "for", accountAddress);
@@ -90,8 +93,9 @@ export default function ClaimPoapModal({
               className="rounded-xl mt-4 h-20 px-6 font-bold bg-white bg-opacity-[0.08] active:bg-opacity-[0.04] text-4xl"
               style={{ color: theme.primary }}
               onClick={claimPoapNow}
+              disabled={status === "claiming"}
             >
-              Claim your POAP of the day
+              {status === "claiming" ? "Claiming..." : "Claim your POAP of the day"}
             </button>
           )}
         </div>
