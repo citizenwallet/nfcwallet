@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { resolveAddress } from "@/lib/ens";
 import { claimPoap, getPoapData } from "@/lib/poap";
 
 // Ensure you're running in an environment that supports top-level await or wrap in an async function
@@ -24,9 +25,13 @@ export async function GET(request: NextRequest, { params }: { params: paramsType
 export async function POST(request: NextRequest, { params }: { params: paramsType }) {
   const hash = params.hash;
   const { address, secret } = await request.json();
-  console.log("POST> Claiming POAP", hash, hash.length, "for", address, "with secret", secret);
-  if (!address || !address.match(/^0x[a-fA-F0-9]{40}$/)) {
-    console.log("Invalid address", address);
+  let addr: string = address;
+  if (!addr.startsWith("0x")) {
+    addr = (await resolveAddress(address, "gno")) || "";
+  }
+  console.log("POST> Claiming POAP", hash, hash.length, "for", addr, "with secret", secret);
+  if (!addr || !addr.match(/^0x[a-fA-F0-9]{40}$/)) {
+    console.log("Invalid address", addr);
     return Response.json({ error: "Invalid address" }, { status: 400 });
   }
   if (!secret) {
@@ -35,7 +40,7 @@ export async function POST(request: NextRequest, { params }: { params: paramsTyp
   }
 
   try {
-    const data = await claimPoap(address, hash, secret);
+    const data = await claimPoap(addr, hash, secret);
     console.log(">>> Claimed POAP", data);
     return Response.json(data);
   } catch (e) {
