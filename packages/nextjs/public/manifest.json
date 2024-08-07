@@ -5,7 +5,7 @@
   "start_url": "/wallet.pay.brussels/kiosk",
   "display": "standalone",
   "background_color": "#162B44",
-  "theme_color": "#4a90e2",
+  "theme_color": "#162B44",
   "icons": [
     {
       "src": "/nfcwallet-icon-small.png",
