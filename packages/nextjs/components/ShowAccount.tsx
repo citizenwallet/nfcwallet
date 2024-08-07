@@ -113,6 +113,9 @@ export default function ShowAccount({
             <PreviewAccountBadges
               title="POAPs collected"
               limit={10}
+              poapToClaim={poap}
+              theme={config.community.theme}
+              profile={profile}
               accountAddress={accountAddress}
               communitySlug={communitySlug}
             />

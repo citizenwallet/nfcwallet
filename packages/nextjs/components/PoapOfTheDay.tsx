@@ -21,6 +21,12 @@ export default function PoapOfTheDay({
   if (hasPoap) return <></>;
 
   return (
-    <ClaimPoapModal accountAddress={accountAddress} poap={poap} theme={theme} profile={profile} onClaimed={onClaimed} />
+    <ClaimPoapModal
+      accountAddress={profile?.ownerAddress || accountAddress}
+      poap={poap}
+      theme={theme}
+      profile={profile}
+      onClaimed={onClaimed}
+    />
   );
 }

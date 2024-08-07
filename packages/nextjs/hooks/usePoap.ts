@@ -10,7 +10,7 @@ export function usePoaps(address: string, limit?: number) {
     isError: error,
   };
 }
-export function useHasPoap(address: string, eventId: number) {
+export function useHasPoap(address: string, eventId: string) {
   const { data, error } = useSWR(`/api/poap/scan/${address}/${eventId}`, fetcher);
 
   return {
@@ -20,7 +20,7 @@ export function useHasPoap(address: string, eventId: number) {
     isError: error,
   };
 }
-export function useGetEventPoaps(eventId: number) {
+export function useGetEventPoaps(eventId: string) {
   const { data, error } = useSWR(`/api/poap/event/${eventId}/poaps`, fetcher);
 
   return {
@@ -30,7 +30,7 @@ export function useGetEventPoaps(eventId: number) {
   };
 }
 
-export function useGetEvent(eventId: number) {
+export function useGetEvent(eventId: string) {
   const { data, error } = useSWR(`/api/poap/event/${eventId}`, fetcher);
 
   return {

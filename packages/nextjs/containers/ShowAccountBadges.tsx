@@ -13,7 +13,7 @@ import chains from "~~/lib/chains";
 export default function ShowAccount({ accountAddress, config }: { accountAddress: string; config: any }) {
   const communitySlug = config?.community.alias;
   const [profile] = useProfile(communitySlug, accountAddress);
-  const { data: poaps } = usePoaps(accountAddress);
+  const { data: poaps } = usePoaps(profile?.ownerAddress || accountAddress);
 
   if (!config) return null;
   const publicClient = createPublicClient({
@@ -51,12 +51,16 @@ export default function ShowAccount({ accountAddress, config }: { accountAddress
                 <h2 className="mt-8 mb-2 font-bold">{sectionTitle}</h2>
                 {sections[sectionTitle].length > 0 &&
                   sections[sectionTitle].map(poap => (
-                    <div key={poap.tokenId} className="rounded-full overflow-hidden my-2">
+                    <div
+                      key={poap.tokenId}
+                      className="rounded-full w-full h-full overflow-hidden my-2"
+                      style={{ maxWidth: "500px", maxHeight: "500px" }}
+                    >
                       <Link href={`https://collectors.poap.xyz/token/${poap.tokenId}`}>
                         <Image
                           src={`${poap.event.image_url}?size=large`}
-                          width={512}
-                          height={512}
+                          width={500}
+                          height={500}
                           alt={poap.event.name}
                         />
                       </Link>
