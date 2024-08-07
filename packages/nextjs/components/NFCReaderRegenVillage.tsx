@@ -2,15 +2,18 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import { Theme } from "@/lib/colors";
 
 const Scan = ({
   onChange,
   state,
+  theme,
   ignoreRead,
   isWriting,
 }: {
   isWriting: boolean;
   state: string;
+  theme: Theme;
   onChange: (event: NDEFReadingEvent) => any;
   ignoreRead?: boolean;
 }) => {
@@ -72,7 +75,7 @@ const Scan = ({
             />
           </div>
           <div className="pb-4 font-bold text-4xl whitespace-nowrap text-center">
-            {isWriting ? "Hold your wristband" : scanning ? "Tap your wristband" : "Start scanner"}
+            {isWriting ? `Hold your ${theme.nfctagName}` : scanning ? `Tap your ${theme.nfctagName}` : "Start scanner"}
           </div>
         </div>
       )}

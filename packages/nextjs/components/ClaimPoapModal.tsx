@@ -87,7 +87,8 @@ export default function ClaimPoapModal({
             <h2 className="text-4xl font-bold text-center">Claimed!</h2>
           ) : (
             <button
-              className="rounded-xl mt-4 h-20 px-6 text-[#1CB260] font-bold bg-white bg-opacity-[0.08] active:bg-opacity-[0.04] text-4xl"
+              className="rounded-xl mt-4 h-20 px-6 font-bold bg-white bg-opacity-[0.08] active:bg-opacity-[0.04] text-4xl"
+              style={{ color: theme.primary }}
               onClick={claimPoapNow}
             >
               Claim your POAP of the day

@@ -102,7 +102,7 @@ export default function CommunityKiosk({
         <div className="flex items-center flex-col">
           <DefaultAvatar className="mt-16 w-48 h-48 mx-auto" />
           <h1 className="text-6xl font-bold">{theme.greating}</h1>
-          <NFCReaderRegenVillage onChange={handleNFCData} isWriting={writing} state={nfcReaderState} />
+          <NFCReaderRegenVillage theme={theme} onChange={handleNFCData} isWriting={writing} state={nfcReaderState} />
         </div>
       )}
       {accountAddress && (
