@@ -16,6 +16,10 @@ type paramsType = {
 export async function generateViewport({ params }: paramsType) {
   const cw = new CitizenWalletCommunity(params.communitySlug);
   const config = await cw.loadConfig();
+  if (!config) {
+    console.error(`Unable to load the ${params.communitySlug} community`);
+    return;
+  }
   const backgroundColor = darkenHexColor(config.community.theme.primary, 70);
 
   return {

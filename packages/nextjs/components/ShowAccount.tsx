@@ -52,6 +52,7 @@ export default function ShowAccount({
 
   const hasPlugin = (plugin: string) => {
     if (communitySlug === "wallet.regenvillage.brussels" && plugin === "poap") return true;
+    if (communitySlug === "wallet.commonshub.brussels" && plugin === "poap") return true;
     if (communitySlug === "wallet.pay.brussels") return true;
     return config.plugins?.includes(plugin);
   };
