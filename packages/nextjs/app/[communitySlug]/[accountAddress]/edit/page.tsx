@@ -4,6 +4,23 @@ import Error from "@/components/Error";
 import CitizenWalletCommunity from "~~/lib/citizenwallet";
 import { darkenHexColor, theme } from "~~/lib/colors";
 
+type paramsType = {
+  params: {
+    communitySlug: string;
+    accountAddress: string;
+  };
+};
+
+export async function generateViewport({ params }: paramsType) {
+  const cw = new CitizenWalletCommunity(params.communitySlug);
+  const config = await cw.loadConfig();
+  const backgroundColor = darkenHexColor(config.community.theme.primary, 70);
+
+  return {
+    themeColor: backgroundColor,
+  };
+}
+
 export default async function WalletProfile({
   params,
   searchParams,
