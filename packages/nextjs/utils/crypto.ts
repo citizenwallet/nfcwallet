@@ -10,6 +10,16 @@ function serialToBigInt(serial: string): bigint {
   return result;
 }
 
+export function stringToKeccak256(input: string): string {
+  // Convert the string to bytes
+  const bytes = ethers.toUtf8Bytes(input);
+
+  // Compute the keccak256 hash of the bytes
+  const hash = ethers.keccak256(bytes);
+
+  return hash;
+}
+
 /**
  * Computes a keccak256 hash of the given inputs, simulating Solidity's tightly packed behavior.
  *
@@ -24,6 +34,44 @@ export function getHash(serialNumber: string, contractAddress: string): string {
 
   return hash;
 }
+
+export function getIdHash(id: string): string {
+  const idHash = stringToKeccak256(id);
+
+  return idHash;
+}
+
+/**
+ * Computes a keccak256 hash of the given inputs, simulating Solidity's tightly packed behavior.
+ *
+ * @param code - The code as a bigint.
+ * @param contractAddress - The contract address as a string.
+ * @returns The keccak256 hash as a string.
+ */
+export function getSerialHash(serialNumber: string): string {
+  const parsedSerialNumber = serialToBigInt(serialNumber);
+  const hashedSerialNumber = ethers.keccak256(ethers.toBeArray(parsedSerialNumber));
+
+  return hashedSerialNumber;
+}
+
+export const convertBigIntToUint8Array = (value: bigint): Uint8Array => {
+  // Convert BigInt to hexadecimal string
+  let hexString = value.toString(16);
+
+  // Ensure even length by padding with '0' if necessary
+  if (hexString.length % 2 !== 0) {
+    hexString = "0" + hexString;
+  }
+
+  // Convert hex string to Uint8Array
+  const bytes = new Uint8Array(hexString.length / 2);
+  for (let i = 0; i < hexString.length; i += 2) {
+    bytes[i / 2] = parseInt(hexString.substr(i, 2), 16);
+  }
+
+  return bytes;
+};
 
 /**
  * Computes a keccak256 hash of the given inputs, simulating Solidity's tightly packed behavior.
