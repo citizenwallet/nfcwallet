@@ -47,7 +47,8 @@ export default function CommunityKiosk({
     }
     if (!accountAddress) {
       accountAddress = await getCardAccountAddress(communitySlug, serialNumber);
-      setupCard(accountAddress);
+      console.log("setupCard disabled", accountAddress);
+      // setupCard(accountAddress); // TODO: DEBUG it is writing a different address than without the /kiosk
     }
   };
 
