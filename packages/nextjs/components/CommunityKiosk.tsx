@@ -47,14 +47,18 @@ export default function CommunityKiosk({
     }
     if (!accountAddress) {
       accountAddress = await getCardAccountAddress(communitySlug, serialNumber);
-      console.log("setupCard disabled", accountAddress);
-      // setupCard(accountAddress); // TODO: DEBUG it is writing a different address than without the /kiosk
+      // TODO: DEBUG it is writing a different address than without the /kiosk
+      console.log("computed crypto wallet address for", communitySlug, serialNumber, accountAddress);
+      setupCard(accountAddress);
     }
   };
 
   const setupCard = async (accountAddress: any) => {
     if (!accountAddress) {
       console.error("Account address is required");
+      return null;
+    } else {
+      console.log("setupCard disabled"); // TODO: DEBUG
       return null;
     }
     const urlstr = `https://nfcwallet.xyz/${communitySlug}/${accountAddress}`;
