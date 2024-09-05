@@ -1,8 +1,8 @@
 import { getTextRecord, resolveAddress } from "@/lib/ens";
 
 describe("ens lib", () => {
-  it("resolve address", async () => {
-    const address = await resolveAddress("commonshub.eth");
+  it("resolve address case insensitive", async () => {
+    const address = await resolveAddress("COmmonshub.eth");
     expect(address).toBe("0x1438b634A4feBEE5F15588B65Fd4049C0526c55d");
   });
   it("resolve address on gnosis", async () => {

@@ -17,13 +17,14 @@ interface ENSCacheType {
 const ENScache: ENSCacheType = {};
 
 export async function resolveAddress(ensname: string, chain?: string) {
-  const cacheKey = `${ensname}-${chain || "eth"}`;
+  const normalizedEnsname = ensname.trim().toLowerCase();
+  const cacheKey = `${normalizedEnsname}-${chain || "eth"}`;
   if (ENScache[cacheKey]) {
     return ENScache[cacheKey];
   }
   let addr: string;
   if (chain && chain.toLowerCase() !== "eth") {
-    const records = await client.getRecords({ name: ensname, coins: ["eth", chain] });
+    const records = await client.getRecords({ name: normalizedEnsname, coins: ["eth", chain] });
     const coins: Coins = {};
     records.coins.map(coin => {
       coins[coin.name] = coin.value;
@@ -32,23 +33,25 @@ export async function resolveAddress(ensname: string, chain?: string) {
     ENScache[cacheKey] = addr;
     return addr;
   }
-  const ethAddress = await client.getAddressRecord({ name: ensname, coin: chain });
+  const ethAddress = await client.getAddressRecord({ name: normalizedEnsname, coin: chain });
   addr = ethAddress?.value || "";
   ENScache[cacheKey] = addr;
   return addr;
 }
 
 export async function getRecords(ensname: string, coins?: string[]) {
+  const normalizedEnsname = ensname.trim().toLowerCase();
   const result = await client.getRecords({
-    name: ensname,
+    name: normalizedEnsname,
     coins,
     contentHash: true,
   });
   return result;
 }
 export async function getTextRecord(ensname: string, key: string) {
+  const normalizedEnsname = ensname.trim().toLowerCase();
   const result = await client.getTextRecord({
-    name: ensname,
+    name: normalizedEnsname,
     key,
   });
   return result;
