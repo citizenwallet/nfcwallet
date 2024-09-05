@@ -1,3 +1,4 @@
+import CardManagerABI from "../contracts/CardManagerABI.json";
 import { ProfileService } from "@citizenwallet/sdk";
 import { formatUnits } from "ethers";
 import CardFactoryABI from "smartcontracts/build/contracts/cardFactory/CardFactory.abi.json";
@@ -5,7 +6,7 @@ import ERC20ABI from "smartcontracts/build/contracts/erc20/ERC20.abi.json";
 import ProfileABI from "smartcontracts/build/contracts/profile/Profile.abi.json";
 import { createPublicClient, http } from "viem";
 import chains from "~~/lib/chains";
-import { getHash } from "~~/utils/crypto";
+import { getHash, getIdHash, getSerialHash } from "~~/utils/crypto";
 
 const protocol = ["production", "preview"].includes(process.env.NODE_ENV) ? "https" : "http";
 
@@ -78,7 +79,7 @@ export default class CitizenWalletCommunity {
         ...profileData,
         ipfsHash,
       };
-    } catch (e) {
+    } catch (e: any) {
       if (e.message && e.message.match(/invalid token ID/)) {
         console.error("Profile not found for", account);
       } else {
@@ -96,24 +97,45 @@ export default class CitizenWalletCommunity {
   };
 
   getCardAccountAddress = async (serialNumber: string): Promise<string | null> => {
-    await this.initClient();
-    const contractAddress: string | undefined = this.config.cards?.card_factory_address;
-    if (!contractAddress) {
-      console.error(">>> card_factory_address missing for", this.config.community.alias);
-      return null;
+    try {
+      await this.initClient();
+      const contractAddress: string | undefined = this.config.cards?.card_factory_address;
+      const safeContractAddress: string | undefined = this.config.safe_cards?.card_manager_address;
+      if (!contractAddress && !safeContractAddress) {
+        console.error(">>> card_factory_address missing for", this.config.community.alias);
+        return null;
+      }
+      if (!contractAddress && !safeContractAddress) return null;
+      if (!serialNumber) return null;
+
+      if (safeContractAddress) {
+        // Safe cards
+        const hashedId = getIdHash("test");
+        const hashedSerial = getSerialHash(serialNumber);
+        const accountAddress = await this.client.readContract({
+          address: safeContractAddress,
+          abi: CardManagerABI,
+          functionName: "getCardAddress",
+          args: [hashedId, hashedSerial],
+        });
+        return accountAddress;
+      }
+
+      // Standard cards
+      const hash = getHash(serialNumber, this.config.cards.card_factory_address || "");
+      const accountAddress = await this.client.readContract({
+        address: contractAddress,
+        abi: CardFactoryABI,
+        functionName: "getCardAddress",
+        args: [hash],
+      });
+
+      return accountAddress;
+    } catch (error) {
+      console.error("Error while fetching card account address", error);
     }
-    if (!contractAddress) return null;
-    if (!serialNumber) return null;
 
-    const hash = getHash(serialNumber, this.config.cards.card_factory_address || "");
-    const accountAddress = await this.client.readContract({
-      address: contractAddress,
-      abi: CardFactoryABI,
-      functionName: "getCardAddress",
-      args: [hash],
-    });
-
-    return accountAddress;
+    return null;
   };
 
   getBalance = async (account: string) => {
