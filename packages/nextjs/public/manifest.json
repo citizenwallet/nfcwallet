@@ -1,11 +1,11 @@
 {
   "name": "nfcwallet.xyz",
-  "short_name": "NFC Wallet Kiosk",
+  "short_name": "Commons Hub Kiosk",
   "description": "Here to welcome your visitors",
-  "start_url": "/wallet.pay.brussels/kiosk",
+  "start_url": "/wallet.commonshub.brussels/kiosk",
   "display": "standalone",
-  "background_color": "#162B44",
-  "theme_color": "#162B44",
+  "background_color": "#ff4c02",
+  "theme_color": "#ff4c02",
   "icons": [
     {
       "src": "/nfcwallet-icon-small.png",

@@ -22,64 +22,65 @@ export default function CommunityKiosk({
   theme: Theme;
 }) {
   const [writing, setWriting] = useState<boolean>(false);
-  const [cardUrl, setCardUrl] = useState<string | null>(null);
   const [nfcReaderState, setNFCReaderState] = useState<string>("idle");
   const [accounts, setAccounts] = useState<string | null>(null);
   const router = useRouter();
 
   const handleNFCData = async ({ message, serialNumber }: { message: any; serialNumber: string }) => {
     if (writing) return;
-    setCardUrl(null);
     const textDecoder = new TextDecoder();
     let accounts_str = null;
+    let urlstr = null;
     for (const record of message.records) {
       if (record.recordType === "url") {
-        const urlstr = textDecoder.decode(record.data);
-        console.log("URL:", urlstr);
+        urlstr = textDecoder.decode(record.data);
+        console.log("NFC card current url:", urlstr);
 
         const lastToken = urlstr.split("/").pop();
         if (lastToken?.substring(0, 2) === "0x" && lastToken.length >= 42) {
           accounts_str = lastToken;
-          setAccounts(accounts_str);
-          setCardUrl(urlstr);
-          return;
+          if (communitySlug === "wallet.commonshub.brussels" && (accounts_str || "").indexOf(",") === -1) {
+            setupCard(accounts_str, urlstr);
+          } else {
+            setAccounts(accounts_str);
+            return;
+          }
         }
       }
     }
-    if (!accounts_str) {
-      console.log("computed crypto wallet address for", communitySlug, serialNumber, accounts);
+    if (!accounts_str || (communitySlug === "wallet.commonshub.brussels" && (accounts_str || "").indexOf(",") === -1)) {
       accounts_str = await getCardAccountAddress(communitySlug, serialNumber);
       if (communitySlug === "wallet.commonshub.brussels") {
         accounts_str += `,${await getCardAccountAddress("wallet.pay.brussels", serialNumber)}@wallet.pay.brussels`;
       }
-      setupCard(accounts_str);
+      console.log("computed crypto wallet address for", communitySlug, serialNumber, accounts_str);
     }
+    setupCard(accounts_str, urlstr);
   };
 
-  const setupCard = async (accounts: any) => {
+  const setupCard = async (accounts: any, urlstr: string | null) => {
     if (!accounts) {
       console.error("Account address is required");
       return null;
     }
-    const urlstr = `https://nfcwallet.xyz/${communitySlug}/${accounts}`;
-    if (cardUrl && cardUrl === urlstr) {
-      router.push(cardUrl);
+    const newurlstr = `https://nfcwallet.xyz/${communitySlug}/${accounts}`;
+    if (urlstr && urlstr === newurlstr) {
+      setAccounts(accounts);
+      return;
     }
     setWriting(true);
     try {
       const ndef = new NDEFReader();
       await ndef.write({
-        records: [{ recordType: "url", data: urlstr }],
+        records: [{ recordType: "url", data: newurlstr }],
       });
-      setCardUrl(urlstr);
-      console.log("Card set up successfully!", urlstr);
+      console.log("Card set up successfully!", newurlstr);
       setAccounts(accounts);
       // return router.push(urlstr);
     } catch {
       setWriting(false);
       console.error("Write failed :-( try again.");
       setTimeout(() => {
-        setCardUrl(null);
         setAccounts(null);
       }, 3000);
     }
