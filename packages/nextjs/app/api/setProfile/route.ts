@@ -36,7 +36,8 @@ export async function POST(request: NextRequest) {
   //  const bearer = `${expiryDate}-${data.account}-${signedMessage}`;
   const matches = bearer.match(/(\d+)-(0x.*)-(0x.*)/);
   if (matches?.length !== 4) {
-    return Response.json({ error: "Invalid bearer format" });
+    console.log(">>> bearer matches", matches);
+    return Response.json({ error: "Invalid bearer format: " + bearer });
   }
   const bearerTokens = bearer.split("-");
   const expiryDate = bearerTokens[0];
@@ -94,8 +95,6 @@ export async function POST(request: NextRequest) {
 
   const serverAccountAddress = await accountFactoryContract.getFunction("getAddress")(address, 0);
 
-  console.log(">>> serverAccountAddress", serverAccountAddress);
-
   const bundler = new BundlerService(cw.config);
   // for debugging, we wait until it's confirmed:
   try {
@@ -110,6 +109,9 @@ export async function POST(request: NextRequest) {
     console.log(">>> env", process.env.NODE_ENV);
   } catch (e) {
     console.error(">>> error", e);
+    console.error(
+      `Make sure that the server account address (${serverAccountAddress}) has the PROFILE_ADMIN ROLE (0x224b562a599bb6f57441f98a50de513dff0de3d9b620f342c27a4e4a898ce8e2) on the profile contract for this community (${cw.config.profile.address})`,
+    );
     return Response.json({ error: "Unable to save profile. Try with a different username." });
   }
 

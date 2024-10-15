@@ -1,0 +1,17 @@
+{
+  "wallet.regenvillage.brussels": {
+    "primary": "#1CB260",
+    "secondary": "#01392C",
+    "text": "#fff",
+    "greeting": "Hello, regen!",
+    "nfc": {
+      "deviceName": "wristband",
+      "scannerLogo": "https://nfcwallet.xyz/heart-nfc.png"
+    }
+  },
+  "wallet.pay.brussels": {
+    "primary": "#4a90e2",
+    "secondary": "#4a90e2",
+    "text": "#fff"
+  }
+}

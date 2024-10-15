@@ -30,7 +30,7 @@ export async function generateViewport({ params }: paramsType) {
 export default async function WalletProfile({ params }: paramsType) {
   // const [urlRecord, setUrlRecord] = useState("");
   const { accountAddress } = params;
-  if (accountAddress.length !== 42 || accountAddress.substring(0, 2) !== "0x") {
+  if (accountAddress.length < 42 || accountAddress.substring(0, 2) !== "0x") {
     return <Error msg="Invalid account address" />;
   }
 

@@ -28,7 +28,10 @@ export default function CommunityCardReader({ communitySlug }: { communitySlug: 
       }
     }
     setSerialNumber(serialNumber);
-    const accountAddress = await getCardAccountAddress(communitySlug, serialNumber);
+    let accountAddress = await getCardAccountAddress(communitySlug, serialNumber);
+    if (communitySlug === "wallet.commonshub.brussels") {
+      accountAddress += `,${await getCardAccountAddress("wallet.pay.brussels", serialNumber)}@wallet.pay.brussels`;
+    }
     setAccountAddress(accountAddress);
   };
 

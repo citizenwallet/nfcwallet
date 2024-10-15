@@ -11,7 +11,7 @@ if (!process.env.PRIVATE_KEY) {
 }
 
 const wallet = new Wallet(process.env.PRIVATE_KEY || "");
-
+console.log(">>> NFC Wallet server public address:", wallet.address);
 let requestsLastPeriod: { [key: string]: number } = {};
 setInterval(() => {
   requestsLastPeriod = {};

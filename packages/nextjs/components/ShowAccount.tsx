@@ -31,11 +31,12 @@ export default function ShowAccount({
   poap?: Poap;
 }) {
   const communitySlug = config?.community.alias;
-  const [profile] = useProfile(communitySlug, accountAddress);
+  const accounts = decodeURIComponent(accountAddress).split(",");
+  const [profile] = useProfile(communitySlug, accounts[0]);
   const [showProfileQR, setShowProfileQR] = useState(false);
 
   useSafeEffect(() => {
-    window.localStorage.setItem("account", accountAddress);
+    window.localStorage.setItem("account", accounts[0]);
     window.localStorage.setItem("communityslug", config.community.alias);
   });
 
@@ -61,7 +62,7 @@ export default function ShowAccount({
     setShowProfileQR(!showProfileQR);
   };
 
-  const profilePageUrl = `${process.env.NEXT_PUBLIC_WEBAPP_URL}/${communitySlug}/${accountAddress}`;
+  const profilePageUrl = `${process.env.NEXT_PUBLIC_WEBAPP_URL}/${communitySlug}/${accounts[0]}`;
 
   return (
     <WagmiConfig config={wagmiConfig}>
@@ -74,7 +75,7 @@ export default function ShowAccount({
           style={{ color: config.community.theme.primary }}
         />
 
-        {poap?.id && <PoapOfTheDay accountAddress={accountAddress} poap={poap} profile={profile} theme={theme} />}
+        {poap?.id && <PoapOfTheDay accountAddress={accounts[0]} poap={poap} profile={profile} theme={theme} />}
 
         <ProfileHeader profile={profile} config={config} />
 
@@ -88,8 +89,13 @@ export default function ShowAccount({
         )}
 
         <div className="mb-8 flex flex-col gap-2 max-w-sm mx-auto">
-          {config?.token.address && <CWTokenBalance config={config} accountAddress={accountAddress} />}
-          {secondConfig && <CWTokenBalance config={secondConfig} accountAddress={accountAddress} />}
+          {config?.token.address && <CWTokenBalance config={config} accountAddress={accounts[0]} />}
+          {secondConfig && accounts.length > 1 && (
+            <CWTokenBalance
+              config={secondConfig}
+              accountAddress={accounts[1].replace(`@${secondConfig.community.alias}`, "")}
+            />
+          )}
         </div>
 
         {hasPlugin("poap") && (

@@ -1,5 +1,6 @@
 import LeftArrowIcon from "@/public/leftarrow.svg";
 import QRCode from "react-qr-code";
+import { hexToRgba } from "~~/lib/colors";
 
 export default function EditProfileQRModal({
   editProfileUrl,
@@ -20,7 +21,8 @@ export default function EditProfileQRModal({
         <QRCode value={editProfileUrl} size={256} style={{ height: "auto", maxWidth: "300px", width: "100%" }} />
       </div>
       <button
-        className="bg-[#195245] active:bg-[#01392C] border-2 border-[#1E6756] color-[#F8F7F3] h-32 w-full rounded-2xl text-center font-bold text-4xl my-16"
+        style={{ backgroundColor: hexToRgba(theme.primary, 0.1) }}
+        className="active:opacity-70 border-2 h-32 w-full rounded-2xl text-center font-bold text-4xl my-16"
         onClick={onClose}
       >
         <div className="flex flex-row gap-6 justify-center">

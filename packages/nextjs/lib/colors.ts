@@ -1,3 +1,6 @@
+import themes from "@/themes.json";
+import { defaultsDeep } from "lodash";
+
 function rgbToHex(r: number, g: number, b: number): string {
   return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
 }
@@ -40,12 +43,17 @@ export function getTextColor(hex: string): "black" | "white" {
   return luminance > 0.5 ? "black" : "white";
 }
 
+type nfcSettings = {
+  scannerLogo: string;
+  deviceName: string;
+};
+
 export type Theme = {
   primary: string;
   secondary?: string;
   text?: string;
-  greating?: string;
-  nfctagName?: string;
+  greeting?: string;
+  nfc?: nfcSettings;
 };
 
 type Config = {
@@ -54,28 +62,23 @@ type Config = {
     theme?: Theme;
   };
 };
-export const theme = (config: Config) => {
-  const theme: Theme = config.community.theme || { primary: "#2FA087" };
-  theme.greating = "Hello, citizen!";
-  theme.nfctagName = "NFC wallet";
-  switch (config.community.alias) {
-    case "wallet.regenvillage.brussels":
-      theme.primary = "#1CB260";
-      theme.secondary = "#01392C";
-      theme.text = "#fff";
-      theme.greating = "Hello, regen!";
-      theme.nfctagName = "wristband";
-      break;
-    case "wallet.pay.brussels":
-      theme.primary = "#4a90e2";
-      theme.secondary = "#4a90e2";
-      theme.text = "#fff";
-      break;
-    default:
-      theme.primary = "#2FA087";
-      theme.secondary = "#01392C";
-      theme.text = "#fff";
-      break;
-  }
+
+export const theme = (communityConfig: Config) => {
+  const theme: Theme = communityConfig.community.theme || { primary: "#2FA087" };
+  const communitySlug = communityConfig.community.alias;
+
+  const defaults = {
+    greeting: "Hello, citizen!",
+    primary: "#2FA087",
+    secondary: "#01392C",
+    text: "#fff",
+    nfc: {
+      scannerLogo: "https://nfcwallet.xyz/nfc-scanner.svg",
+      deviceName: "NFC wallet",
+    },
+  };
+
+  defaultsDeep(theme, defaults, themes[communitySlug] || {});
+
   return theme;
 };

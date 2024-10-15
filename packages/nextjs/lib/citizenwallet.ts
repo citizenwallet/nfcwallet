@@ -1,6 +1,8 @@
 import CardManagerABI from "../contracts/CardManagerABI.json";
 import { ProfileService } from "@citizenwallet/sdk";
-import { formatUnits } from "ethers";
+import { BundlerService } from "@citizenwallet/sdk/dist/src/services/bundler";
+import { ethers } from "ethers";
+import accountFactoryContractAbi from "smartcontracts/build/contracts/accfactory/AccountFactory.abi.json";
 import CardFactoryABI from "smartcontracts/build/contracts/cardFactory/CardFactory.abi.json";
 import ERC20ABI from "smartcontracts/build/contracts/erc20/ERC20.abi.json";
 import ProfileABI from "smartcontracts/build/contracts/profile/Profile.abi.json";
@@ -55,7 +57,6 @@ export default class CitizenWalletCommunity {
       if (!config) {
         console.error(`Community ${this.communitySlug} not found in ${this.configUrl}`);
       }
-      // console.log(">>> this.config", config);
       this.config = config;
       return config;
     } catch (e) {
@@ -64,7 +65,7 @@ export default class CitizenWalletCommunity {
     }
   };
 
-  getProfile = async (account: string) => {
+  getProfile = async (accountAddress: string) => {
     await this.initClient();
     const contractAddress = this.config.profile.address;
     try {
@@ -72,7 +73,7 @@ export default class CitizenWalletCommunity {
         address: contractAddress,
         abi: ProfileABI,
         functionName: "get",
-        args: [account],
+        args: [accountAddress],
       });
       const profileData = await this.fetchJSON(ipfsHash);
       return {
@@ -81,9 +82,9 @@ export default class CitizenWalletCommunity {
       };
     } catch (e: any) {
       if (e.message && e.message.match(/invalid token ID/)) {
-        console.error("Profile not found for", account);
+        console.error("Profile not found for", accountAddress);
       } else {
-        console.error("Error while fetching profile for", account, e);
+        console.error("Error while fetching profile for", accountAddress, e);
       }
       return null;
     }
@@ -138,7 +139,7 @@ export default class CitizenWalletCommunity {
     return null;
   };
 
-  getBalance = async (account: string) => {
+  getBalance = async (accountAddress: string) => {
     await this.initClient();
     const contractAddress = this.config.token.address;
     const decimals = this.config.token.decimals;
@@ -147,21 +148,64 @@ export default class CitizenWalletCommunity {
       address: contractAddress,
       abi: ERC20ABI,
       functionName: "balanceOf",
-      args: [account],
+      args: [accountAddress],
     });
 
-    return parseFloat(formatUnits(balance, decimals));
+    return parseFloat(ethers.formatUnits(balance, decimals));
   };
 
-  getTransactions = async (account: string) => {
+  getTransactions = async (accountAddress: string) => {
     await this.loadConfig();
     const apiUrl = this.config.indexer.url;
-    const apiCall = `${apiUrl}/logs/transfers/${this.config.token.address}/${account}?limit=10`;
+    const apiCall = `${apiUrl}/logs/transfers/${this.config.token.address}/${accountAddress}?limit=10`;
     const response = await fetch(apiCall, {
       headers: { Authorization: "Bearer x" },
     });
     const data = await response.json();
     return data.array;
+  };
+
+  mint = async (accountAddress: string, amount: number, description: string) => {
+    await this.loadConfig();
+    const provider = new ethers.JsonRpcProvider(this.config.node.url);
+    const serverWallet = new ethers.Wallet(process.env.PRIVATE_KEY || "");
+    const signer = serverWallet.connect(provider);
+    const bundler = new BundlerService(this.config);
+    const accountFactoryContract = new ethers.Contract(
+      this.config.erc4337.account_factory_address,
+      accountFactoryContractAbi,
+      provider,
+    );
+    const sender = await accountFactoryContract.getFunction("getAddress")(signer.address, 0);
+
+    try {
+      console.log(
+        ">>> Minting token",
+        typeof process.env.PRIVATE_KEY,
+        serverWallet.address,
+        amount,
+        this.config.token.symbol,
+        "for",
+        accountAddress,
+        "from",
+        signer.address,
+      );
+      const data = await bundler.mintERC20Token(
+        // @ts-ignore I don't know how to fix this (why is the exact same code working fine for the /topup route?)
+        signer,
+        this.config.token.address,
+        sender,
+        accountAddress,
+        `${amount}`,
+        description || "minting",
+      );
+
+      console.log(">>> Minted token", data);
+      return data;
+    } catch (e) {
+      console.error("Error:", e);
+      return { error: "Error minting token", status: 500 };
+    }
   };
 
   fetchFromIPFS = async (ipfsHash: string) => {

@@ -33,9 +33,10 @@ export default async function WalletProfile({
 }) {
   // const [urlRecord, setUrlRecord] = useState("");
   const { accountAddress } = params;
-  if (accountAddress.length !== 42 || accountAddress.substring(0, 2) !== "0x") {
+  if (accountAddress.length < 42 || accountAddress.substring(0, 2) !== "0x") {
     return <Error msg="Invalid account address" />;
   }
+  const accounts = decodeURIComponent(accountAddress).split(",");
 
   const cw = new CitizenWalletCommunity(params.communitySlug);
   const config = await cw.loadConfig();
@@ -48,7 +49,7 @@ export default async function WalletProfile({
 
   return (
     <div className="min-h-screen" style={{ background: backgroundColor }}>
-      <EditProfile config={config} accountAddress={accountAddress} owner={searchParams.owner} theme={theme(config)} />
+      <EditProfile config={config} accounts={accounts} owner={searchParams.owner} theme={theme(config)} />
     </div>
   );
 }

@@ -1599,17 +1599,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@citizenwallet/sdk@npm:^1.2.40":
-  version: 1.2.40
-  resolution: "@citizenwallet/sdk@npm:1.2.40"
+"@citizenwallet/sdk@npm:^1.2.42":
+  version: 1.2.42
+  resolution: "@citizenwallet/sdk@npm:1.2.42"
   dependencies:
     "@openzeppelin/contracts-upgradeable": ^5.0.2
     ethers: ^6.11.1
     fflate: ^0.8.2
     react: ^18.2.0
-    smartcontracts: "github:citizenwallet/smartcontracts#v0.0.106"
+    smartcontracts: "github:citizenwallet/smartcontracts#v0.0.110"
     zustand: ^4.5.2
-  checksum: 4cea6d8f9a5aebe7d3918cf422262694648c28df7ce5dae3824ca47caf0e3c73a0bbd99eb36fa372d12ddff2a3998aaefcdd144161c875f9681fd7fcbb844b67
+  checksum: ccb26dea6c5f60735c6c2ecc615ad437c25eec3b949561cf57f2d7dbe94f7289df147ac6ccd8f3ec30024405be3b67846785cbee47bfbbb7df0c818bd19f131c
   languageName: node
   linkType: hard
 
@@ -3863,7 +3863,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@se-2/nextjs@workspace:packages/nextjs"
   dependencies:
-    "@citizenwallet/sdk": ^1.2.40
+    "@citizenwallet/sdk": ^1.2.42
     "@ensdomains/ensjs": ^4.0.0
     "@ethersproject/providers": ~5.7.2
     "@heroicons/react": ~2.0.11
@@ -16706,21 +16706,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"smartcontracts@github:citizenwallet/smartcontracts#v0.0.106":
-  version: 1.0.0
-  resolution: "smartcontracts@https://github.com/citizenwallet/smartcontracts.git#commit=d45f310c1621ec859ba6c39076709c857302a4b4"
-  dependencies:
-    userop: ^0.3.3
-  checksum: 6e88634a6c537bb3b467239e6fb1af1e2d7ff0a11a5fb34995597245c511268127ec3ad35d1faacdc24f02922fbd631ce7ff8990a00787ab25e93f896cb3e7db
-  languageName: node
-  linkType: hard
-
 "smartcontracts@github:citizenwallet/smartcontracts#v0.0.108":
   version: 1.0.0
   resolution: "smartcontracts@https://github.com/citizenwallet/smartcontracts.git#commit=996c67a610cbc7c868c3d921f7be02ac476b42ec"
   dependencies:
     userop: ^0.3.3
   checksum: e0d0be8f24d8a3a777b24acec9084c1552b1d2b071004fffcc18342f0657c6a388e17d197412f7f778a8777c1802ec1cf347a33c9bba7baab9eb6abd3c3b5694
+  languageName: node
+  linkType: hard
+
+"smartcontracts@github:citizenwallet/smartcontracts#v0.0.110":
+  version: 1.0.0
+  resolution: "smartcontracts@https://github.com/citizenwallet/smartcontracts.git#commit=891893cbd62a278eea3d8a954c40590ac5970956"
+  dependencies:
+    userop: ^0.3.3
+  checksum: 2a53a5fc8b592d736e14f93ccc89d4e64d405439f913a2ef40f35c737343ae10e16854fd7970f99c594f0204b64b4b25685ceb3a13baac31e72b14b1618cf2bf
   languageName: node
   linkType: hard
 

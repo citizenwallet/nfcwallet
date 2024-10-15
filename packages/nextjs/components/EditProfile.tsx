@@ -16,15 +16,16 @@ import { getPasswordHash } from "~~/utils/crypto";
 import { getUrlFromIPFS } from "~~/utils/ipfs";
 
 export default function EditProfile({
-  accountAddress,
+  accounts,
   config,
   theme,
 }: {
-  accountAddress: string;
+  accounts: string[];
   owner: string;
   config: any;
   theme: Theme;
 }) {
+  const accountAddress = accounts[0];
   const communitySlug = config?.community.alias;
   const configUrl = `${window.location.protocol}//${window.location.host}/api/getConfig`;
 
@@ -175,7 +176,7 @@ export default function EditProfile({
     }
     const res = await saveProfile(formData);
     if (res) {
-      router.push(`/${config.community.alias}/${accountAddress}`);
+      router.push(`/${config.community.alias}/${accounts.join(",")}`);
     }
   }
 

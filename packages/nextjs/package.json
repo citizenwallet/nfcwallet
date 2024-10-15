@@ -14,7 +14,7 @@
     "vercel:yolo": "vercel --build-env NEXT_PUBLIC_IGNORE_BUILD_ERROR=true"
   },
   "dependencies": {
-    "@citizenwallet/sdk": "^1.2.40",
+    "@citizenwallet/sdk": "^1.2.42",
     "@ensdomains/ensjs": "^4.0.0",
     "@ethersproject/providers": "~5.7.2",
     "@heroicons/react": "~2.0.11",
