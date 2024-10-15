@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import KioskProfile from "./KioskProfile";
 import NFCReader from "@/components/NFCReader";
 import { Poap } from "@/lib/poap";
@@ -24,7 +23,6 @@ export default function CommunityKiosk({
   const [writing, setWriting] = useState<boolean>(false);
   const [nfcReaderState, setNFCReaderState] = useState<string>("idle");
   const [accounts, setAccounts] = useState<string | null>(null);
-  const router = useRouter();
 
   const handleNFCData = async ({ message, serialNumber }: { message: any; serialNumber: string }) => {
     if (writing) return;
@@ -66,7 +64,6 @@ export default function CommunityKiosk({
     const newurlstr = `https://nfcwallet.xyz/${communitySlug}/${accounts}`;
     if (urlstr && urlstr === newurlstr) {
       setAccounts(accounts);
-      return;
     }
     setWriting(true);
     try {
@@ -76,7 +73,6 @@ export default function CommunityKiosk({
       });
       console.log("Card set up successfully!", newurlstr);
       setAccounts(accounts);
-      // return router.push(urlstr);
     } catch {
       setWriting(false);
       console.error("Write failed :-( try again.");
