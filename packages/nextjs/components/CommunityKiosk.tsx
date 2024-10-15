@@ -11,11 +11,13 @@ import DefaultAvatar from "~~/public/avatar.svg";
 
 export default function CommunityKiosk({
   config,
+  secondConfig,
   communitySlug,
   poap,
   theme,
 }: {
   config: any;
+  secondConfig: any;
   communitySlug: string;
   poap: Poap | undefined;
   theme: Theme;
@@ -66,6 +68,7 @@ export default function CommunityKiosk({
       setAccounts(accounts);
     }
     setWriting(true);
+    console.log("setupCard, writing", newurlstr);
     try {
       const ndef = new NDEFReader();
       await ndef.write({
@@ -73,9 +76,9 @@ export default function CommunityKiosk({
       });
       console.log("Card set up successfully!", newurlstr);
       setAccounts(accounts);
-    } catch {
+    } catch (error) {
       setWriting(false);
-      console.error("Write failed :-( try again.");
+      console.error("Write failed :-( try again.", error);
       setTimeout(() => {
         setAccounts(null);
       }, 3000);
@@ -118,7 +121,14 @@ export default function CommunityKiosk({
         </div>
       )}
       {accounts && (
-        <KioskProfile config={config} accounts={accounts.split(",")} theme={theme} poap={poap} onLogout={onLogout} />
+        <KioskProfile
+          config={config}
+          secondConfig={secondConfig}
+          accounts={accounts.split(",")}
+          theme={theme}
+          poap={poap}
+          onLogout={onLogout}
+        />
       )}
     </div>
   );

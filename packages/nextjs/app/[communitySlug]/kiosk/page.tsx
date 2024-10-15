@@ -25,7 +25,12 @@ export default async function KioskPage({ params }: { params: { communitySlug: s
 
   const cw = new CitizenWalletCommunity(params.communitySlug);
   const config = await cw.loadConfig();
-
+  // Add a EURb balance to regen village and commonshub wallets
+  let secondConfig;
+  if (["wallet.commonshub.brussels", "wallet.regenvillage.brussels"].includes(config.community.alias)) {
+    const cw2 = new CitizenWalletCommunity("wallet.pay.brussels");
+    secondConfig = await cw2.loadConfig();
+  }
   if (!config) {
     return <Error msg={`Unable to load the ${params.communitySlug} community`} />;
   }
@@ -35,7 +40,13 @@ export default async function KioskPage({ params }: { params: { communitySlug: s
       className="h-screen flex flex-col justify-between "
       style={{ backgroundColor: darkenHexColor(theme(config).primary, 70) }}
     >
-      <CommunityKiosk config={config} communitySlug={params.communitySlug} theme={theme(config)} poap={poapOfTheDay} />
+      <CommunityKiosk
+        config={config}
+        secondConfig={secondConfig}
+        communitySlug={params.communitySlug}
+        theme={theme(config)}
+        poap={poapOfTheDay}
+      />
       <div className="text-center p-2 mt-2 flex justify-center items-center flex-col">
         <div className="text-xs text-[#2FA087]">Powered by</div>
         <div className="flex justify-center items-center">
