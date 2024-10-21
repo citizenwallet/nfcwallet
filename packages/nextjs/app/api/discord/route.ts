@@ -89,6 +89,7 @@ export async function GET(request: NextRequest) {
   const messages = await response.json();
   const output = await Promise.all(
     messages.slice(0, limit).map(async message => {
+      // console.log(message);
       const avatarUrl = getAvatarUrl(message.author.id, message.author.avatar);
       const { content, mentions, channels } = await processContent(message.content, message.mentions);
 
@@ -98,6 +99,18 @@ export async function GET(request: NextRequest) {
         content,
         mentions,
         channels,
+        attachments: message.attachments.map(attachment => {
+          return {
+            id: attachment.id,
+            url: attachment.url,
+            proxy_url: attachment.proxy_url,
+            filename: attachment.filename,
+            content_type: attachment.content_type,
+            width: attachment.width,
+            height: attachment.height,
+            size: attachment.size,
+          };
+        }),
         timestamp: message.timestamp,
         reactions: message.reactions?.map(reaction => {
           return {

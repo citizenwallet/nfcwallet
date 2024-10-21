@@ -23,7 +23,7 @@ export default function CommunityKiosk({
   theme: Theme;
 }) {
   const [writing, setWriting] = useState<boolean>(false);
-  const [nfcReaderState, setNFCReaderState] = useState<string>("idle");
+  const [nfcReaderState, setNFCReaderState] = useState<string>("scanning"); // "idle" by default
   const [accounts, setAccounts] = useState<string | null>(null);
 
   const handleNFCData = async ({ message, serialNumber }: { message: any; serialNumber: string }) => {
@@ -119,10 +119,12 @@ export default function CommunityKiosk({
             <NFCReader theme={theme} onChange={handleNFCData} isWriting={writing} state={nfcReaderState} />
           </div>
           <div className="flex items-center flex-col">
-            <h1 className="text-6xl font-bold">Who are you grateful to today?</h1>
+            <h1 className="text-5xl font-bold">Latest contributions to the Commons Hub</h1>
             <div className="text-left p-4">
-              <DiscordChannel channelId={"1280924924625682484"} />
-              <h2>Join the #praise channel to share your gratitude! (discord.commonshub.brussels)</h2>
+              <DiscordChannel channelId={"1297965144579637248"} />
+              <h2 className="text-center">
+                Join the #contributions channel to share your contributions (discord.commonshub.brussels)
+              </h2>
             </div>
           </div>
         </div>

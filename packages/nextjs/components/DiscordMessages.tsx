@@ -20,6 +20,17 @@ interface Channel {
   url: string;
 }
 
+interface Attachment {
+  id: string;
+  filename: string;
+  size: number;
+  url: string;
+  proxy_url: string;
+  content_type?: string;
+  width?: number;
+  height?: number;
+}
+
 interface Message {
   id: string;
   content: string;
@@ -28,6 +39,7 @@ interface Message {
   reactions: Reaction[];
   mentions: Mention[];
   channels: Channel[];
+  attachments: Attachment[];
 }
 
 interface Reaction {
@@ -68,6 +80,30 @@ const MessageContent: React.FC<{ content: string; mentions: Mention[]; channels:
     </p>
   );
 };
+
+const AttachmentPreview: React.FC<{ attachment: Attachment }> = ({ attachment }) => {
+  const isImage = attachment.content_type?.startsWith("image/");
+
+  if (isImage) {
+    return (
+      <a href={attachment.url} target="_blank" rel="noopener noreferrer" className="block mt-2">
+        <img src={attachment.proxy_url} alt={attachment.filename} className="max-w-full max-h-96 rounded" />
+      </a>
+    );
+  }
+
+  return (
+    <a
+      href={attachment.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block mt-2 text-blue-500 hover:underline"
+    >
+      📎 {attachment.filename} ({(attachment.size / 1024 / 1024).toFixed(2)} MB)
+    </a>
+  );
+};
+
 export default function DiscordMessages({ messages }: { messages: Message[] }) {
   if (!messages) return null;
   if (messages.length === 0) return <div>No messages</div>;
@@ -86,6 +122,9 @@ export default function DiscordMessages({ messages }: { messages: Message[] }) {
               <span className="text-xs text-gray-400">{new Date(message.timestamp).toLocaleString()}</span>
             </div>
             <MessageContent content={message.content} mentions={message.mentions} channels={message.channels} />
+            {message.attachments.map(attachment => (
+              <AttachmentPreview key={attachment.id} attachment={attachment} />
+            ))}
             <div className="flex space-x-2 mt-2">
               {message.reactions?.map((reaction, index) => (
                 <ReactionButton key={index} reaction={reaction} />

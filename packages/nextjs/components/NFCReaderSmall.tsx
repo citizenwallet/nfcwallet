@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
 import { Theme } from "@/lib/colors";
+import ScannerLogo from "@/public/nfc-scanner.svg";
 
 const Scan = ({
   onChange,
@@ -40,7 +40,7 @@ const Scan = ({
 
       setScanning(true);
     } catch (error) {
-      setScanning(false);
+      setScanning(false); // toggle
       console.log(`Error! Scan failed to start: ${error}.`);
       setErrorMsg(`Scanner failed to start: ${error}.`);
     }
@@ -53,7 +53,7 @@ const Scan = ({
     } catch (error) {
       console.log(`Error! Scan failed to start: ${error}.`);
       // setErrorMsg(`setNfcAvailable error: ${error}.`);
-      setNfcAvailable(false); // toggle
+      setNfcAvailable(true); // toggle
     }
   }, []);
 
@@ -66,15 +66,15 @@ const Scan = ({
       {nfcAvailable && (
         <div className="flex flex-col justify-center" onClick={startScanner}>
           <div className="">
-            <Image
+            <ScannerLogo
               src={theme.nfc?.scannerLogo || "/nfc-scanner.svg"}
-              width={150}
-              height={100}
+              width={75}
+              height={50}
               alt="NFC scanner"
-              className={`${isWriting || !scanning ? "" : "heartBeating"}`}
+              className={`${isWriting || !scanning ? "" : "heartBeatingg"}`}
             />
           </div>
-          <div className=" font-bold text-lg whitespace-nowrap text-center">
+          <div className=" text-sm whitespace-nowrap text-center">
             {isWriting
               ? `Hold your ${theme.nfc?.deviceName}`
               : scanning
