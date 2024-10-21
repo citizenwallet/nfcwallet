@@ -3,6 +3,7 @@
 import Error from "@/components/Error";
 import CitizenWalletText from "@/public/citizenwallet-logo-text.svg";
 import moment from "moment";
+import CHBKiosk from "~~/components/CHBKiosk";
 import CommunityKiosk from "~~/components/CommunityKiosk";
 import CitizenWalletCommunity from "~~/lib/citizenwallet";
 import { darkenHexColor, theme } from "~~/lib/colors";
@@ -40,13 +41,23 @@ export default async function KioskPage({ params }: { params: { communitySlug: s
       className="h-screen flex flex-col justify-between "
       style={{ backgroundColor: darkenHexColor(theme(config).primary, 70) }}
     >
-      <CommunityKiosk
-        config={config}
-        secondConfig={secondConfig}
-        communitySlug={params.communitySlug}
-        theme={theme(config)}
-        poap={poapOfTheDay}
-      />
+      {params.communitySlug === "wallet.commonshub.brussels" ? (
+        <CHBKiosk
+          config={config}
+          secondConfig={secondConfig}
+          communitySlug={params.communitySlug}
+          theme={theme(config)}
+          poap={poapOfTheDay}
+        />
+      ) : (
+        <CommunityKiosk
+          config={config}
+          secondConfig={secondConfig}
+          communitySlug={params.communitySlug}
+          theme={theme(config)}
+          poap={poapOfTheDay}
+        />
+      )}
       <div className="text-center p-2 mt-2 flex justify-center items-center flex-col">
         <div className="text-xs text-[#2FA087]">Powered by</div>
         <div className="flex justify-center items-center">
