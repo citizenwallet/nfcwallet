@@ -53,7 +53,7 @@ const Scan = ({
     } catch (error) {
       console.log(`Error! Scan failed to start: ${error}.`);
       // setErrorMsg(`setNfcAvailable error: ${error}.`);
-      setNfcAvailable(true); // toggle
+      setNfcAvailable(false); // toggle
     }
   }, []);
 

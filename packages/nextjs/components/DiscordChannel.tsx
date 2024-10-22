@@ -100,14 +100,14 @@ const DiscordChannel = ({ channelId }: { channelId: string }) => {
   return (
     <div className="p-4">
       <div className="max-w-2xl mx-auto">
-        <div className="flex items-center space-x-4 mb-4">
+        <div className="flex items-center space-x-4 mb-8 justify-center">
           {leaderboard.map(user => (
             <div key={user.username} className="flex items-center space-x-2 my-4">
               <img src={user.avatar} alt={user.name || user.username} className="w-16 h-16 rounded-full" />
             </div>
           ))}
         </div>
-        <div className="h-[600px] overflow-y-scroll">
+        <div className="h-[670px] overflow-y-scroll">
           <DiscordMessages messages={messages} />
         </div>
       </div>

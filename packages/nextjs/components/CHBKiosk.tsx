@@ -23,7 +23,7 @@ export default function CommunityKiosk({
   theme: Theme;
 }) {
   const [writing, setWriting] = useState<boolean>(false);
-  const [nfcReaderState, setNFCReaderState] = useState<string>("scanning"); // "idle" by default
+  const [nfcReaderState, setNFCReaderState] = useState<string>("idle"); // "idle" by default
   const [accounts, setAccounts] = useState<string | null>(null);
 
   const handleNFCData = async ({ message, serialNumber }: { message: any; serialNumber: string }) => {
@@ -114,17 +114,17 @@ export default function CommunityKiosk({
     <div className="text-center">
       {!accounts && (
         <div>
-          <div className="flex flex-row justify-between p-4">
-            <div>
+          <div className="flex flex-row justify-between p-4 items-center">
+            <div className="align-middle">
               <div className="text-xl">{moment(now).format("MMMM Do")}</div>
               <div className="text-3xl font-bold">{moment(now).format("HH:mm")}</div>
             </div>
-            <div className="">
+            <div className="align-middle">
               <NFCReader theme={theme} onChange={handleNFCData} isWriting={writing} state={nfcReaderState} />
             </div>
           </div>
           <div className="flex items-center flex-col">
-            <h1 className="text-4xl mt-8">Latest contributions to the Commons Hub</h1>
+            <h1 className="text-4xl mt-8 font-bold">Contribute to the Commons Hub</h1>
             <div className="text-left p-4">
               <DiscordChannel channelId={"1297965144579637248"} />
               <h2 className="text-center">
