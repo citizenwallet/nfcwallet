@@ -107,7 +107,7 @@ const DiscordChannel = ({ channelId }: { channelId: string }) => {
             </div>
           ))}
         </div>
-        <div className="h-[500px] overflow-y-scroll">
+        <div className="h-[600px] overflow-y-scroll">
           <DiscordMessages messages={messages} />
         </div>
       </div>

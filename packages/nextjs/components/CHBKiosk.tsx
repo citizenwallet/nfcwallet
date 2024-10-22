@@ -115,11 +115,16 @@ export default function CommunityKiosk({
       {!accounts && (
         <div>
           <div className="flex flex-row justify-between p-4">
-            <h2>{moment(now).format("DD-MM-YYYY HH:mm")}</h2>
-            <NFCReader theme={theme} onChange={handleNFCData} isWriting={writing} state={nfcReaderState} />
+            <div>
+              <div className="text-xl">{moment(now).format("MMMM Do")}</div>
+              <div className="text-3xl font-bold">{moment(now).format("HH:mm")}</div>
+            </div>
+            <div className="">
+              <NFCReader theme={theme} onChange={handleNFCData} isWriting={writing} state={nfcReaderState} />
+            </div>
           </div>
           <div className="flex items-center flex-col">
-            <h1 className="text-5xl font-bold">Latest contributions to the Commons Hub</h1>
+            <h1 className="text-4xl mt-8">Latest contributions to the Commons Hub</h1>
             <div className="text-left p-4">
               <DiscordChannel channelId={"1297965144579637248"} />
               <h2 className="text-center">
